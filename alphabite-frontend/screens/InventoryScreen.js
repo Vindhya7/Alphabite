@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Button, Image } from 'react-native';
-
+import { FontAwesome5 } from '@expo/vector-icons';
 
 
 const styles = StyleSheet.create({
@@ -21,6 +21,12 @@ class InventoryScreen extends React.Component{
     render(){
         return(
             <View>
+              <TouchableOpacity 
+                style={{alignItems: "flext-start", margin: 16}}
+                onPress={this.props.navigation.openDrawer}>
+
+                <FontAwesome5 name = "bars" size = {24} color = "#161924" />
+              </TouchableOpacity>
               <Text>Hi, Vindhya</Text>
               <Image style={styles.userImage}></Image>
                 
