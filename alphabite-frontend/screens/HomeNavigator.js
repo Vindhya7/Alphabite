@@ -12,7 +12,11 @@ const HomeNavigator = createDrawerNavigator({
     Nutrition: { screen : NutritionScreen },
     Recipe : { screen : RecipeScreen }
   },
-  { initialRouteName: 'UserProfile' }
+  { initialRouteName: 'UserProfile' },
+  {
+    drawerWidth:250,
+    drawerType:'slide'
+  }
 );
 
 export default createAppContainer(HomeNavigator);
