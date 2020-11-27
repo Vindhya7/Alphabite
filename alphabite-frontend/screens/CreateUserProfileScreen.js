@@ -1,4 +1,6 @@
 import React from 'react';
+import DropDownPicker from 'react-native-dropdown-picker';
+
 import {
   StyleSheet,
   View,
@@ -14,7 +16,7 @@ import {
 import firebase from 'firebase';
 
 class CreateUserProfileScreen extends React.Component {
-  state = { user: {}, displayName: '', height: '', weight: '', age: '', errorMessage: '', loading: false };
+  state = { user: {}, displayName: '', height: '', weight: '', age: '', gender: '', errorMessage: '', loading: false };
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
@@ -44,6 +46,7 @@ class CreateUserProfileScreen extends React.Component {
         weight: this.state.weight,
         height: this.state.height,
         age: this.state.age,
+        gender: this.state.gender,
         inventory: {}
       }).then((data) => {
         this.props.navigation.navigate('App');
@@ -67,6 +70,19 @@ class CreateUserProfileScreen extends React.Component {
               textContentType="name"
               value={this.state.displayName}
               onChangeText={displayName => this.setState({ displayName })}
+            />
+          </View>
+
+          <View style={styles.inputView} >
+            <DropDownPicker
+                items={[
+                  {label: 'Female', value: 'f'},
+                  {label: 'Male', value: 'm'},
+                ]}
+                defaultNull
+                placeholder="Gender"
+                containerStyle={{height: 40}}
+                onChangeItem={gender => this.setState({ gender: gender.label})}
             />
           </View>
 
