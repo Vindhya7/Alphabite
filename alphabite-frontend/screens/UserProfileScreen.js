@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 })
 
 
-class UserProfile extends React.Component{
+class UserProfileScreen extends React.Component{
     render(){
         return(
             <View>
@@ -38,4 +38,4 @@ class UserProfile extends React.Component{
     }
 }
 
-export default UserProfile;
+export default UserProfileScreen;
