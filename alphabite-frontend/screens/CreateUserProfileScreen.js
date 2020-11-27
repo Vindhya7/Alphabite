@@ -1,5 +1,5 @@
 import React from 'react';
-import DropDownPicker from 'react-native-dropdown-picker';
+
 
 import {
   StyleSheet,
@@ -11,7 +11,8 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   Keyboard,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Picker
 } from 'react-native';
 import firebase from 'firebase';
 
@@ -58,6 +59,7 @@ class CreateUserProfileScreen extends React.Component {
 
 
   render(){
+
     return(
       <View style={styles.container}>
         <Text style={styles.logo}>AlphaBite</Text>
@@ -74,16 +76,13 @@ class CreateUserProfileScreen extends React.Component {
           </View>
 
           <View style={styles.inputView} >
-            <DropDownPicker
-                items={[
-                  {label: 'Female', value: 'f'},
-                  {label: 'Male', value: 'm'},
-                ]}
-                defaultNull
-                placeholder="Gender"
-                containerStyle={{height: 40}}
-                onChangeItem={gender => this.setState({ gender: gender.label})}
-            />
+            <Picker
+                style={{ backgroundColor:"#465881",textColor:"#B1B1B1",height: 50, width: "80%" }}
+                onValueChange={(itemValue, itemIndex) => this.setState({ gender: itemValue })}
+            >
+              <Picker.Item label="Female" value="Female" />
+              <Picker.Item label="Male" value="Male" />
+            </Picker>
           </View>
 
           <View style={styles.inputView} >
