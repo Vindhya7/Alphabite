@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import UserProfileScreen from './UserProfileScreen.js';
 import InventoryScreen from './InventoryScreen.js';

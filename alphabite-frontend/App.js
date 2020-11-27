@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import firebase from '@firebase/app';
 import firebaseConfig from './config/firebase.js';

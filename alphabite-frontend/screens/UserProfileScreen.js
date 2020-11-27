@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
     body: {},
@@ -23,7 +24,6 @@ class UserProfileScreen extends React.Component{
               <TouchableOpacity 
                 style={{alignItems: "flext-start", margin: 16}}
                 onPress={this.props.navigation.openDrawer}>
-
                 <FontAwesome5 name = "bars" size = {24} color = "#161924" />
               </TouchableOpacity>
               <Text>Hi, Vindhya</Text>
