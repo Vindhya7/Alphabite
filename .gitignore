@@ -1,0 +1,13 @@
+alphabite-frontend/node_modules/**/*
+alphabite-frontend/.expo/*
+alphabite-frontend/npm-debug.*
+alphabite-frontend/*.jks
+alphabite-frontend/*.p8
+alphabite-frontend/*.p12
+alphabite-frontend/*.key
+alphabite-frontend/*.mobileprovision
+alphabite-frontend/*.orig.*
+alphabite-frontend/web-build/
+
+# macOS
+.DS_Store

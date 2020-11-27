@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "800937211198",
+    "firebase_url": "https://alphabite-f5098.firebaseio.com",
+    "project_id": "alphabite-f5098",
+    "storage_bucket": "alphabite-f5098.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800937211198:android:8189bdfa1b85f22d01a86f",
+        "android_client_info": {
+          "package_name": "com.alphabite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800937211198-9l0r6804c8v7p0a9qjipj9ddlsrgakkn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdyf12BgxkfGjJz_tbeYQhQwLv4wiZ2qI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800937211198-9l0r6804c8v7p0a9qjipj9ddlsrgakkn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
