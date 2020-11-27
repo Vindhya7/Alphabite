@@ -12,7 +12,7 @@ class HomeScreen extends React.Component {
       }
     })
   }
-  
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -34,5 +34,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
 
 export default HomeScreen;
