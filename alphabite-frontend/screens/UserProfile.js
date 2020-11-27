@@ -23,8 +23,16 @@ class UserProfile extends React.Component{
             <View>
             <Text>Hi, Vindhya</Text>
             <Image style={styles.userImage}></Image>
+            /* separator line
 
+               Age
+               Height
+               Weight
+               Calc BMI
+               NutritionCount
 
+                */
+                
             </View>
         );
     }
