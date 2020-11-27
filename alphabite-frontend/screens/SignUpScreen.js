@@ -17,7 +17,7 @@ import firebase from 'firebase';
 class SignUpScreen extends React.Component {
   state = { displayName: '', email: '', password: '', errorMessage: '', loading: false };
   onLoginSuccess() {
-    this.props.navigation.navigate('App');
+    this.props.navigation.navigate('CreateProfile');
   }
   onLoginFailure(errorMessage) {
     this.setState({ error: errorMessage, loading: false });
@@ -53,19 +53,6 @@ class SignUpScreen extends React.Component {
 
       <View style={styles.container}>
         <Text style={styles.logo}>AlphaBite</Text>
-          <View style={styles.inputView} >
-
-
-            <TextInput  
-              style={styles.inputText}
-              placeholder="Name"
-              placeholderTextColor="#B1B1B1"
-              returnKeyType="next"
-              textContentType="name"
-              value={this.state.displayName}
-              onChangeText={displayName => this.setState({ displayName })}
-            />
-          </View>
 
           <View style={styles.inputView} >
             <TextInput  

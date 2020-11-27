@@ -12,6 +12,7 @@ class HomeScreen extends React.Component {
       }
     })
   }
+  
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
