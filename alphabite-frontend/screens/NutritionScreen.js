@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 })
 
 
-class UserProfileScreen extends React.Component{
+class NutritionScreen extends React.Component{
     render(){
         return(
             <View>
@@ -29,4 +29,4 @@ class UserProfileScreen extends React.Component{
     }
 }
 
-export default UserProfileScreen;
+export default NutritionScreen;
