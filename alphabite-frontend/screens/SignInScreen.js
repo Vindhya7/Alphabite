@@ -13,6 +13,8 @@ import {
 } from "react-native";
 import "firebase/firestore";
 import firebase from "firebase";
+import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 class SignInScreen extends React.Component {
   state = { email: '', password: '', errorMessage: '', loading: false };
@@ -55,12 +57,15 @@ class SignInScreen extends React.Component {
   render() {
     return (
         <View style={styles.container}>
+
           <Text style={styles.logo}>AlphaBite</Text>
+
             <View style={styles.inputView} >
+              <MaterialIcons name="email" size={24} color="black" />
               <TextInput  
                 style={styles.inputText}
-                placeholder="Email"
-                placeholderTextColor="#B1B1B1"
+                placeholder=""
+                placeholderTextColor="#000a13"
                 returnKeyType="next"
                 keyboardType="email-address"
                 textContentType="emailAddress"
@@ -71,10 +76,11 @@ class SignInScreen extends React.Component {
 
 
             <View style={styles.inputView} >
+              <Entypo name="lock-open" size={24} color="black" />
               <TextInput  
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#B1B1B1"
+                style={styles.inputText}
+                placeholder=""
+                placeholderTextColor="#000a13"
                 returnKeyType="done"
                 textContentType="newPassword"
                 secureTextEntry={true}
@@ -88,7 +94,7 @@ class SignInScreen extends React.Component {
               style={{
                 fontSize: 18,
                 textAlign: "center",
-                color: "red",
+                color: "white",
                 width: "80%"
               }}
             >
@@ -116,45 +122,48 @@ class SignInScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c',
+    /*backgroundColor: '#003f5c'*/
+    backgroundColor: '#000a13',
     alignItems: 'center',
     justifyContent: 'center',
   },
   logo:{
     fontWeight:"bold",
     fontSize:50,
-    color:"#fb5b5a",
+    color:"#ffffff",
     marginBottom:40
   },
   inputView:{
-    width:"80%",
-    backgroundColor:"#465881",
+    width:"50%",
+    flexDirection: 'row',
+    backgroundColor:"#95db93",
     borderRadius:25,
-    height:50,
+    height:65,
     marginBottom:20,
-    justifyContent:"center",
     padding:20
+
   },
   inputText:{
-    height:50,
-    color:"white"
+    color:"#000a13",
+    fontWeight:'bold',
+    marginLeft:5,
   },
   forgot:{
     color:"white",
     fontSize:11
   },
   loginBtn:{
-    width:"80%",
-    backgroundColor:"#fb5b5a",
+    width:"10%",
+    backgroundColor:"#71ceac",
     borderRadius:25,
     height:50,
     alignItems:"center",
     justifyContent:"center",
-    marginTop:40,
-    marginBottom:10
+    marginTop:15
   },
   loginText:{
-    color:"white"
+    color:"#000a13",
+    fontWeight: 'bold',
   }
 });
 
