@@ -1,5 +1,7 @@
 import 'react-native-gesture-handler';
+import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { Provider } from 'react-native-paper';
 import firebase from '@firebase/app';
 import firebaseConfig from './config/firebase.js';
 import AuthNavigator from './screens/AuthNavigator';
@@ -9,8 +11,7 @@ import HomeNavigator from './screens/HomeNavigator';
 
 firebase.initializeApp(firebaseConfig);
 
-
-export default createAppContainer(
+const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       Auth: AuthNavigator,
@@ -21,3 +22,17 @@ export default createAppContainer(
     }
   )
 );
+
+
+class App extends React.Component{
+
+    render(){
+        return(
+            <Provider>
+                <AppContainer />
+            </Provider>
+        );
+    }
+}
+
+export default App;

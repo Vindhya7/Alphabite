@@ -1,11 +1,11 @@
 import React from 'react';
-import {  StyleSheet, Text, View, SafeAreaView, Button, Image, 
-  TouchableOpacity, TouchableHighlight, StatusBar, TextInput, 
-  Picker, FlatList, Modal } from 'react-native';
+import {  StyleSheet, Text, View, SafeAreaView, Image, 
+  TouchableOpacity, TouchableHighlight, StatusBar, Picker, FlatList} from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import firebase from 'firebase';
 import 'react-native-gesture-handler';
 import AppBar from '../components/AppBar.js';
+import { Portal, Modal, Provider, Dialog, TextInput, Button } from 'react-native-paper';
 
 
 class UserProfileScreen extends React.Component{
@@ -13,7 +13,7 @@ class UserProfileScreen extends React.Component{
     constructor(props){
       super(props);
       this.state = { user: {}, 
-            isModalVisible: false,
+            isDialogVisible: false,
             inputText: '',
             editedItem: 0, 
             fields: ["Age", "Name", "Gender", "Height", "Weight"]
@@ -41,8 +41,8 @@ class UserProfileScreen extends React.Component{
       })
     }
 
-    setModalVisible = (bool) => {
-        this.setState({ isModalVisible: bool })
+    setDialogVisible = (bool) => {
+        this.setState({ isDialogVisible: bool })
     }
 
     setInputText = (text) => {
@@ -69,7 +69,7 @@ class UserProfileScreen extends React.Component{
       return(
         <TouchableHighlight 
           style = {styles.loginBtn}
-          onPress = {() => { this.setModalVisible(true); this.setInputText(item.v), this.setEditedItem(item.id) }}>
+          onPress = {() => { this.setDialogVisible(true); this.setInputText(item.v), this.setEditedItem(item.id) }}>
             <Text style = {{fontSize: 25, color: "white"}}> {this.state.fields[item.id]} {'\t\t:\t\t'} {item.v}</Text>
         </TouchableHighlight>
         );
@@ -88,25 +88,28 @@ class UserProfileScreen extends React.Component{
 
         return(
             <SafeAreaView style = {styles.container}>
-
-            <Modal visible={this.state.isModalVisible} 
-              onRequestClose={() => this.setModalVisible(false)}>
-              <View style={styles.modalView}>
-                <Text style={styles.inputText}>Change text:</Text>
-                <TextInput
-                    style={styles.inputText}
-                    onChangeText={(text) => {this.setState({inputText: text}); }}
-                    defaultValue={this.state.inputText}
-                    editable = {true}
-                    multiline = {false}
-                    maxLength = {200}
-                /> 
-                <TouchableHighlight onPress={() => {this.handleEditItem(this.state.editedItem); this.setModalVisible(false)}} 
-                    style={[styles.inputText, {backgroundColor: 'orange'}]} underlayColor={'#f1f1f1'}>
-                    <Text style={styles.inputText}>Save</Text>
-                </TouchableHighlight>  
-              </View>           
-            </Modal> 
+              <Portal>
+                <Dialog visible={this.state.isDialogVisible} 
+                  onDismiss={() => this.setDialogVisible(false)}>
+                  <View style={styles.dialogView}>
+                    <Dialog.Title style={{color: 'black'}}>Enter your name</Dialog.Title>
+                    <Dialog.Content>
+                      <TextInput
+                          label="Name"
+                          onChangeText={(text) => {this.setState({inputText: text}); }}
+                          defaultValue={this.state.inputText}
+                          editable = {true}
+                          multiline = {false}
+                          maxLength = {200}
+                      /> 
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                      <Button onPress={() => this.setDialogVisible(false)}>Cancel</Button>
+                      <Button onPress={() => {this.handleEditItem(this.state.editedItem); this.setDialogVisible(false)}}>Ok</Button>
+                    </Dialog.Actions>
+                  </View>           
+                </Dialog> 
+              </Portal>
 
 
               <AppBar navigation = {this.props.navigation}/>
@@ -194,9 +197,8 @@ const styles = StyleSheet.create({
     margin: 10,
     fontSize: 50
   },
-  modalView: {
-        flex: 1, 
-        backgroundColor: 'grey',
+  dialogView: {
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
   },
