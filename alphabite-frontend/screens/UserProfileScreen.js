@@ -5,6 +5,7 @@ import {  StyleSheet, Text, View, SafeAreaView, Button, Image,
 import { FontAwesome5 } from '@expo/vector-icons';
 import firebase from 'firebase';
 import 'react-native-gesture-handler';
+import AppBar from '../components/AppBar.js';
 
 
 class UserProfileScreen extends React.Component{
@@ -64,7 +65,6 @@ class UserProfileScreen extends React.Component{
     }
 
     renderItem = ({item}) => {
-      console.log(item)
 
       return(
         <TouchableHighlight 
@@ -76,7 +76,6 @@ class UserProfileScreen extends React.Component{
     }
 
     render(){
-        console.log(this.state)
         var img;
         if(this.state.user[4]){
           img = this.state.user[4].v == "Male" ? require('../avatars/Male.jpg') : require('../avatars/Female.jpg')
@@ -110,18 +109,7 @@ class UserProfileScreen extends React.Component{
             </Modal> 
 
 
-              <View style = {styles.headerContainer}>
-                  
-                <TouchableOpacity 
-                    style = {styles.icon}
-                    onPress={this.props.navigation.openDrawer}>
-
-                    <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
-                    
-                </TouchableOpacity>
-                <Text style = {{alignSelf: 'center', marginLeft: '7%', marginTop: '2%', fontWeight:"bold", fontSize:30, color:"white",}}>Alphabite</Text>
-                
-              </View>
+              <AppBar navigation = {this.props.navigation}/>
 
 
               <View style={styles.innerContainer}>
@@ -154,8 +142,7 @@ class UserProfileScreen extends React.Component{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c',
-    marginTop: StatusBar.currentHeight
+    backgroundColor: '#003f5c'
   },
   headerContainer: {
     backgroundColor: '#465881',
