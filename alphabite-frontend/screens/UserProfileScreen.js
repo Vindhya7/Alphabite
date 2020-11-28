@@ -5,6 +5,7 @@ import {  StyleSheet, Text, View, SafeAreaView, Button, Image,
 import { FontAwesome5 } from '@expo/vector-icons';
 import firebase from 'firebase';
 import 'react-native-gesture-handler';
+import AppBar from '../components/AppBar.js';
 
 
 class UserProfileScreen extends React.Component{
@@ -64,7 +65,6 @@ class UserProfileScreen extends React.Component{
     }
 
     renderItem = ({item}) => {
-      console.log(item)
 
       return(
         <TouchableHighlight 
@@ -76,7 +76,6 @@ class UserProfileScreen extends React.Component{
     }
 
     render(){
-        console.log(this.state)
         var img;
         if(this.state.user[4]){
           img = this.state.user[4].v == "Male" ? require('../avatars/Male.jpg') : require('../avatars/Female.jpg')
@@ -108,21 +107,15 @@ class UserProfileScreen extends React.Component{
                 </TouchableHighlight>  
               </View>           
             </Modal> 
-              <View style = {styles.headerContainer}>
-                <View style = {{flex: 1, flexDirection: 'row'}}>
-                  <TouchableOpacity 
-                      style = {styles.icon}
-                      onPress={this.props.navigation.openDrawer}>
 
-                      <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
-                      <Text>Alphabite</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
+
+              <AppBar navigation = {this.props.navigation}/>
+
+
               <View style={styles.innerContainer}>
                 
                 <View style={styles.topContainer}>
-                    <Text style = {{fontSize: 35, color: "white", marginBottom: 15}}>Hi, {name}</Text>
+                    <Text style = {{fontSize: 35, color: "#fb5b5a", marginBottom: 15}}>Hi, {name}</Text>
                     <Image style={styles.userImage} source = {img}/>
                 </View>
 
@@ -149,11 +142,10 @@ class UserProfileScreen extends React.Component{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c',
-    marginTop: StatusBar.currentHeight
+    backgroundColor: '#003f5c'
   },
   headerContainer: {
-    height: 60,
+    backgroundColor: '#465881',
     flexDirection: 'row'
   },
   innerContainer: {

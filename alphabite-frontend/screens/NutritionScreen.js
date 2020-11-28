@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-
+import AppBar from '../components/AppBar.js';
 import 'react-native-gesture-handler';
 
 
@@ -9,13 +9,8 @@ class NutritionScreen extends React.Component{
     render(){
         return(
             <SafeAreaView style = {styles.container}>
-                <TouchableOpacity 
-                    style = {styles.icon}
-                    onPress={this.props.navigation.openDrawer}>
+                <AppBar navigation = {this.props.navigation}/>
 
-                    <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
-                </TouchableOpacity>
-                
                 <Text>Hi, Vindhya</Text>
                 
             </SafeAreaView>
@@ -26,8 +21,11 @@ class NutritionScreen extends React.Component{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c',
-    marginTop: StatusBar.currentHeight
+    backgroundColor: '#003f5c'
+  },
+  headerContainer: {
+    backgroundColor: '#465881',
+    flexDirection: 'row'
   },
   icon: {
     marginLeft: 16,

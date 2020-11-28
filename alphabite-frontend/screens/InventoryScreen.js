@@ -3,17 +3,14 @@ import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, 
 import { FontAwesome5 } from '@expo/vector-icons';
 import InventoryList from "../components/InventoryList";
 import 'react-native-gesture-handler';
+import AppBar from '../components/AppBar.js';
 
 
 class InventoryScreen extends React.Component{
     render(){
         return(
             <SafeAreaView style = {styles.container}>
-              <TouchableOpacity
-                  style = {styles.icon}
-                  onPress={this.props.navigation.openDrawer}>
-                  <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
-              </TouchableOpacity>
+              <AppBar navigation = {this.props.navigation}/>
 
               <View style={styles.innerContainer}>
 
@@ -37,8 +34,11 @@ class InventoryScreen extends React.Component{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c',
-    marginTop: StatusBar.currentHeight
+    backgroundColor: '#003f5c'
+  },
+  headerContainer: {
+    backgroundColor: '#465881',
+    flexDirection: 'row'
   },
   topContainer: {
     flex: 1,
