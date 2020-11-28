@@ -9,13 +9,19 @@ class NutritionScreen extends React.Component{
     render(){
         return(
             <SafeAreaView style = {styles.container}>
-                <TouchableOpacity 
-                    style = {styles.icon}
-                    onPress={this.props.navigation.openDrawer}>
+                <View style = {styles.headerContainer}>
+                    
+                  <TouchableOpacity 
+                      style = {styles.icon}
+                      onPress={this.props.navigation.openDrawer}>
 
-                    <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
-                </TouchableOpacity>
-                
+                      <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
+                      
+                  </TouchableOpacity>
+                  <Text style = {{alignSelf: 'center', marginLeft: '7%', marginTop: '2%', fontWeight:"bold", fontSize:30, color:"white",}}>Alphabite</Text>
+                  
+                </View>
+
                 <Text>Hi, Vindhya</Text>
                 
             </SafeAreaView>
@@ -28,6 +34,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#003f5c',
     marginTop: StatusBar.currentHeight
+  },
+  headerContainer: {
+    backgroundColor: '#465881',
+    flexDirection: 'row'
   },
   icon: {
     marginLeft: 16,

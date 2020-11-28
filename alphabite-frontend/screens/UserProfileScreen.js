@@ -108,21 +108,26 @@ class UserProfileScreen extends React.Component{
                 </TouchableHighlight>  
               </View>           
             </Modal> 
-              <View style = {styles.headerContainer}>
-                <View style = {{flex: 1, flexDirection: 'row'}}>
-                  <TouchableOpacity 
-                      style = {styles.icon}
-                      onPress={this.props.navigation.openDrawer}>
 
-                      <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
-                      <Text>Alphabite</Text>
-                  </TouchableOpacity>
-                </View>
+
+              <View style = {styles.headerContainer}>
+                  
+                <TouchableOpacity 
+                    style = {styles.icon}
+                    onPress={this.props.navigation.openDrawer}>
+
+                    <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
+                    
+                </TouchableOpacity>
+                <Text style = {{alignSelf: 'center', marginLeft: '7%', marginTop: '2%', fontWeight:"bold", fontSize:30, color:"white",}}>Alphabite</Text>
+                
               </View>
+
+
               <View style={styles.innerContainer}>
                 
                 <View style={styles.topContainer}>
-                    <Text style = {{fontSize: 35, color: "white", marginBottom: 15}}>Hi, {name}</Text>
+                    <Text style = {{fontSize: 35, color: "#fb5b5a", marginBottom: 15}}>Hi, {name}</Text>
                     <Image style={styles.userImage} source = {img}/>
                 </View>
 
@@ -153,7 +158,7 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight
   },
   headerContainer: {
-    height: 60,
+    backgroundColor: '#465881',
     flexDirection: 'row'
   },
   innerContainer: {
