@@ -94,7 +94,7 @@ class SignInScreen extends React.Component {
               style={{
                 fontSize: 18,
                 textAlign: "center",
-                color: "white",
+                color: "red",
                 width: "80%"
               }}
             >
@@ -122,7 +122,6 @@ class SignInScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    /*backgroundColor: '#003f5c'*/
     backgroundColor: '#000a13',
     alignItems: 'center',
     justifyContent: 'center',
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
     marginBottom:40
   },
   inputView:{
-    width:"50%",
+    width:"70%",
     flexDirection: 'row',
     backgroundColor:"#95db93",
     borderRadius:25,
@@ -147,19 +146,21 @@ const styles = StyleSheet.create({
     color:"#000a13",
     fontWeight:'bold',
     marginLeft:5,
+    width:"70%",
   },
   forgot:{
     color:"white",
     fontSize:11
   },
   loginBtn:{
-    width:"10%",
+    width:"30%",
     backgroundColor:"#71ceac",
     borderRadius:25,
     height:50,
     alignItems:"center",
     justifyContent:"center",
-    marginTop:15
+    marginTop:20,
+    marginBottom:10
   },
   loginText:{
     color:"#000a13",

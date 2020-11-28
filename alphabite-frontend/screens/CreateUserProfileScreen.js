@@ -63,11 +63,12 @@ class CreateUserProfileScreen extends React.Component {
     return(
       <View style={styles.container}>
         <Text style={styles.logo}>AlphaBite</Text>
+
           <View style={styles.inputView} >
             <TextInput  
               style={styles.inputText}
               placeholder="Name"
-              placeholderTextColor="#B1B1B1"
+              placeholderTextColor="#000a13"
               returnKeyType="next"
               textContentType="name"
               value={this.state.displayName}
@@ -77,7 +78,7 @@ class CreateUserProfileScreen extends React.Component {
 
           <View style={styles.inputView} >
             <Picker
-                style={{ backgroundColor:"#465881",textColor:"#B1B1B1",height: 50, width: "80%" }}
+                style={{ backgroundColor:"#95db93",textColor:"#000a13",fontWeight:'bold',height: 50, width: "70%" }}
                 onValueChange={(itemValue, itemIndex) => this.setState({ gender: itemValue })}
             >
               <Picker.Item label="Female" value="Female" />
@@ -89,7 +90,7 @@ class CreateUserProfileScreen extends React.Component {
             <TextInput  
               style={styles.inputText}
               placeholder="Age"
-              placeholderTextColor="#B1B1B1"
+              placeholderTextColor="#000a13"
               returnKeyType="next"
               textContentType="number-pad"
               value={this.state.age}
@@ -101,7 +102,7 @@ class CreateUserProfileScreen extends React.Component {
             <TextInput  
               style={styles.inputText}
               placeholder="Height in cm"
-              placeholderTextColor="#B1B1B1"
+              placeholderTextColor="#000a13"
               returnKeyType="next"
               keyboardType="number-pad"
               value={this.state.height}
@@ -113,7 +114,7 @@ class CreateUserProfileScreen extends React.Component {
             <TextInput  
               style={styles.inputText}
               placeholder="Weight in lbs"
-              placeholderTextColor="#B1B1B1"
+              placeholderTextColor="#000a13"
               returnKeyType="done"
               keyboardType="number-pad"
               value={this.state.weight}
@@ -149,19 +150,19 @@ class CreateUserProfileScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c',
+    backgroundColor: '#000a13',
     alignItems: 'center',
     justifyContent: 'center',
   },
   logo:{
     fontWeight:"bold",
     fontSize:50,
-    color:"#fb5b5a",
+    color:"#ffffff",
     marginBottom:40
   },
   inputView:{
-    width:"80%",
-    backgroundColor:"#465881",
+    width:"70%",
+    backgroundColor:"#95db93",
     borderRadius:25,
     height:50,
     marginBottom:20,
@@ -169,25 +170,27 @@ const styles = StyleSheet.create({
     padding:20
   },
   inputText:{
-    height:50,
-    color:"white"
+    fontWeight:'bold',
+    color:"#000a13",
+    width:"70%",
   },
   forgot:{
     color:"white",
     fontSize:11
   },
   loginBtn:{
-    width:"80%",
-    backgroundColor:"#fb5b5a",
+    width:"30%",
+    backgroundColor:"#71ceac",
     borderRadius:25,
     height:50,
     alignItems:"center",
     justifyContent:"center",
-    marginTop:40,
+    marginTop:20,
     marginBottom:10
   },
   loginText:{
-    color:"white"
+    color:"#000a13",
+    fontWeight: 'bold',
   }
 });
 

@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import 'firebase/firestore';
 import firebase from 'firebase';
+import {Entypo, MaterialIcons} from "@expo/vector-icons";
+
 
 class SignUpScreen extends React.Component {
   state = { displayName: '', email: '', password: '', errorMessage: '', loading: false };
@@ -55,10 +57,11 @@ class SignUpScreen extends React.Component {
         <Text style={styles.logo}>AlphaBite</Text>
 
           <View style={styles.inputView} >
+            <MaterialIcons name="email" size={24} color="black" />
             <TextInput  
               style={styles.inputText}
-              placeholder="Email"
-              placeholderTextColor="#003f5c"
+              placeholder=""
+              placeholderTextColor="#000a13"
               returnKeyType="next"
               keyboardType="email-address"
               textContentType="emailAddress"
@@ -68,10 +71,11 @@ class SignUpScreen extends React.Component {
           </View>
 
           <View style={styles.inputView} >
+            <Entypo name="lock-open" size={24} color="black" />
             <TextInput  
-              style={styles.input}
-              placeholder="Password"
-              placeholderTextColor="#B1B1B1"
+              style={styles.inputText}
+              placeholder=""
+              placeholderTextColor="#000a13"
               returnKeyType="done"
               textContentType="newPassword"
               secureTextEntry={true}
@@ -117,36 +121,38 @@ class SignUpScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c',
+    backgroundColor: '#000a13',
     alignItems: 'center',
     justifyContent: 'center',
   },
   logo:{
     fontWeight:"bold",
     fontSize:50,
-    color:"#fb5b5a",
+    color:"#ffffff",
     marginBottom:40
   },
   inputView:{
-    width:"80%",
-    backgroundColor:"#465881",
+    width:"70%",
+    flexDirection: 'row',
+    backgroundColor:"#95db93",
     borderRadius:25,
-    height:50,
+    height:65,
     marginBottom:20,
-    justifyContent:"center",
     padding:20
   },
   inputText:{
-    height:50,
-    color:"white"
+    width:"70%",
+    color:"#000a13",
+    marginLeft:5,
+    fontWeight:'bold',
   },
   forgot:{
     color:"white",
     fontSize:11
   },
   loginBtn:{
-    width:"80%",
-    backgroundColor:"#fb5b5a",
+    width:"30%",
+    backgroundColor:"#71ceac",
     borderRadius:25,
     height:50,
     alignItems:"center",
@@ -155,7 +161,8 @@ const styles = StyleSheet.create({
     marginBottom:10
   },
   loginText:{
-    color:"white"
+    color:"#000a13",
+    fontWeight: 'bold',
   }
 });
 export default SignUpScreen;
