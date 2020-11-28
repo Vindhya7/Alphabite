@@ -78,7 +78,8 @@ class CreateUserProfileScreen extends React.Component {
 
           <View style={styles.inputView} >
             <Picker
-                style={{ backgroundColor:"#95db93",textColor:"#000a13",fontWeight:'bold',height: 50, width: "70%" }}
+                selectedValue={this.state.gender}
+                style={{ backgroundColor:"#95db93",textColor:"#000a13",fontWeight:'bold',height: 50, width: "80%" }}
                 onValueChange={(itemValue, itemIndex) => this.setState({ gender: itemValue })}
             >
               <Picker.Item label="Female" value="Female" />
@@ -137,7 +138,7 @@ class CreateUserProfileScreen extends React.Component {
           <TouchableOpacity 
             style={styles.loginBtn}
             onPress={() => this.addUserInfo()}>
-            <Text style={styles.loginText}>Sign In</Text>
+            <Text style={styles.loginText}>Create Profile</Text>
           </TouchableOpacity>
 
       </View>
