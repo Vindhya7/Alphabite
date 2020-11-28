@@ -1,39 +1,75 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import 'react-native-gesture-handler';
-
-const styles = StyleSheet.create({
-    body: {},
-    userImage: {
-        borderColor: '#FFF',
-        borderRadius: 85,
-        borderWidth: 3,
-        height: 170,
-        marginBottom: 15,
-        width: 170,
-    },
-
-})
 
 
 class RecipeScreen extends React.Component{
     render(){
         return(
-            <View>
-              <TouchableOpacity 
-                style={{alignItems: "flext-start", margin: 16}}
-                onPress={this.props.navigation.openDrawer}>
+            <SafeAreaView style = {styles.container}>
+                <TouchableOpacity 
+                    style = {styles.icon}
+                    onPress={this.props.navigation.openDrawer}>
 
-                <FontAwesome5 name = "bars" size = {24} color = "#161924" />
-              </TouchableOpacity>
-              <Text>Hi, Vindhya</Text>
-              <Image style={styles.userImage}></Image>
+                    <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
+                </TouchableOpacity>
+                <Text>Hi, Vindhya</Text>
                 
-            </View>
+            </SafeAreaView>
         );
     }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#003f5c',
+    marginTop: StatusBar.currentHeight
+  },
+  icon: {
+    marginLeft: 16,
+    marginTop: 10,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
+  },
+  logo:{
+    fontWeight:"bold",
+    fontSize:50,
+    color:"#fb5b5a",
+    marginBottom:40
+  },
+  inputView:{
+    width:"80%",
+    backgroundColor:"#465881",
+    borderRadius:25,
+    height:50,
+    marginBottom:20,
+    justifyContent:"center",
+    padding:20
+  },
+  inputText:{
+    height:50,
+    color:"white"
+  },
+  forgot:{
+    color:"white",
+    fontSize:11
+  },
+  loginBtn:{
+    width:"80%",
+    backgroundColor:"#fb5b5a",
+    borderRadius:25,
+    height:50,
+    alignItems:"center",
+    justifyContent:"center",
+    marginTop:40,
+    marginBottom:10
+  },
+  loginText:{
+    color:"white"
+  }
+});
 
 export default RecipeScreen;
