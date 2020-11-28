@@ -15,6 +15,7 @@ class UserProfileScreen extends React.Component{
             isModalVisible: false,
             inputText: '',
             editedItem: 0, 
+            fields: ["Age", "Name", "Gender", "Height", "Weight"]
           };
     }
 
@@ -28,7 +29,10 @@ class UserProfileScreen extends React.Component{
               const user = Object.keys(snapshot.val()).map( (item, index) => {
                 return {id: index, k: item, v: snapshot.val()[item]} ;
               });
-              this.setState({user: user});
+
+              var fin = [user[1], user[0], user[3], user[4], user[2]];
+              // console.log(fin)
+              this.setState({user: fin});
               
           });
           
@@ -56,31 +60,37 @@ class UserProfileScreen extends React.Component{
             }
             return item
         })
-        this.setState({ data: newData })
+        this.setState({ user: newData })
     }
 
-    renderItem = ({item}) => (
+    renderItem = ({item}) => {
+      console.log(item)
+
+      return(
         <TouchableHighlight 
+          style = {styles.loginBtn}
           onPress = {() => { this.setModalVisible(true); this.setInputText(item.v), this.setEditedItem(item.id) }}>
-            <Text> {item.k} : {item.v}</Text>
+            <Text style = {{fontSize: 25, color: "white"}}> {this.state.fields[item.id]} {'\t\t:\t\t'} {item.v}</Text>
         </TouchableHighlight>
-    )
+        );
+    }
 
     render(){
+        console.log(this.state)
         var img;
-        if(this.state.user){
-          img = this.state.user.gender == "Male" ? require('../avatars/Male.jpg') : require('../avatars/Female.jpg')
+        if(this.state.user[4]){
+          img = this.state.user[4].v == "Male" ? require('../avatars/Male.jpg') : require('../avatars/Female.jpg')
         }
         else{
           img = require("../avatars/defaultuser.jpg")
         }
-
-        console.log(this.state)
+        var name = ""
+        if(this.state.user[0]){ name = this.state.user[0].v}
 
         return(
             <SafeAreaView style = {styles.container}>
 
-            <Modal animationType="fade" visible={this.state.isModalVisible} 
+            <Modal visible={this.state.isModalVisible} 
               onRequestClose={() => this.setModalVisible(false)}>
               <View style={styles.modalView}>
                 <Text style={styles.inputText}>Change text:</Text>
@@ -98,22 +108,25 @@ class UserProfileScreen extends React.Component{
                 </TouchableHighlight>  
               </View>           
             </Modal> 
+              <View style = {styles.headerContainer}>
+                <View style = {{flex: 1, flexDirection: 'row'}}>
+                  <TouchableOpacity 
+                      style = {styles.icon}
+                      onPress={this.props.navigation.openDrawer}>
 
-                <TouchableOpacity 
-                    style = {styles.icon}
-                    onPress={this.props.navigation.openDrawer}>
-
-                    <FontAwesome5 name = "bars" size = {24} color = "#161924" />
-                </TouchableOpacity>
-
+                      <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
+                      <Text>Alphabite</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
               <View style={styles.innerContainer}>
                 
                 <View style={styles.topContainer}>
+                    <Text style = {{fontSize: 35, color: "white", marginBottom: 15}}>Hi, {name}</Text>
                     <Image style={styles.userImage} source = {img}/>
-                    <Text>Hi, {this.state.user.displayName}</Text>
                 </View>
 
-                <View style={styles.bottomContainer}>
+                <View>
 
                   <View>
 
@@ -139,6 +152,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#003f5c',
     marginTop: StatusBar.currentHeight
   },
+  headerContainer: {
+    height: 60,
+    flexDirection: 'row'
+  },
+  innerContainer: {
+    flex: 2
+  },
   icon: {
     marginLeft: 16,
     marginTop: 10,
@@ -148,14 +168,6 @@ const styles = StyleSheet.create({
   topContainer: {
     alignItems: 'center',
     margin: 10,
-  },
-  bottomContainer: {
-    alignItems: 'center',
-    backgroundColor: '#465881',
-    margin: 10
-  },
-  innerContainer:{
-    alignItems:'center'
   },
   logo:{
     fontWeight:"bold",
@@ -181,18 +193,18 @@ const styles = StyleSheet.create({
     fontSize:11
   },
   loginBtn:{
-    width:"80%",
+    flex: 1,
     backgroundColor:"#fb5b5a",
     borderRadius:25,
     height:50,
     alignItems:"center",
     justifyContent:"center",
-    marginTop:40,
-    marginBottom:10
+    margin: 10,
+    fontSize: 50
   },
   modalView: {
         flex: 1, 
-        backgroundColor: 'white',
+        backgroundColor: 'grey',
         alignItems: 'center',
         justifyContent: 'center',
   },
@@ -206,7 +218,7 @@ const styles = StyleSheet.create({
     },
   loginText:{
     color:"white"
-  }
+  }, 
 });
 
 export default UserProfileScreen;

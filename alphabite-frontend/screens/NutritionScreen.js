@@ -13,8 +13,9 @@ class NutritionScreen extends React.Component{
                     style = {styles.icon}
                     onPress={this.props.navigation.openDrawer}>
 
-                    <FontAwesome5 name = "bars" size = {24} color = "#161924" />
+                    <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
                 </TouchableOpacity>
+                
                 <Text>Hi, Vindhya</Text>
                 
             </SafeAreaView>

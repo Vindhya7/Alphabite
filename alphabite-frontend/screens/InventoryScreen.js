@@ -12,20 +12,18 @@ class InventoryScreen extends React.Component{
               <TouchableOpacity
                   style = {styles.icon}
                   onPress={this.props.navigation.openDrawer}>
-                  <FontAwesome5 name = "bars" size = {24} color = "#161924" />
+                  <FontAwesome5 name = "bars" size = {24} color = "#FFFFFF" />
               </TouchableOpacity>
 
               <View style={styles.innerContainer}>
 
                 <View style={styles.topContainer}>
-                  <Text style={{color:"#fb5b5a",fontWeight:"bold",fontSize:'xxx-large'}}>Inventory</Text>
+                  <Text style={{color:"#fb5b5a",fontWeight:"bold",fontSize:40}}>Inventory</Text>
                 </View>
 
                 <View style={styles.bottomContainer}>
 
-                  <InventoryList>
-
-                  </InventoryList>
+                  <InventoryList/>
 
                 </View>
 
@@ -43,17 +41,19 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight
   },
   topContainer: {
+    flex: 1,
     alignItems: 'center',
-    padding:"3%",
+    margin: 10,
+  },
+  innerContainer: {
+    flex: 1,
+    alignItems: 'stretch',
   },
   bottomContainer: {
-    width:"40%",
-    alignItems: 'center',
+    flex: 8,
+    alignItems: 'stretch',
     backgroundColor: '#465881',
-    margin: 10
-  },
-  innerContainer:{
-    alignItems:'center'
+    margin: 10,
   },
   icon: {
     marginLeft: 16,
