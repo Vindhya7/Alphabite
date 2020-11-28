@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     padding:20
   },
   inputText:{
-    width:"70%",
+    width:"100%",
     color:"#000a13",
     marginLeft:5,
     fontWeight:'bold',

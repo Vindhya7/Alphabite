@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   inputText:{
     fontWeight:'bold',
     color:"#000a13",
-    width:"70%",
+    width:"100%",
   },
   forgot:{
     color:"white",

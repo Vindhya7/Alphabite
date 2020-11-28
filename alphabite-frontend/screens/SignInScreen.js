@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     color:"#000a13",
     fontWeight:'bold',
     marginLeft:5,
-    width:"70%",
+    width:"100%",
   },
   forgot:{
     color:"white",
