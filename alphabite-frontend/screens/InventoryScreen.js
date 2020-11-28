@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-
+import InventoryList from "../components/InventoryList";
 import 'react-native-gesture-handler';
 
 
@@ -9,14 +9,28 @@ class InventoryScreen extends React.Component{
     render(){
         return(
             <SafeAreaView style = {styles.container}>
-                <TouchableOpacity 
-                    style = {styles.icon}
-                    onPress={this.props.navigation.openDrawer}>
+              <TouchableOpacity
+                  style = {styles.icon}
+                  onPress={this.props.navigation.openDrawer}>
+                  <FontAwesome5 name = "bars" size = {24} color = "#161924" />
+              </TouchableOpacity>
 
-                    <FontAwesome5 name = "bars" size = {24} color = "#161924" />
-                </TouchableOpacity>
-                <Text>Hi, Vindhya</Text>
-                
+              <View style={styles.innerContainer}>
+
+                <View style={styles.topContainer}>
+                  <Text style={{color:"#fb5b5a",fontWeight:"bold",fontSize:'xxx-large'}}>Inventory</Text>
+                </View>
+
+                <View style={styles.bottomContainer}>
+
+                  <InventoryList>
+
+                  </InventoryList>
+
+                </View>
+
+              </View>
+
             </SafeAreaView>
         );
     }
@@ -27,6 +41,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#003f5c',
     marginTop: StatusBar.currentHeight
+  },
+  topContainer: {
+    alignItems: 'center',
+    padding:"3%",
+  },
+  bottomContainer: {
+    width:"40%",
+    alignItems: 'center',
+    backgroundColor: '#465881',
+    margin: 10
+  },
+  innerContainer:{
+    alignItems:'center'
   },
   icon: {
     marginLeft: 16,
