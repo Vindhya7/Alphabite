@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     fontSize:11
   },
   loginBtn:{
-    width:"30%",
+    width:"70%",
     backgroundColor:"#71ceac",
     borderRadius:25,
     height:50,
