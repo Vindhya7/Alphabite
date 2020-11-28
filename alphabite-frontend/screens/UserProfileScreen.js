@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, StatusBar, TextInput, Picker } from 'react-native';
+import {  StyleSheet, Text, View, SafeAreaView, Button, Image, 
+  TouchableOpacity, TouchableHighlight, StatusBar, TextInput, 
+  Picker, FlatList, Modal } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import firebase from 'firebase';
 import 'react-native-gesture-handler';
@@ -7,20 +9,62 @@ import 'react-native-gesture-handler';
 
 class UserProfileScreen extends React.Component{
 
-    state = { user: {} };
+    constructor(props){
+      super(props);
+      this.state = { user: {}, 
+            isModalVisible: false,
+            inputText: '',
+            editedItem: 0, 
+          };
+    }
+
+    
 
     componentDidMount() {
       firebase.auth().onAuthStateChanged((user) => {
         if (user != null) {
           firebase.database().ref('users/' + user.uid).once("value")
             .then((snapshot) => {
-              this.setState({user: snapshot.val()});
-              console.log(snapshot.val().gender)
+              const user = Object.keys(snapshot.val()).map( (item, index) => {
+                return {id: index, k: item, v: snapshot.val()[item]} ;
+              });
+              this.setState({user: user});
+              
           });
           
         }
       })
     }
+
+    setModalVisible = (bool) => {
+        this.setState({ isModalVisible: bool })
+    }
+
+    setInputText = (text) => {
+        this.setState({ inputText: text })
+    }
+
+    setEditedItem = (id) => {
+        this.setState({ editedItem: id })
+    }
+
+    handleEditItem = (editedItem) => {
+        const newData = this.state.user.map( item => {
+            if (item.id === editedItem ) {
+                item.v = this.state.inputText
+                return item
+            }
+            return item
+        })
+        this.setState({ data: newData })
+    }
+
+    renderItem = ({item}) => (
+        <TouchableHighlight 
+          onPress = {() => { this.setModalVisible(true); this.setInputText(item.v), this.setEditedItem(item.id) }}>
+            <Text> {item.k} : {item.v}</Text>
+        </TouchableHighlight>
+    )
 
     render(){
         var img;
@@ -31,8 +75,30 @@ class UserProfileScreen extends React.Component{
           img = require("../avatars/defaultuser.jpg")
         }
 
+        console.log(this.state)
+
         return(
             <SafeAreaView style = {styles.container}>
+
+            <Modal animationType="fade" visible={this.state.isModalVisible} 
+              onRequestClose={() => this.setModalVisible(false)}>
+              <View style={styles.modalView}>
+                <Text style={styles.inputText}>Change text:</Text>
+                <TextInput
+                    style={styles.inputText}
+                    onChangeText={(text) => {this.setState({inputText: text}); }}
+                    defaultValue={this.state.inputText}
+                    editable = {true}
+                    multiline = {false}
+                    maxLength = {200}
+                /> 
+                <TouchableHighlight onPress={() => {this.handleEditItem(this.state.editedItem); this.setModalVisible(false)}} 
+                    style={[styles.inputText, {backgroundColor: 'orange'}]} underlayColor={'#f1f1f1'}>
+                    <Text style={styles.inputText}>Save</Text>
+                </TouchableHighlight>  
+              </View>           
+            </Modal> 
+
                 <TouchableOpacity 
                     style = {styles.icon}
                     onPress={this.props.navigation.openDrawer}>
@@ -51,41 +117,11 @@ class UserProfileScreen extends React.Component{
 
                   <View>
 
-                      <TextInput
-                          style={styles.inputText}
-                          placeholder="Age"
-                          placeholderTextColor="#B1B1B1"
-                          returnKeyType="next"
-                          textContentType="number-pad"
-                          value={this.state.age}
-                          onChangeText={age => this.setState({ age })}
-                      />
-                      <TextInput
-                          style={styles.inputText}
-                          placeholder="Height in cm"
-                          placeholderTextColor="#B1B1B1"
-                          returnKeyType="next"
-                          keyboardType="number-pad"
-                          value={this.state.height}
-                          onChangeText={height => this.setState({ height })}
-                      />
-                      <TextInput
-                          style={styles.inputText}
-                          placeholder="Weight in lbs"
-                          placeholderTextColor="#B1B1B1"
-                          returnKeyType="done"
-                          keyboardType="number-pad"
-                          value={this.state.weight}
-                          onChangeText={weight => this.setState({ weight })}
-                      />
-
-                      <Picker
-                          style={{ backgroundColor:"#465881",textColor:"#B1B1B1",height: 50, width: "80%" }}
-                          onValueChange={(itemValue, itemIndex) => this.setState({ gender: itemValue })}
-                      >
-                          <Picker.Item label="Female" value="Female" />
-                          <Picker.Item label="Male" value="Male" />
-                      </Picker>
+                    <FlatList 
+                      data={this.state.user}
+                      keyExtractor={(item) => item.id.toString()}
+                      renderItem={this.renderItem}
+                    />
 
                   </View>
                </View>   
@@ -110,12 +146,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   topContainer: {
-    width:"40%",
     alignItems: 'center',
     margin: 10,
   },
   bottomContainer: {
-    width:"40%",
     alignItems: 'center',
     backgroundColor: '#465881',
     margin: 10
@@ -155,6 +189,12 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     marginTop:40,
     marginBottom:10
+  },
+  modalView: {
+        flex: 1, 
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
   },
   userImage: {
         borderColor: '#FFF',

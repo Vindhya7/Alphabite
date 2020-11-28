@@ -60,7 +60,7 @@ class SignInScreen extends React.Component {
               <TextInput  
                 style={styles.inputText}
                 placeholder="Email"
-                placeholderTextColor="#003f5c"
+                placeholderTextColor="#B1B1B1"
                 returnKeyType="next"
                 keyboardType="email-address"
                 textContentType="emailAddress"

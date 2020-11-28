@@ -17,7 +17,7 @@ import {
 import firebase from 'firebase';
 
 class CreateUserProfileScreen extends React.Component {
-  state = { user: {}, displayName: '', height: '', weight: '', age: '', gender: '', errorMessage: '', loading: false };
+  state = { user: {}, displayName: '', height: '', weight: '', age: '', gender: 'Female', errorMessage: '', loading: false };
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
