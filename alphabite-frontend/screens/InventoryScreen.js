@@ -162,13 +162,9 @@ class InventoryScreen extends React.Component{
               <ScrollView>
                 <View style={styles.innerContainer}>
 
-                  <View style={styles.topContainer}>
-                    <Text style={{color:"#fb5b5a",fontWeight:"bold",fontSize:40}}>Inventory</Text>
-                  </View>
-
                   <View style={styles.bottomContainer}>
 
-                    <DataTable>
+                    <DataTable style={styles.dataTable}>
                       {header}
 
                       {this.addTableRows()}
@@ -187,16 +183,7 @@ class InventoryScreen extends React.Component{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c'
-  },
-  headerContainer: {
-    backgroundColor: '#465881',
-    flexDirection: 'row'
-  },
-  topContainer: {
-    flex: 1,
-    alignItems: 'center',
-    margin: 10,
+    backgroundColor: '#000a13'
   },
   innerContainer: {
     flex: 1,
@@ -205,50 +192,13 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 8,
     alignItems: 'stretch',
-    backgroundColor: '#465881',
-    margin: 10,
+    marginTop: 50,
+    marginLeft: 10,
+    marginRight:10
   },
-  icon: {
-    marginLeft: 16,
-    marginTop: 10,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
-  },
-  logo:{
-    fontWeight:"bold",
-    fontSize:50,
-    color:"#fb5b5a",
-    marginBottom:40
-  },
-  inputView:{
-    width:"80%",
-    backgroundColor:"#465881",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
-    padding:20
-  },
-  inputText:{
-    height:50,
-    color:"white"
-  },
-  forgot:{
-    color:"white",
-    fontSize:11
-  },
-  loginBtn:{
-    width:"80%",
-    backgroundColor:"#fb5b5a",
-    borderRadius:25,
-    height:50,
-    alignItems:"center",
-    justifyContent:"center",
-    marginTop:40,
-    marginBottom:10
-  },
-  loginText:{
-    color:"white"
+  dataTable: {
+      backgroundColor: '#71ceac',
+      color:'#000a13',
   }
 });
 
