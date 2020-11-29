@@ -158,7 +158,7 @@ class InventoryScreen extends React.Component{
 
         return(
             <SafeAreaView style = {styles.container}>
-              <AppBar navigation = {this.props.navigation}/>
+              <AppBar navigation = {this.props.navigation} title = "Inventory"/>
               <ScrollView>
                 <View style={styles.innerContainer}>
 

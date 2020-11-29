@@ -177,7 +177,7 @@ class UserProfileScreen extends React.Component{
                 </Portal>
 
 
-                <AppBar navigation = {this.props.navigation} title="User Profile"/>
+                <AppBar navigation = {this.props.navigation} title="Alphabite"/>
                 <ScrollView>
 
                     <View>
