@@ -1,71 +1,52 @@
-import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, StatusBar } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
-import 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { Text, View, TouchableOpacity } from 'react-native';
+import { Camera } from 'expo-camera';
 
+export default function InventoryScanScreen(){
 
-class InventoryScanScreen extends React.Component{
-    render(){
-        return(
-            <SafeAreaView style = {styles.container}>
-                <Text>Hi, Vindhya</Text>
-                
-            </SafeAreaView>
-        );
-    }
-}
+  console.log(props);
+  const [hasPermission, setHasPermission] = useState(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#003f5c'
-  },
-  headerContainer: {
-    backgroundColor: '#465881',
-    flexDirection: 'row'
-  },
-  icon: {
-    marginLeft: 16,
-    marginTop: 10,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
-  },
-  logo:{
-    fontWeight:"bold",
-    fontSize:50,
-    color:"#fb5b5a",
-    marginBottom:40
-  },
-  inputView:{
-    width:"80%",
-    backgroundColor:"#465881",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
-    padding:20
-  },
-  inputText:{
-    height:50,
-    color:"white"
-  },
-  forgot:{
-    color:"white",
-    fontSize:11
-  },
-  loginBtn:{
-    width:"80%",
-    backgroundColor:"#fb5b5a",
-    borderRadius:25,
-    height:50,
-    alignItems:"center",
-    justifyContent:"center",
-    marginTop:40,
-    marginBottom:10
-  },
-  loginText:{
-    color:"white"
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
+  if (hasPermission === null) {
+    return <View />;
   }
-});
-
-export default InventoryScanScreen;
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+  return (
+    <View style={{ flex: 1 }}>
+      <Camera style={{ flex: 1 }} type={type}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'transparent',
+            flexDirection: 'row',
+          }}>
+          <TouchableOpacity
+            style={{
+              flex: 0.1,
+              alignSelf: 'flex-end',
+              alignItems: 'center',
+            }}
+            onPress={() => {
+              setType(
+                type === Camera.Constants.Type.back
+                  ? Camera.Constants.Type.front
+                  : Camera.Constants.Type.back
+              );
+            }}>
+            <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
+          </TouchableOpacity>
+        </View>
+      </Camera>
+    </View>
+  );
+}

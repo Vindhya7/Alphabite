@@ -5,6 +5,17 @@ import 'react-native-gesture-handler';
 
 
 class InventoryTypeScreen extends React.Component{
+
+    constructor(props){
+        super(props);
+    }
+
+
+    componentWillUnmount(){
+        console.log(this.props.navigation.state);
+        this.props.navigation.state.params.refresh();
+    }
+
     render(){
         return(
             <SafeAreaView style = {styles.container}>

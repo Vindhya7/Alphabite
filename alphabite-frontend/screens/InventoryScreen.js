@@ -19,9 +19,15 @@ class InventoryScreen extends React.Component{
         sortDirection: 'ascending',
         sortBy: 0,
         uid: '',
-        fabOpen: false
+        fabOpen: false,
+        fabVisible: true
       }
 
+    }
+
+    refresh = () => {
+      this.setState({ fabVisible: true });
+      this.render();
     }
 
 
@@ -207,16 +213,17 @@ class InventoryScreen extends React.Component{
                 <FAB.Group 
                   open = {this.state.fabOpen}
                   icon = {this.state.fabOpen ? 'close' : 'plus'}
+                  visible = {this.state.fabVisible}
                   actions = {[
                     {
                       icon: 'camera',
                       label: 'Take Picture',
-                      onPress: () => this.props.navigation.navigate('Scan')
+                      onPress: () => { this.setState({ fabVisible: false}); this.props.navigation.navigate('Scan', { refresh: this.refresh })}
                     },
                     {
                       icon: 'pencil',
                       label: 'Type',
-                      onPress: () => this.props.navigation.navigate('Type')
+                      onPress: () => { this.setState({ fabVisible: false}); this.props.navigation.navigate('Type', { refresh: this.refresh })}
                     },
                   ]}
                   onStateChange={() => this.setState({ fabOpen: !this.state.fabOpen })}
