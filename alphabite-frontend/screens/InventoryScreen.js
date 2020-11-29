@@ -112,10 +112,7 @@ class InventoryScreen extends React.Component{
                 <View style={styles.bottomContainer}>
 
                   <DataTable>
-                    <DataTable.Header>
-                      <DataTable.Title sortDirection={this.state.sortDirection} onPress={() => this.sortByFood }>Food</DataTable.Title>
-                      <DataTable.Title numeric>Quantity</DataTable.Title>
-                    </DataTable.Header>
+                    {header}
 
                     {this.addTableRows()}
 
