@@ -1,7 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, StatusBar } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    SafeAreaView,
+    Button,
+    Image,
+    TouchableOpacity,
+    StatusBar,
+    TextInput
+} from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
+
 
 
 class InventoryTypeScreen extends React.Component{
@@ -10,16 +21,65 @@ class InventoryTypeScreen extends React.Component{
         super(props);
     }
 
-
     componentWillUnmount(){
         console.log(this.props.navigation.state);
         this.props.navigation.state.params.refresh();
     }
 
+    static navigationOptions = {
+        title: 'Enter the Item details',
+        headerStyle: { backgroundColor: '#95db93' },
+        headerTitleStyle: { color: '#00a13' },
+    };
+
+    addItemInfo() {
+
+    }
+
     render(){
         return(
             <SafeAreaView style = {styles.container}>
-                <Text>Hi, Vindhya</Text>
+
+                <View style={styles.inputView} >
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Item Name"
+                        placeholderTextColor="#000a13"
+                        returnKeyType="next"
+                        textContentType="name"
+                        /*value={}
+                        onChangeText={itemName => this.setState({ displayName })}*/
+                    />
+                </View>
+
+                <View style={styles.inputView} >
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Expiry Date"
+                        placeholderTextColor="#000a13"
+                        returnKeyType="next"
+                        textContentType="name"
+                        /*value={}
+                        onChangeText={itemName => this.setState({ displayName })}*/
+                    />
+                </View>
+                <View style={styles.inputView} >
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Quantity"
+                        placeholderTextColor="#000a13"
+                        returnKeyType="next"
+                        textContentType="name"
+                        /*value={}
+                        onChangeText={itemName => this.setState({ displayName })}*/
+                    />
+                </View>
+
+                <TouchableOpacity
+                    style={styles.loginBtn}
+                    onPress={() => this.addItemInfo()}>
+                    <Text style={styles.loginText}>Confirm</Text>
+                </TouchableOpacity>
 
             </SafeAreaView>
         );
@@ -29,54 +89,37 @@ class InventoryTypeScreen extends React.Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#003f5c'
-    },
-    headerContainer: {
-        backgroundColor: '#465881',
-        flexDirection: 'row'
-    },
-    icon: {
-        marginLeft: 16,
-        marginTop: 10,
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start'
-    },
-    logo:{
-        fontWeight:"bold",
-        fontSize:50,
-        color:"#fb5b5a",
-        marginBottom:40
+        backgroundColor: '#000a13',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     inputView:{
         width:"80%",
-        backgroundColor:"#465881",
+        backgroundColor:"#F7F7F7",
         borderRadius:25,
-        height:50,
+        height:65,
         marginBottom:20,
         justifyContent:"center",
         padding:20
     },
     inputText:{
-        height:50,
-        color:"white"
-    },
-    forgot:{
-        color:"white",
-        fontSize:11
+        fontWeight:'bold',
+        color:"#000a13",
+        width:"100%",
     },
     loginBtn:{
         width:"80%",
-        backgroundColor:"#fb5b5a",
+        backgroundColor:"#71ceac",
         borderRadius:25,
         height:50,
         alignItems:"center",
         justifyContent:"center",
-        marginTop:40,
+        marginTop:20,
         marginBottom:10
     },
     loginText:{
-        color:"white"
+        color:"#000a13",
+        fontWeight: 'bold',
     }
 });
-
 export default InventoryTypeScreen;
