@@ -20,6 +20,7 @@ class UserProfileScreen extends React.Component{
             fields: ["Age", "Name", "Gender", "Height", "Weight"],
             editedWord: '',
             gender: '',
+            uid: ''
         };
     }
 
@@ -28,6 +29,7 @@ class UserProfileScreen extends React.Component{
     componentDidMount() {
         firebase.auth().onAuthStateChanged((user) => {
             if (user != null) {
+                this.setState({ uid: user.uid });
                 firebase.database().ref('users/' + user.uid).once("value")
                     .then((snapshot) => {
                         const user = Object.keys(snapshot.val()).map( (item, index) => {
@@ -45,26 +47,35 @@ class UserProfileScreen extends React.Component{
     }
 
     setDialogVisible = (bool) => {
-        this.setState({ isDialogVisible: bool })
+        this.setState({ isDialogVisible: bool });
     }
 
     setInputText = (text) => {
-        this.setState({ inputText: text })
+        this.setState({ inputText: text });
     }
 
     setEditedItem = (id) => {
-        this.setState({ editedItem: id })
+        this.setState({ editedItem: id });
     }
 
     handleEditItem = (editedItem) => {
         const newData = this.state.user.map( item => {
             if (item.id === editedItem ) {
-                item.v = this.state.inputText
-                return item
+                item.v = this.state.inputText;
+
+                firebase.database().ref('users/' + this.state.uid).update({
+                  [item.k]: item.v
+                });
+
+
+                return item;
             }
-            return item
+            return item;
         })
-        this.setState({ user: newData })
+        this.setState({ user: newData });
+
+
+
     }
 
     handleDialog = (id) => {
