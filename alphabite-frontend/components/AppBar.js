@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
 import firebase from 'firebase';
 
 const AppBar = ({navigation}) => {
-    console.log(navigation);
     return(
         <Appbar.Header style={{backgroundColor:'#95db93'}}>
             <Appbar.Action icon="menu" onPress={() => navigation.openDrawer()}/>
@@ -17,7 +16,6 @@ const AppBar = ({navigation}) => {
 const styles = StyleSheet.create({
 title:{
     color:'#000a13',
-    fontWeight:600
 }
 });
 
