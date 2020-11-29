@@ -13,10 +13,12 @@ const HomeNavigator = createDrawerNavigator({
     Nutrition: { screen : NutritionScreen },
     Recipe : { screen : RecipeScreen }
   },
-  { initialRouteName: 'UserProfile' },
-  {
-    drawerWidth:250,
-    drawerType:'slide'
+  { 
+    initialRouteName: 'UserProfile', 
+    drawerBackgroundColor: '#000a13',
+    contentOptions: {
+      activeTintColor: '#95db93',
+    },
   }
 );
 

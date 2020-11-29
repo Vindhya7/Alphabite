@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, StatusBar, ScrollView } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import InventoryList from "../components/InventoryList";
 import 'react-native-gesture-handler';
 import AppBar from '../components/AppBar.js';
 import { DataTable, IconButton } from 'react-native-paper';
