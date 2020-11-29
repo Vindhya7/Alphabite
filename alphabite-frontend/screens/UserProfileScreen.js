@@ -177,12 +177,12 @@ class UserProfileScreen extends React.Component{
 
                       <List.Item
                         title="Name"
-                        titleStyle={styles.listItemTitle}
+                        titleStyle={{color:"#ffffff", fontSize: 10}}
                         description={name}
                         descriptionStyle={{fontSize: 20}}
                         left={props => <List.Icon {...props} icon="account-circle"/>}
                         right={props => <TouchableOpacity onPress={() => this.handleDialog(0)}><List.Icon {...props} icon="pencil"/></TouchableOpacity>}
-                        style={styles.listItems}
+                        style={{alignItems: 'center'}}
                       />
 
                       <View style = {styles.separator} />
@@ -190,36 +190,36 @@ class UserProfileScreen extends React.Component{
 
                       <List.Item
                       title="Age"
-                      titleStyle={styles.listItemTitle}
+                      titleStyle={{color:"#ffffff", fontSize: 10}}
                       description={age}
                       descriptionStyle={{fontSize: 20}}
                       left={props => <List.Icon {...props} icon="account-circle"/>}
                       right={props => <TouchableOpacity onPress={() => this.handleDialog(1)}><List.Icon {...props} icon="pencil"/></TouchableOpacity>}
-                      style={styles.listItems}
+                      style={{alignItems: 'center'}}
                     />
 
                       <View style = {styles.separator} />
 
                     <List.Item
                       title="Gender"
-                      titleStyle={styles.listItemTitle}
+                      titleStyle={{color:"#ffffff", fontSize: 10}}
                       description={gender}
                       descriptionStyle={{fontSize: 20}}
                       left={props => <List.Icon {...props} icon="gender-male-female"/>}
                       right={props => <TouchableOpacity onPress={() => this.handleDialog(4)}><List.Icon {...props} icon="pencil"/></TouchableOpacity>}
-                      style={styles.listItems}
+                      style={{alignItems: 'center'}}
                     />
 
                       <View style = {styles.separator} />
 
                     <List.Item
                       title="Height"
-                      titleStyle={styles.listItemTitle}
+                      titleStyle={{color:"#ffffff", fontSize: 10}}
                       description={height}
                       descriptionStyle={{fontSize: 20}}
                       left={props => <List.Icon {...props} icon="human-male-height"/>}
                       right={props => <TouchableOpacity onPress={() => this.handleDialog(2)}><List.Icon {...props} icon="pencil"/></TouchableOpacity>}
-                      style={styles.listItems}
+                      style={{alignItems: 'center'}}
                     />
 
 
@@ -227,22 +227,22 @@ class UserProfileScreen extends React.Component{
 
                     <List.Item
                       title="Weight"
-                      titleStyle={styles.listItemTitle}
+                      titleStyle={{color:"#ffffff", fontSize: 10}}
                       description={weight}
                       descriptionStyle={{fontSize: 20}}
                       left={props => <List.Icon {...props} icon="weight-pound"/>}
                       right={props => <TouchableOpacity onPress={() => this.handleDialog(3)}><List.Icon {...props} icon="pencil"/></TouchableOpacity>}
-                      style={styles.listItems}
+                      style={{alignItems: 'center'}}
                     />
                       <View style = {styles.separator} />
 
                     <List.Item
                       title="BMI"
-                      titleStyle={styles.listItemTitle}
+                      titleStyle={{color:"#ffffff", fontSize: 10}}
                       description={bmitext}
                       descriptionStyle={{fontSize: 20}}
                       left={props => <List.Icon {...props} icon="weight-pound"/>}
-                      style={styles.listItems}
+                      style={{alignItems: 'center'}}
                     />
 
                     
@@ -287,13 +287,6 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         width: 170,
     },
-  listItems: {
-      alignItems: 'center'
-  },
-  listItemTitle: {
-      color:"#ffffff",
-      fontSize: 10
-  },
   separator: {
     borderBottomColor: '#71ceac',
     borderBottomWidth: 1,
