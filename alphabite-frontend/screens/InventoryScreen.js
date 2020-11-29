@@ -8,6 +8,10 @@ import firebase from 'firebase';
 
 class InventoryScreen extends React.Component{
 
+    static navigationOptions = {
+        headerShown: false
+    }
+
     constructor(props){
       super(props);
       this.state = {
@@ -207,7 +211,7 @@ class InventoryScreen extends React.Component{
                     {
                       icon: 'camera',
                       label: 'Take Picture',
-                      onPress: () => console.log("Take pic")
+                      onPress: () => this.props.navigation.navigate('Scan')
                     },
                     {
                       icon: 'pencil',

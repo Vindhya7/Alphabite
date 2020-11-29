@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import UserProfileScreen from './UserProfileScreen.js';
-import InventoryScreen from './InventoryScreen.js';
+import InventoryStack from './InventoryStack.js';
 import NutritionScreen from './NutritionScreen.js';
 import RecipeScreen from './RecipeScreen.js';
 import { createAppContainer, DrawerNavigator} from 'react-navigation';
@@ -9,7 +9,7 @@ import { createAppContainer, DrawerNavigator} from 'react-navigation';
 
 const HomeNavigator = createDrawerNavigator({
     UserProfile: { screen : UserProfileScreen },
-    Inventory: { screen : InventoryScreen },
+    Inventory: { screen : InventoryStack },
     Nutrition: { screen : NutritionScreen },
     Recipe : { screen : RecipeScreen }
   },
