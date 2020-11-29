@@ -1,13 +1,15 @@
 import 'react-native-gesture-handler';
 import InventoryScreen from './InventoryScreen.js';
 import InventoryScanScreen from './InventoryScanScreen.js';
+import InventoryTypeScreen from './InventoryTypeScreen.js'
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 
 
 const InventoryStack = createStackNavigator({
         Inventory: { screen: InventoryScreen },
-        Scan: { screen: InventoryScanScreen }
+        Scan: { screen: InventoryScanScreen },
+        Type: {screen: InventoryTypeScreen }
     },
     {
         initialRouteName: 'Inventory'

@@ -216,7 +216,7 @@ class InventoryScreen extends React.Component{
                     {
                       icon: 'pencil',
                       label: 'Type',
-                      onPress: () => console.log("Typing")
+                      onPress: () => this.props.navigation.navigate('Type')
                     },
                   ]}
                   onStateChange={() => this.setState({ fabOpen: !this.state.fabOpen })}
