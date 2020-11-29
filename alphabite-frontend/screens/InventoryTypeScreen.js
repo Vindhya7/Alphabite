@@ -13,6 +13,7 @@ import {
 import { FontAwesome5 } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 import firebase from "firebase";
+import {IconButton} from "react-native-paper";
 
 
 
@@ -70,8 +71,6 @@ class InventoryTypeScreen extends React.Component{
                 console.log(error);
         });
 
-
-
     }
 
     render(){
@@ -79,9 +78,10 @@ class InventoryTypeScreen extends React.Component{
             <SafeAreaView style = {styles.container}>
 
                 <View style={styles.inputView} >
+                    <Text>Item Name</Text>
                     <TextInput
                         style={styles.inputText}
-                        placeholder="Item Name"
+                        placeholder=""
                         placeholderTextColor="#000a13"
                         returnKeyType="next"
                         textContentType="name"
@@ -91,9 +91,10 @@ class InventoryTypeScreen extends React.Component{
                 </View>
 
                 <View style={styles.inputView} >
+                    <Text>Expiry Date</Text>
                     <TextInput
                         style={styles.inputText}
-                        placeholder="Expiry Date"
+                        placeholder=""
                         placeholderTextColor="#000a13"
                         returnKeyType="next"
                         textContentType="name"
@@ -102,9 +103,10 @@ class InventoryTypeScreen extends React.Component{
                     />
                 </View>
                 <View style={styles.inputView} >
-                    <TextInput
+                    <Text>Quantity</Text>
+                     <TextInput
                         style={styles.inputText}
-                        placeholder="Quantity"
+                        placeholder=""
                         placeholderTextColor="#000a13"
                         returnKeyType="next"
                         textContentType="name"
