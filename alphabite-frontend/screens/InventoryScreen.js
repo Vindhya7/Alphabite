@@ -1,9 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, StatusBar, ScrollView } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    SafeAreaView,
+    Image,
+    TouchableOpacity,
+    StatusBar,
+    ScrollView,
+    Picker,
+} from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 import AppBar from '../components/AppBar.js';
-import { DataTable, IconButton, Portal, FAB } from 'react-native-paper';
+import {DataTable, IconButton, Portal, FAB, Dialog,  Button} from 'react-native-paper';
 import firebase from 'firebase';
 
 class InventoryScreen extends React.Component{
@@ -20,7 +30,9 @@ class InventoryScreen extends React.Component{
         sortBy: 0,
         uid: '',
         fabOpen: false,
-        fabVisible: true
+        fabVisible: true,
+        isDialogVisible: false,
+        duration:'set',
       }
 
     }
@@ -54,6 +66,19 @@ class InventoryScreen extends React.Component{
 
             }
         })
+    }
+
+    handleDialog = () => {
+
+        this.setDialogVisible(true);
+    }
+
+    setDialogVisible = (bool) => {
+        this.setState({ isDialogVisible: bool });
+    }
+
+    setReminder = () => {
+
     }
 
     addOne = (idx) => {
@@ -162,18 +187,29 @@ class InventoryScreen extends React.Component{
       this.setState({sortBy: 1});
     }
 
+    sortByReminder(){
+
+    }
+
     addTableRows(){
       return this.state.data.map((item, idx) => {
         return (
           <DataTable.Row style={styles.dataItem} key = {idx}>
 
-              <DataTable.Cell style={{}}><Text style={{color:'#000a13'}}>{item.key}</Text></DataTable.Cell>
+            <DataTable.Cell style={{}}><Text style={{color:'#000a13'}}>{item.key}</Text></DataTable.Cell>
+
             <DataTable.Cell  numeric>
                 <View style={styles.dataCell}>
                     <IconButton icon="minus-circle-outline" onPress={ () => this.minusOne(idx) }/>
                     <Text style={{color:'#000a13'}}>{item.value}</Text>
                     <IconButton icon="plus-circle-outline" onPress={ () => this.addOne(idx) }/>
                 </View>
+            </DataTable.Cell>
+
+            <DataTable.Cell style={{justifyContent: 'flex-end'}}>
+                <TouchableOpacity onPress={() => this.handleDialog()}>
+                    <Text style={{color:'#000a13'}}> {this.state.duration} </Text>
+                </TouchableOpacity>
             </DataTable.Cell>
 
           </DataTable.Row>
@@ -194,6 +230,11 @@ class InventoryScreen extends React.Component{
                       <DataTable.Title style={{paddingRight:25}} numeric >
                         <TouchableOpacity onPress = {() => this.sortByQuantity() }><Text style={{fontWeight: 'bold'}}>Quantity</Text></TouchableOpacity>
                       </DataTable.Title>
+
+                      <DataTable.Title style={{}} numeric >
+                          <TouchableOpacity onPress = {() => this.sortByReminder() }><Text style={{fontWeight: 'bold'}}>Reminder</Text></TouchableOpacity>
+                      </DataTable.Title>
+
                   </DataTable.Header>;
         }
         else{
@@ -205,12 +246,52 @@ class InventoryScreen extends React.Component{
                       <DataTable.Title style={{paddingRight:25}} sortDirection={this.state.sortDirection} numeric >
                         <TouchableOpacity onPress = {() => this.sortByQuantity() }><Text style={{fontWeight: 'bold'}}>Quantity</Text></TouchableOpacity>
                       </DataTable.Title>
+
+                      <DataTable.Title style={{}} numeric >
+                          <TouchableOpacity onPress = {() => this.sortByReminder() }><Text style={{fontWeight: 'bold', fontSize:10}}>Reminder</Text></TouchableOpacity>
+                      </DataTable.Title>
+
                   </DataTable.Header>;
         }
 
+        var dialogInput = <Picker
+            selectedValue={this.state.duration}
+            onValueChange={(itemValue, itemIndex) => {this.setState({duration: itemValue})}}
+        >
+            <Picker.Item label="1 Week" value="1week" />
+            <Picker.Item label="2 Weeks" value="2weeks" />
+            <Picker.Item label="1 Month" value="1month" />
+            <Picker.Item label="2 Months" value="2months" />
+            <Picker.Item label="6 Months" value="6months" />
+            <Picker.Item label="A year" value="12months" />
+
+        </Picker>
+
         return(
             <SafeAreaView style = {styles.container}>
-              <AppBar navigation = {this.props.navigation} title = "Inventory"/>
+
+                <Portal>
+                    <Dialog  visible={this.state.isDialogVisible}
+                             onDismiss={() => this.setDialogVisible(false)}>
+                        <View style={{backgroundColor:"#FFFFFF"}}>
+                            <Dialog.Title style={{color: '#000a13'}}>Remind me after?</Dialog.Title>
+                            <Dialog.Content>
+                                { dialogInput }
+                            </Dialog.Content>
+                            <Dialog.Actions >
+                                <Button  onPress={() => this.setDialogVisible(false)}>Cancel</Button>
+                                <Button  onPress={() => this.setDialogVisible(false)}>Ok</Button>
+                            </Dialog.Actions>
+                        </View>
+                    </Dialog>
+                </Portal>
+
+
+
+
+
+
+                <AppBar navigation = {this.props.navigation} title = "Inventory"/>
               <ScrollView>
                 <View style={styles.innerContainer}>
 
