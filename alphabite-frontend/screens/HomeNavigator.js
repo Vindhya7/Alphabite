@@ -14,14 +14,16 @@ const HomeNavigator = createDrawerNavigator({
     Recipe : { screen : RecipeScreen }
   },
   { 
-    initialRouteName: 'UserProfile', 
+    initialRouteName: 'UserProfile',
     drawerBackgroundColor: '#000a13',
     contentOptions: {
-      // labelStyle: {
-      //     color: 'white',
-      // },
       inactiveTintColor: 'white',
-      activeTintColor: '#95db93',
+      activeTintColor: '#000a13',
+      activeBackgroundColor:'#71ceac',
+        itemStyle: {
+
+
+        },
     },
   }
 );
