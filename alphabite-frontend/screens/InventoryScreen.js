@@ -151,13 +151,17 @@ class InventoryScreen extends React.Component{
     addTableRows(){
       return this.state.data.map((item, idx) => {
         return (
-          <DataTable.Row key = {idx}>
-            <DataTable.Cell>{item.key}</DataTable.Cell>
-            <DataTable.Cell numeric> 
-              <IconButton icon="minus-circle" onPress={ () => this.minusOne(idx) }/>
-              {item.value}
-              <IconButton icon="plus-circle" onPress={ () => this.addOne(idx) }/>
+          <DataTable.Row style={styles.dataItem} key = {idx}>
+
+              <DataTable.Cell style={{}}><Text style={{color:'#000a13'}}>{item.key}</Text></DataTable.Cell>
+            <DataTable.Cell  numeric>
+                <View style={styles.dataCell}>
+                    <IconButton icon="minus-circle-outline" onPress={ () => this.minusOne(idx) }/>
+                    <Text style={{color:'#000a13'}}>{item.value}</Text>
+                    <IconButton icon="plus-circle-outline" onPress={ () => this.addOne(idx) }/>
+                </View>
             </DataTable.Cell>
+
           </DataTable.Row>
         );
       });
@@ -168,24 +172,24 @@ class InventoryScreen extends React.Component{
 
         var header;
         if(this.state.sortBy == 0){
-          header = <DataTable.Header>
+          header = <DataTable.Header style={styles.dataHeader}>
                       <DataTable.Title sortDirection={this.state.sortDirection} >
-                        <TouchableOpacity onPress = {() => {this.sortByFood()} }><Text>Food</Text></TouchableOpacity>
+                        <TouchableOpacity onPress = {() => {this.sortByFood()} }><Text style={{fontWeight: 'bold'}}>Food</Text></TouchableOpacity>
                       </DataTable.Title>
                     
-                      <DataTable.Title numeric >
-                        <TouchableOpacity onPress = {() => this.sortByQuantity() }><Text>Quantity</Text></TouchableOpacity>
+                      <DataTable.Title style={{paddingRight:25}} numeric >
+                        <TouchableOpacity onPress = {() => this.sortByQuantity() }><Text style={{fontWeight: 'bold'}}>Quantity</Text></TouchableOpacity>
                       </DataTable.Title>
                   </DataTable.Header>;
         }
         else{
-          header = <DataTable.Header>
+          header = <DataTable.Header style={styles.dataHeader}>
                       <DataTable.Title>
-                        <TouchableOpacity onPress = {() => {this.sortByFood()} }><Text>Food</Text></TouchableOpacity>
+                        <TouchableOpacity onPress = {() => {this.sortByFood()} }><Text style={{fontWeight: 'bold'}}>Food</Text></TouchableOpacity>
                       </DataTable.Title>
                     
-                      <DataTable.Title sortDirection={this.state.sortDirection} numeric >
-                        <TouchableOpacity onPress = {() => this.sortByQuantity() }><Text>Quantity</Text></TouchableOpacity>
+                      <DataTable.Title style={{paddingRight:25}} sortDirection={this.state.sortDirection} numeric >
+                        <TouchableOpacity onPress = {() => this.sortByQuantity() }><Text style={{fontWeight: 'bold'}}>Quantity</Text></TouchableOpacity>
                       </DataTable.Title>
                   </DataTable.Header>;
         }
@@ -255,13 +259,25 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 8,
     alignItems: 'stretch',
-    marginTop: 50,
-    marginLeft: 10,
-    marginRight:10
+
+
   },
   dataTable: {
-      backgroundColor: '#71ceac',
-      color:'#000a13',
+
+  },
+  dataHeader: {
+      height:70,
+      paddingTop:20,
+      backgroundColor: "#95db93",
+      fontWeight:'bold'
+  },
+  dataItem:{
+      backgroundColor:"#F7F7F7",
+  },
+  dataCell:{
+    flexDirection:'row', alignItems:'center',
+
+
   }
 });
 
