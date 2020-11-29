@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, 
 import { FontAwesome5 } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 import AppBar from '../components/AppBar.js';
-import { DataTable, IconButton } from 'react-native-paper';
+import { DataTable, IconButton, Portal, FAB } from 'react-native-paper';
 import firebase from 'firebase';
 
 class InventoryScreen extends React.Component{
@@ -14,7 +14,8 @@ class InventoryScreen extends React.Component{
         data: [],
         sortDirection: 'ascending',
         sortBy: 0,
-        uid: ''
+        uid: '',
+        fabOpen: false
       }
 
     }
@@ -198,6 +199,34 @@ class InventoryScreen extends React.Component{
 
                 </View>
               </ScrollView>
+              <Portal>
+                <FAB.Group 
+                  open = {this.state.fabOpen}
+                  icon = {this.state.fabOpen ? 'close' : 'plus'}
+                  actions = {[
+                    {
+                      icon: 'camera',
+                      label: 'Take Picture',
+                      onPress: () => console.log("Take pic")
+                    },
+                    {
+                      icon: 'pencil',
+                      label: 'Type',
+                      onPress: () => console.log("Typing")
+                    },
+                  ]}
+                  onStateChange={() => this.setState({ fabOpen: !this.state.fabOpen })}
+                  onPress={() => {
+                    if (this.state.fabOpen) {
+                      this.setState({fabOpen: false});
+                    }
+                    else {
+                      this.setState({fabOpen: true});
+                    }
+                  }}
+                />
+              </Portal>
+
             </SafeAreaView>
         );
     }
