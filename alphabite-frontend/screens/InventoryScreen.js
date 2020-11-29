@@ -11,18 +11,7 @@ class InventoryScreen extends React.Component{
     constructor(props){
       super(props);
       this.state = {
-        data: [
-                        // {key: 'Milk',value:'10'},
-                        // {key: 'Butter',value:'20'},
-                        // {key: 'Tomato',value:'30'},
-                        // {key: 'Potato',value:'10'},
-                        // {key: 'Onion',value:'10'},
-                        // {key: 'Dal',value:'20'},
-                        // {key: 'Sugar',value:'30'},
-                        // {key: 'Eggs',value:'10'},
-                        // {key: 'Bread',value:'20'},
-                        // {key: 'Avocado',value:'30'},
-                    ],
+        data: [],
         sortDirection: 'ascending',
         sortBy: 0,
         uid: ''
