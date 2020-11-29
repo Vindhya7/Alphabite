@@ -9,7 +9,7 @@ class RecipeScreen extends React.Component{
     render(){
         return(
             <SafeAreaView style = {styles.container}>
-                <AppBar navigation = {this.props.navigation}/>
+                <AppBar navigation = {this.props.navigation} title="Recipes"/>
                 <Text>Hi, Vindhya</Text>
                 
             </SafeAreaView>

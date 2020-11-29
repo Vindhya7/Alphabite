@@ -9,7 +9,7 @@ class NutritionScreen extends React.Component{
     render(){
         return(
             <SafeAreaView style = {styles.container}>
-                <AppBar navigation = {this.props.navigation}/>
+                <AppBar navigation = {this.props.navigation} title = "Nutrition Log"/>
 
                 <Text>Hi, Vindhya</Text>
                 
