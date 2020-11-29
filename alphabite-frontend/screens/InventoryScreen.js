@@ -4,7 +4,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 import AppBar from '../components/AppBar.js';
 import { DataTable, IconButton } from 'react-native-paper';
-
+import firebase from 'firebase';
 
 class InventoryScreen extends React.Component{
 
@@ -12,21 +12,46 @@ class InventoryScreen extends React.Component{
       super(props);
       this.state = {
         data: [
-                        {key: 'Milk',value:'10'},
-                        {key: 'Butter',value:'20'},
-                        {key: 'Tomato',value:'30'},
-                        {key: 'Potato',value:'10'},
-                        {key: 'Onion',value:'10'},
-                        {key: 'Dal',value:'20'},
-                        {key: 'Sugar',value:'30'},
-                        {key: 'Eggs',value:'10'},
-                        {key: 'Bread',value:'20'},
-                        {key: 'Avocado',value:'30'},
+                        // {key: 'Milk',value:'10'},
+                        // {key: 'Butter',value:'20'},
+                        // {key: 'Tomato',value:'30'},
+                        // {key: 'Potato',value:'10'},
+                        // {key: 'Onion',value:'10'},
+                        // {key: 'Dal',value:'20'},
+                        // {key: 'Sugar',value:'30'},
+                        // {key: 'Eggs',value:'10'},
+                        // {key: 'Bread',value:'20'},
+                        // {key: 'Avocado',value:'30'},
                     ],
         sortDirection: 'ascending',
         sortBy: 0
       }
 
+    }
+
+
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user != null) {
+                this.setState({ uid: user.uid });
+                firebase.database().ref('users/' + user.uid + '/inventory').once("value")
+                    .then((snapshot) => {
+                        var itemKeys = Object.keys(snapshot.val())
+                          .map( item => {
+                            return item;
+                          });
+                        var itemVals = Object.keys(snapshot.val())
+                          .map( item => {
+                            return snapshot.val()[item];
+                          });
+                        var newData = itemKeys.map( (item, idx) => {
+                          return {key: item, value: itemVals[idx]}
+                        });
+                        this.setState({data: newData});
+                    });
+
+            }
+        })
     }
 
     addOne = (idx) => {

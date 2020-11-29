@@ -89,7 +89,7 @@ class UserProfileScreen extends React.Component{
     }
 
     render(){
-        console.log(this.state.user);
+      
         var img;
         if(this.state.user[4]){
             img = this.state.user[4].v == "Male" ? require('../avatars/Male.jpg') : require('../avatars/Female.jpg')
