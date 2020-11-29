@@ -52,18 +52,20 @@ class InventoryTypeScreen extends React.Component{
             .then((snapshot) => {
                 var vals = snapshot.val();
                 var updateKey = this.state.itemName.toLowerCase();
-                var updateVal = this.state.quantity;
+                var updateQuantity = this.state.quantity;
 
                 if(updateKey in vals){
                     var q = vals[this.state.itemName.toLowerCase()];
-                    updateVal  = Number(q) + Number(this.state.quantity);
+                    updateQuantity  = Number(q) + Number(this.state.quantity);
                 }
 
+                var vals = {quantity: updateQuantity, reminder: "set"};
+                
                 firebase
                     .database()
                     .ref('users/' + this.state.uid + '/inventory/')
                     .update({
-                        [updateKey]: updateVal
+                        [updateKey]: vals
                     })
 
                 this.props.navigation.goBack();
@@ -90,18 +92,6 @@ class InventoryTypeScreen extends React.Component{
                     />
                 </View>
 
-                <View style={styles.inputView} >
-                    <Text>Expiry Date</Text>
-                    <TextInput
-                        style={styles.inputText}
-                        placeholder=""
-                        placeholderTextColor="#000a13"
-                        returnKeyType="next"
-                        textContentType="name"
-                        value={this.state.expiryDate}
-                        onChangeText={expiryDate => this.setState({ expiryDate })}
-                    />
-                </View>
                 <View style={styles.inputView} >
                     <Text>Quantity</Text>
                      <TextInput

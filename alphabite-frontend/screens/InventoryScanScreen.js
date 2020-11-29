@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Button, Dialog, Portal } from "react-native-paper";
 import firebase from 'firebase';
+import ProcessGoogleResponse from '../apis/GCApi.js';
 
 const InventoryScanScreen = (props) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -11,18 +12,6 @@ const InventoryScanScreen = (props) => {
   const [imageUri, setImageUri] = useState(null);
   const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off)
   const [type, setType] = useState(Camera.Constants.Type.back);
-
-  // uploadImage = async () => {
-  //   var storageRef = firebase.storage().ref().child('images/' + props.navigation.state.params.uid);
-  //   const response = await fetch(imageUri);
-  //   const blob = await response.blob();
-  //   const st = await storageRef.put(blob);
-    
-  //   storageRef.getDownloadURL().then((url) => {
-  //     submitPicture(url);
-  //   })
-  // }
-
 
   submitPicture = async () => {
 
@@ -41,7 +30,6 @@ const InventoryScanScreen = (props) => {
             features: [
               { type: 'LABEL_DETECTION', maxResults: 10 },
               { type: 'LOGO_DETECTION', maxResults: 5 },
-              { type: 'TEXT_DETECTION', maxResults: 5 },
             ],
             image: {
               content: base64data
@@ -69,7 +57,16 @@ const InventoryScanScreen = (props) => {
       var storageRef = firebase.storage().ref().child('googleResponses/' + props.navigation.state.params.uid);
       storageRef.put(blob);
 
-      console.log(responseJson);
+      var labels = responseJson.responses[0].labelAnnotations.map((item) => {
+        return item.description;
+      });
+
+      var logos = responseJson.responses[0].logoAnnotations.map((item) => {
+        return item.description;
+      });
+      console.log(labels);
+      console.log(logos);
+
     }
 
   };
