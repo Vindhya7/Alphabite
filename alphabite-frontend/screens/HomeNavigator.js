@@ -17,6 +17,10 @@ const HomeNavigator = createDrawerNavigator({
     initialRouteName: 'UserProfile', 
     drawerBackgroundColor: '#000a13',
     contentOptions: {
+      // labelStyle: {
+      //     color: 'white',
+      // },
+      inactiveTintColor: 'white',
       activeTintColor: '#95db93',
     },
   }
