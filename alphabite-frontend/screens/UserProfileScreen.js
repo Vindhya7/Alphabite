@@ -100,6 +100,17 @@ class UserProfileScreen extends React.Component{
         var heightInches = height/2.54
         var h2 = heightInches*heightInches;
         var bmi = ((weight / h2) * 703).toFixed(2)
+        var bmitext;
+
+        if(bmi <= 18.5){
+            bmitext="Underweight";
+        }else if(18.5<bmi && bmi < 25){
+            bmitext="Normal";
+        }else if(25 < bmi && bmi < 30){
+            bmitext="Overweight";
+        }else{
+            bmitext="Obesity";
+        }
 
         var dialogInput = <TextInput
                           onChangeText={(text) => {this.setState({inputText: text}); }}
@@ -156,7 +167,7 @@ class UserProfileScreen extends React.Component{
               <View style={styles.innerContainer}>
                 
                 <View style={styles.topContainer}>
-                    <Text style = {{fontSize: 35, color: "#fb5b5a", marginBottom: 15}}>Hi, {name}</Text>
+                    <Text style = {{fontSize: 35, fontWeight:'bold', color: "#000a13", marginBottom: 15}}>Hi, {name}</Text>
                     <Image style={styles.userImage} source = {img}/>
                 </View>
 
@@ -166,61 +177,72 @@ class UserProfileScreen extends React.Component{
 
                       <List.Item
                         title="Name"
-                        titleStyle={{fontSize: 10}}
+                        titleStyle={styles.listItemTitle}
                         description={name}
                         descriptionStyle={{fontSize: 20}}
                         left={props => <List.Icon {...props} icon="account-circle"/>}
                         right={props => <TouchableOpacity onPress={() => this.handleDialog(0)}><List.Icon {...props} icon="pencil"/></TouchableOpacity>}
-                        style={{alignItems: 'center'}}
+                        style={styles.listItems}
                       />
 
-                    <List.Item
+                      <View style = {styles.separator} />
+
+
+                      <List.Item
                       title="Age"
-                      titleStyle={{fontSize: 10}}
+                      titleStyle={styles.listItemTitle}
                       description={age}
                       descriptionStyle={{fontSize: 20}}
                       left={props => <List.Icon {...props} icon="account-circle"/>}
                       right={props => <TouchableOpacity onPress={() => this.handleDialog(1)}><List.Icon {...props} icon="pencil"/></TouchableOpacity>}
-                      style={{alignItems: 'center'}}
+                      style={styles.listItems}
                     />
+
+                      <View style = {styles.separator} />
 
                     <List.Item
                       title="Gender"
-                      titleStyle={{fontSize: 10}}
+                      titleStyle={styles.listItemTitle}
                       description={gender}
                       descriptionStyle={{fontSize: 20}}
                       left={props => <List.Icon {...props} icon="gender-male-female"/>}
                       right={props => <TouchableOpacity onPress={() => this.handleDialog(4)}><List.Icon {...props} icon="pencil"/></TouchableOpacity>}
-                      style={{alignItems: 'center'}}
+                      style={styles.listItems}
                     />
+
+                      <View style = {styles.separator} />
 
                     <List.Item
                       title="Height"
-                      titleStyle={{fontSize: 10}}
+                      titleStyle={styles.listItemTitle}
                       description={height}
                       descriptionStyle={{fontSize: 20}}
                       left={props => <List.Icon {...props} icon="human-male-height"/>}
                       right={props => <TouchableOpacity onPress={() => this.handleDialog(2)}><List.Icon {...props} icon="pencil"/></TouchableOpacity>}
-                      style={{alignItems: 'center'}}
+                      style={styles.listItems}
                     />
+
+
+                      <View style = {styles.separator} />
 
                     <List.Item
                       title="Weight"
-                      titleStyle={{fontSize: 10}}
+                      titleStyle={styles.listItemTitle}
                       description={weight}
                       descriptionStyle={{fontSize: 20}}
                       left={props => <List.Icon {...props} icon="weight-pound"/>}
                       right={props => <TouchableOpacity onPress={() => this.handleDialog(3)}><List.Icon {...props} icon="pencil"/></TouchableOpacity>}
-                      style={{alignItems: 'center'}}
+                      style={styles.listItems}
                     />
+                      <View style = {styles.separator} />
 
                     <List.Item
                       title="BMI"
-                      titleStyle={{fontSize: 10}}
-                      description={bmi}
+                      titleStyle={styles.listItemTitle}
+                      description={bmitext}
                       descriptionStyle={{fontSize: 20}}
                       left={props => <List.Icon {...props} icon="weight-pound"/>}
-                      style={{alignItems: 'center'}}
+                      style={styles.listItems}
                     />
 
                     
@@ -239,57 +261,16 @@ class UserProfileScreen extends React.Component{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c'
-  },
-  headerContainer: {
-    backgroundColor: '#465881',
-    flexDirection: 'row'
+    backgroundColor: '#000a13'
   },
   innerContainer: {
-    flex: 2
-  },
-  icon: {
-    marginLeft: 16,
-    marginTop: 10,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    flex: 1
   },
   topContainer: {
+    flex:1,
     alignItems: 'center',
-    margin: 10,
-  },
-  logo:{
-    fontWeight:"bold",
-    fontSize:50,
-    color:"#fb5b5a",
-    marginBottom:40
-  },
-  inputView:{
-    width:"80%",
-    backgroundColor:"#465881",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
-    padding:20
-  },
-  inputText:{
-    height:50,
-    color:"white"
-  },
-  forgot:{
-    color:"white",
-    fontSize:11
-  },
-  loginBtn:{
-    flex: 1,
-    backgroundColor:"#fb5b5a",
-    borderRadius:25,
-    height:50,
-    alignItems:"center",
-    justifyContent:"center",
-    margin: 10,
-    fontSize: 50
+    backgroundColor:"#95db93",
+    marginBottom: 10,
   },
   dialogView: {
         backgroundColor: 'white',
@@ -299,16 +280,26 @@ const styles = StyleSheet.create({
         height: 300,
   },
   userImage: {
-        borderColor: '#FFF',
+        borderColor: '#000a13',
         borderRadius: 85,
-        borderWidth: 3,
+        borderWidth: 5,
         height: 170,
         marginBottom: 15,
         width: 170,
     },
-  loginText:{
-    color:"white"
-  }, 
+  listItems: {
+      alignItems: 'center'
+  },
+  listItemTitle: {
+      color:"#ffffff",
+      fontSize: 10
+  },
+  separator: {
+    borderBottomColor: '#71ceac',
+    borderBottomWidth: 1,
+    width:"40%",
+    alignSelf:'center'
+  }
 });
 
 export default UserProfileScreen;
