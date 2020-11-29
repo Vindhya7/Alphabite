@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, StatusBar, ScrollView } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import InventoryList from "../components/InventoryList";
 import 'react-native-gesture-handler';
@@ -24,10 +24,10 @@ class InventoryScreen extends React.Component{
                         {key: 'Bread',value:'20'},
                         {key: 'Avocado',value:'30'},
                     ],
-      sortDirection: 'ascending',
-      sortBy: 0
+        sortDirection: 'ascending',
+        sortBy: 0
       }
-      
+
     }
 
     addOne = (idx) => {
@@ -52,19 +52,67 @@ class InventoryScreen extends React.Component{
     }
 
     sortByFood(){
+
+      if(this.state.sortBy == 0) {
+        if(this.state.sortDirection == 'ascending'){
+          this.setState({sortDirection: 'descending'});
+        }
+        else{
+          this.setState({sortDirection: 'ascending'});
+        }
+      }
+
       var arr = this.state.data;
-      arr.sort((a, b) => {
-        return a.key < b.key;
-      });
-      console.log(arr)
+
+      if(this.state.sortDirection == 'ascending'){
+        arr.sort((a, b) => {
+          if(a.key < b.key) return -1;
+          if(a.key > b.key) return 1;
+          return 0;
+        });
+      }
+      else{
+        arr.sort((a, b) => {
+          if(a.key < b.key) return 1;
+          if(a.key > b.key) return -1;
+          return 0;
+        });
+      }
+
+      this.setState({data: arr});
+      this.setState({sortBy: 0});
     }
 
     sortByQuantity(){
+
+      if(this.state.sortBy == 1) {
+        if(this.state.sortDirection == 'ascending'){
+          this.setState({sortDirection: 'descending'});
+        }
+        else{
+          this.setState({sortDirection: 'ascending'});
+        }
+      }
+
       var arr = this.state.data;
-      arr.sort((a, b) => {
-        return a.value < b.value;
-      });
-      console.log(arr)
+
+      if(this.state.sortDirection == 'ascending'){
+        arr.sort((a, b) => {
+          if(a.value < b.value) return -1;
+          if(a.value > b.value) return 1;
+          return 0;
+        });
+      }
+      else{
+        arr.sort((a, b) => {
+          if(a.value < b.value) return 1;
+          if(a.value > b.value) return -1;
+          return 0;
+        });
+      }
+
+      this.setState({data: arr});
+      this.setState({sortBy: 1});
     }
 
     addTableRows(){
@@ -88,40 +136,50 @@ class InventoryScreen extends React.Component{
         var header;
         if(this.state.sortBy == 0){
           header = <DataTable.Header>
-                      <DataTable.Title sortDirection={this.state.sortDirection} onPress={() => this.sortByFood }>Food</DataTable.Title>
-                      <DataTable.Title numeric onPress={() => this.sortByQuantity }>Quantity</DataTable.Title>
-                    </DataTable.Header>;
+                      <DataTable.Title sortDirection={this.state.sortDirection} >
+                        <TouchableOpacity onPress = {() => {this.sortByFood()} }><Text>Food</Text></TouchableOpacity>
+                      </DataTable.Title>
+                    
+                      <DataTable.Title numeric >
+                        <TouchableOpacity onPress = {() => this.sortByQuantity() }><Text>Quantity</Text></TouchableOpacity>
+                      </DataTable.Title>
+                  </DataTable.Header>;
         }
         else{
           header = <DataTable.Header>
-                      <DataTable.Title onPress={() => this.sortByFood }>Food</DataTable.Title>
-                      <DataTable.Title sortDirection={this.state.sortDirection} onPress={() => this.sortByQuantity } numeric>Quantity</DataTable.Title>
-                    </DataTable.Header>;
+                      <DataTable.Title>
+                        <TouchableOpacity onPress = {() => {this.sortByFood()} }><Text>Food</Text></TouchableOpacity>
+                      </DataTable.Title>
+                    
+                      <DataTable.Title sortDirection={this.state.sortDirection} numeric >
+                        <TouchableOpacity onPress = {() => this.sortByQuantity() }><Text>Quantity</Text></TouchableOpacity>
+                      </DataTable.Title>
+                  </DataTable.Header>;
         }
 
         return(
             <SafeAreaView style = {styles.container}>
               <AppBar navigation = {this.props.navigation}/>
+              <ScrollView>
+                <View style={styles.innerContainer}>
 
-              <View style={styles.innerContainer}>
+                  <View style={styles.topContainer}>
+                    <Text style={{color:"#fb5b5a",fontWeight:"bold",fontSize:40}}>Inventory</Text>
+                  </View>
 
-                <View style={styles.topContainer}>
-                  <Text style={{color:"#fb5b5a",fontWeight:"bold",fontSize:40}}>Inventory</Text>
+                  <View style={styles.bottomContainer}>
+
+                    <DataTable>
+                      {header}
+
+                      {this.addTableRows()}
+
+                    </DataTable>
+
+                  </View>
+
                 </View>
-
-                <View style={styles.bottomContainer}>
-
-                  <DataTable>
-                    {header}
-
-                    {this.addTableRows()}
-
-                  </DataTable>
-
-                </View>
-
-              </View>
-
+              </ScrollView>
             </SafeAreaView>
         );
     }
