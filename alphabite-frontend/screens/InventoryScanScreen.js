@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Button, Dialog, Portal } from "react-native-paper";
-
+import firebase from 'firebase';
 
 const InventoryScanScreen = (props) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -12,58 +12,76 @@ const InventoryScanScreen = (props) => {
   const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off)
   const [type, setType] = useState(Camera.Constants.Type.back);
 
+  // uploadImage = async () => {
+  //   var storageRef = firebase.storage().ref().child('images/' + props.navigation.state.params.uid);
+  //   const response = await fetch(imageUri);
+  //   const blob = await response.blob();
+  //   const st = await storageRef.put(blob);
+    
+  //   storageRef.getDownloadURL().then((url) => {
+  //     submitPicture(url);
+  //   })
+  // }
+
 
   submitPicture = async () => {
 
-    try {
-          console.log(typeof(imageUri));
-          let body = JSON.stringify({
-            requests: [
-              {
-                "image":{
-                  "content" : imageUri
-                },
-                features: [
-                  { type: 'LABEL_DETECTION', maxResults: 10 },
-                  { type: 'LANDMARK_DETECTION', maxResults: 5 },
-                  { type: 'FACE_DETECTION', maxResults: 5 },
-                  { type: 'LOGO_DETECTION', maxResults: 5 },
-                  { type: 'TEXT_DETECTION', maxResults: 5 },
-                  { type: 'DOCUMENT_TEXT_DETECTION', maxResults: 5 },
-                  { type: 'SAFE_SEARCH_DETECTION', maxResults: 5 },
-                  { type: 'IMAGE_PROPERTIES', maxResults: 5 },
-                  { type: 'CROP_HINTS', maxResults: 5 },
-                  { type: 'WEB_DETECTION', maxResults: 5 }
-                ],
-                
-              }
-            ]
-          });
-          let response = await fetch(
-            'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAdyf12BgxkfGjJz_tbeYQhQwLv4wiZ2qI',
-            {
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-              },
-              method: 'POST',
-              body: body
-            }
-          );
-          let responseJson = await response.json();
-          console.log(responseJson);
-          
-        } catch (error) {
-          console.log(error);
+    const response = await fetch(imageUri);
+    const blob = await response.blob();
+    var img = '';
+    var reader = new FileReader();
+    reader.readAsDataURL(blob); 
+    reader.onloadend = async () => {
+      var base64data = reader.result.split(',')[1];
+
+      // console.log(base64data);
+      let body = JSON.stringify({
+        requests: [
+          {
+            features: [
+              { type: 'LABEL_DETECTION', maxResults: 10 },
+              { type: 'LOGO_DETECTION', maxResults: 5 },
+              { type: 'TEXT_DETECTION', maxResults: 5 },
+            ],
+            image: {
+              content: base64data
+            } 
+          },
+
+        ]
+      });
+      let response = await fetch(
+        'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAdyf12BgxkfGjJz_tbeYQhQwLv4wiZ2qI',
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          body: body
         }
-      };
+      );
+      let responseJson = await response.json();
+
+      var jsonse = JSON.stringify(responseJson, null, 2);
+      var blob = new Blob([jsonse], {type: "application/json"});
+
+      var storageRef = firebase.storage().ref().child('googleResponses/' + props.navigation.state.params.uid);
+      storageRef.put(blob);
+
+      console.log(responseJson);
+    }
+
+  };
 
   takePicture = async () => {
       try {
         if (cameraRef) {
           const options = {
-            quality: 0.4,
             base64: true,
+            quality: 0.5,
+            forceUpOrientation: true,
+            fixOrientation: true
           };
 
           const { uri } = await cameraRef.takePictureAsync(options);

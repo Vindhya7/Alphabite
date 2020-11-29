@@ -236,7 +236,7 @@ class InventoryScreen extends React.Component{
                     {
                       icon: 'camera',
                       label: 'Take Picture',
-                      onPress: () => { this.setState({ fabVisible: false}); this.props.navigation.navigate('Scan', { refresh: this.refresh })}
+                      onPress: () => { this.setState({ fabVisible: false}); this.props.navigation.navigate('Scan', { refresh: this.refresh, uid: this.state.uid },)}
                     },
                     {
                       icon: 'pencil',
