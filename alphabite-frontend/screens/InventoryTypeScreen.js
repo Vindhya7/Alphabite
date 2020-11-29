@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
+import firebase from "firebase";
 
 
 
@@ -19,6 +20,16 @@ class InventoryTypeScreen extends React.Component{
 
     constructor(props){
         super(props);
+        this.state = { uid: '', itemName: '', expiryDate: '', quantity: '' };
+
+    }
+
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user != null) {
+                this.setState({uid: user.uid});
+            }
+        })
     }
 
     componentWillUnmount(){
@@ -33,6 +44,33 @@ class InventoryTypeScreen extends React.Component{
     };
 
     addItemInfo() {
+        firebase
+            .database()
+            .ref('users/' + this.state.uid + '/inventory/')
+            .once('value')
+            .then((snapshot) => {
+                var vals = snapshot.val();
+                var updateKey = this.state.itemName.toLowerCase();
+                var updateVal = this.state.quantity;
+
+                if(updateKey in vals){
+                    var q = vals[this.state.itemName.toLowerCase()];
+                    updateVal  = Number(q) + Number(this.state.quantity);
+                }
+
+                firebase
+                    .database()
+                    .ref('users/' + this.state.uid + '/inventory/')
+                    .update({
+                        [updateKey]: updateVal
+                    })
+
+                this.props.navigation.goBack();
+            }).catch((error) => {
+                console.log(error);
+        });
+
+
 
     }
 
@@ -47,8 +85,8 @@ class InventoryTypeScreen extends React.Component{
                         placeholderTextColor="#000a13"
                         returnKeyType="next"
                         textContentType="name"
-                        /*value={}
-                        onChangeText={itemName => this.setState({ displayName })}*/
+                        value={this.state.itemName}
+                        onChangeText={itemName => this.setState({ itemName })}
                     />
                 </View>
 
@@ -59,8 +97,8 @@ class InventoryTypeScreen extends React.Component{
                         placeholderTextColor="#000a13"
                         returnKeyType="next"
                         textContentType="name"
-                        /*value={}
-                        onChangeText={itemName => this.setState({ displayName })}*/
+                        value={this.state.expiryDate}
+                        onChangeText={expiryDate => this.setState({ expiryDate })}
                     />
                 </View>
                 <View style={styles.inputView} >
@@ -70,8 +108,8 @@ class InventoryTypeScreen extends React.Component{
                         placeholderTextColor="#000a13"
                         returnKeyType="next"
                         textContentType="name"
-                        /*value={}
-                        onChangeText={itemName => this.setState({ displayName })}*/
+                        value={this.quantity}
+                        onChangeText={quantity => this.setState({ quantity })}
                     />
                 </View>
 

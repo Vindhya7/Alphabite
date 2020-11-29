@@ -27,6 +27,7 @@ class InventoryScreen extends React.Component{
 
     refresh = () => {
       this.setState({ fabVisible: true });
+      this.componentDidMount();
       this.render();
     }
 
