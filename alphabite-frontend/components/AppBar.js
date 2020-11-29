@@ -11,8 +11,8 @@ class AppBar extends React.Component {
 
     render(){
         return(
-            <Appbar.Header style={{backgroundColor:'#95db93'}}>
-                <Appbar.Action icon="menu" onPress={() => this.props.navigation.openDrawer()}/>
+            <Appbar.Header style={{backgroundColor:'#95db93', elevation: 0}}>
+                <Appbar.Action style={styles.drawerIcon} icon="menu" onPress={() => this.props.navigation.openDrawer()}/>
                 <Appbar.Content style={styles.title} title={this.props.title}/>
                 <Appbar.Action icon="logout" onPress={() => {firebase.auth().signOut(); this.props.navigation.navigate('SignIn')}} />
             </Appbar.Header>
@@ -24,7 +24,10 @@ class AppBar extends React.Component {
 const styles = StyleSheet.create({
 title:{
     color:'#000a13',
-}
+    marginLeft:"0%",
+}, drawerIcon: {
+    marginRight: 0
+    }
 });
 
 export default AppBar;

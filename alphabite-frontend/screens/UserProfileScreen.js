@@ -183,8 +183,9 @@ class UserProfileScreen extends React.Component{
                     <View>
 
                         <View style={styles.topContainer}>
-                            <Text style = {{fontSize: 35, fontWeight:'bold', color: "#000a13", marginBottom: 15}}>Hi, {name}</Text>
+
                             <Image style={styles.userImage} source = {img}/>
+                            <Text style = {{fontSize: 35, fontWeight:'bold', color: "#000a13", marginBottom: 15}}>Hi, {name}</Text>
                         </View>
 
                         <View>
@@ -294,6 +295,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor:"#95db93",
         marginBottom: 10,
+        paddingTop:30
     },
     userImage: {
         borderColor: '#000a13',
