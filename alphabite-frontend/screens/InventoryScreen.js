@@ -75,12 +75,25 @@ class InventoryScreen extends React.Component{
       obj.value = Number(obj.value) - 1;
       if(obj.value < 0) obj.value = 0;
 
-      firebase.database().ref('users/' + this.state.uid + '/inventory').update({
-        [obj.key]: obj.value
-      });
+      if(obj.value == 0){
+        firebase.database().ref('users/' + this.state.uid + '/inventory/' + obj.key).set(null);
+
+      }
+      else{
+        firebase.database().ref('users/' + this.state.uid + '/inventory').update({
+          [obj.key]: obj.value
+        });
+      }
+      
 
       var newData = this.state.data;
-      newData[idx] = obj;
+      if(obj.value == 0){
+        newData.splice(idx, 1);
+      }
+      else{
+        newData[idx] = obj;
+      }
+      
 
       this.setState({data: newData});
     }
