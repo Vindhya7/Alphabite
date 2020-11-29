@@ -32,7 +32,9 @@ class UserProfileScreen extends React.Component{
                 this.setState({ uid: user.uid });
                 firebase.database().ref('users/' + user.uid).once("value")
                     .then((snapshot) => {
-                        const user = Object.keys(snapshot.val()).map( (item, index) => {
+                        const user = Object.keys(snapshot.val())
+                        .filter( item => item != "inventory")
+                        .map( (item, index) => {
                             return {id: index, k: item, v: snapshot.val()[item]} ;
                         });
 
