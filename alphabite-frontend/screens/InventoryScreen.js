@@ -24,7 +24,8 @@ class InventoryScreen extends React.Component{
                         // {key: 'Avocado',value:'30'},
                     ],
         sortDirection: 'ascending',
-        sortBy: 0
+        sortBy: 0,
+        uid: ''
       }
 
     }
@@ -56,7 +57,11 @@ class InventoryScreen extends React.Component{
 
     addOne = (idx) => {
       var obj = this.state.data[idx];
-      obj.value = Number(obj.value) + 1
+      obj.value = Number(obj.value) + 1;
+
+      firebase.database().ref('users/' + this.state.uid + '/inventory').update({
+        [obj.key]: obj.value
+      });
 
       var newData = this.state.data;
       newData[idx] = obj;
@@ -66,8 +71,12 @@ class InventoryScreen extends React.Component{
 
     minusOne = (idx) => {
       var obj = this.state.data[idx];
-      obj.value = Number(obj.value) - 1
-      if(obj.value < 0) obj.value = 0
+      obj.value = Number(obj.value) - 1;
+      if(obj.value < 0) obj.value = 0;
+
+      firebase.database().ref('users/' + this.state.uid + '/inventory').update({
+        [obj.key]: obj.value
+      });
 
       var newData = this.state.data;
       newData[idx] = obj;
