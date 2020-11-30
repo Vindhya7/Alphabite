@@ -21,116 +21,83 @@ const InventoryScanScreen = (props) => {
     var reader = new FileReader();
     reader.readAsDataURL(blob); 
     reader.onloadend = async () => {
-    //   var base64data = reader.result.split(',')[1];
+      var base64data = reader.result.split(',')[1];
 
-    //   // console.log(base64data);
-    //   let body = JSON.stringify({
-    //     requests: [
-    //       {
-    //         features: [
-    //           { type: 'LABEL_DETECTION', maxResults: 10 },
-    //           { type: 'LOGO_DETECTION', maxResults: 5 },
-    //         ],
-    //         image: {
-    //           content: base64data
-    //         } 
-    //       },
+      let body = JSON.stringify({
+        requests: [
+          {
+            features: [
+              { type: 'LABEL_DETECTION', maxResults: 10 },
+              { type: 'LOGO_DETECTION', maxResults: 5 },
+            ],
+            image: {
+              content: base64data
+            } 
+          },
 
-    //     ]
-    //   });
-    //   let response = await fetch(
-    //     'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAdyf12BgxkfGjJz_tbeYQhQwLv4wiZ2qI',
-    //     {
-    //       headers: {
-    //         Accept: 'application/json',
-    //         'Content-Type': 'application/json'
-    //       },
-    //       method: 'POST',
-    //       body: body
-    //     }
-    //   );
-    //   let responseJson = await response.json();
+        ]
+      });
+      let response = await fetch(
+        'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAdyf12BgxkfGjJz_tbeYQhQwLv4wiZ2qI',
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          body: body
+        }
+      );
+      let responseJson = await response.json();
 
-    //   // var jsonse = JSON.stringify(responseJson, null, 2);
-    //   // var blob = new Blob([jsonse], {type: "application/json"});
+      var labels = [];
+      var logos = [];
 
-    //   // var storageRef = firebase.storage().ref().child('googleResponses/' + props.navigation.state.params.uid);
-    //   // storageRef.put(blob);
+      if(responseJson.responses[0].labelAnnotations){
+        labels = responseJson.responses[0].labelAnnotations.map((item) => {
+          return item.description;
+        });
+      }
 
-    //   var labels = responseJson.responses[0].labelAnnotations.map((item) => {
-    //     return item.description;
-    //   });
+      if(responseJson.responses[0].logoAnnotations){
+        logos = responseJson.responses[0].logoAnnotations.map((item) => {
+          return item.description;
+        });
+      }
 
-    //   var logos = responseJson.responses[0].logoAnnotations.map((item) => {
-    //     return item.description;
-    //   });
 
-    //   var fin = await labels.concat(logos);
+      var fin = await (logos.concat(labels)).filter(food => food != 'Food' && food != 'Drink' && food != 'Fluid');
 
-      var fin = ["Apple", "Hand"];
-      var qString = fin.join(' ');
 
+      console.log(fin);
       var str = 'https://api.nal.usda.gov/fdc/v1/foods/search?api_key='
       const apiKey = 'v2dhN94YJzPxxzm6UcUgNUYfyz9UgSikLFe4WeUE';
 
-      var finalStr = str + apiKey + '&query=' + encodeURIComponent(qString);
-
-      let foodResponse = await fetch(
-          finalStr, {
-            headers: {
-              Accept: 'application/json',
-            'Content-Type': 'application/json'
-            },
-            method: 'GET'
-          }
-        );
-      let foodJson = await foodResponse.json();
-      var foods = foodJson.foods;
-
-      foods.map((item) => {
-        console.log(item.description + ": " + item.score);
-      })
-
       
 
-
-
-      // let promises = fin.map(async (item) => {
-      //   var finalStr = str + apiKey + '&query=' +  + '&pageSize=5';
-      //   // console.log(finalStr);
-      //   let foodResponse = await fetch(
-      //     finalStr, {
-      //       headers: {
-      //         Accept: 'application/json',
-      //       'Content-Type': 'application/json'
-      //       },
-      //       method: 'GET'
-      //     }
-      //   );
-      //   let foodJson = await foodResponse.json();
-      //   var foods = foodJson.foods;
-      //   if(foods){
-      //     foods.sort((a,b) => {
-      //       if(a.score < b.score) return 1;
-      //       if(a.score > b.score) return -1;
-      //       return 0;
-      //     })
-          
-
-      //     console.log(item + ": " + foods[0].score);
-      //     if(foods[0].score > 750) return item;
-      //   }
+      const list = await Promise.all(fin.map( async (item) => {
+        var finalStr = str + apiKey + '&query=' + encodeURIComponent(item);
+        let foodResponse = await fetch(
+            finalStr, {
+              headers: {
+                Accept: 'application/json',
+              'Content-Type': 'application/json'
+              },
+              method: 'GET'
+            }
+          );
+        let foodJson = await foodResponse.json();
+        var foods = foodJson.foods;
         
-      // });
-      // // console.log(promises);
-      // Promise.all(promises)
-      //   .then(data => {
-      //     console.log(data);
-
-      //   })
-      //   .catch(err => {
-      //     //console.log(err);
-      //   })
+        if(foods[0]){
+          if(foods[0].score > 700) return item;
+        }
+      }))
+      
+      var result = list.filter(item => typeof(item) === 'string');
+      console.log(result);
+      
+      //result is the final array to be passed
 
     }
 
