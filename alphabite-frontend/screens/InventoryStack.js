@@ -11,7 +11,8 @@ import { createAppContainer } from 'react-navigation';
 const InventoryStack = createStackNavigator({
         Inventory: { screen: InventoryScreen },
         Scan: { screen: InventoryScanScreen },
-        Type: {screen: InventoryTypeScreen }
+        Type: { screen: InventoryTypeScreen },
+        Confirm: { screen: InventoryScanConfirmScreen }
     },
     {
         initialRouteName: 'Inventory'

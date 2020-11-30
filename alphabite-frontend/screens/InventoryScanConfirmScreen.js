@@ -20,9 +20,10 @@ class InventoryScanConfirmScreen extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { item: ["Apple","Red","Fruit"],
+        this.state = { items: this.props.navigation.state.params.list,
             isSelected: false,
         };
+        console.log(this.state.items);
 
     }
 
@@ -42,7 +43,7 @@ class InventoryScanConfirmScreen extends React.Component{
     }
 
     addTableRows(){
-        return this.state.item.map((item) => {
+        return this.state.items.map((item) => {
             return (
                 <DataTable.Row style={styles.dataItem}>
 

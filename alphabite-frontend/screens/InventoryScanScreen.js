@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
-import { Button, Dialog, Portal } from "react-native-paper";
+import { Button, Dialog, Portal, Snackbar } from "react-native-paper";
 import firebase from 'firebase';
 import ProcessGoogleResponse from '../apis/GCApi.js';
 
@@ -12,6 +12,10 @@ const InventoryScanScreen = (props) => {
   const [imageUri, setImageUri] = useState(null);
   const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off)
   const [type, setType] = useState(Camera.Constants.Type.back);
+
+  const [snackBarVisible, setSnackBarVisible] = React.useState(false);
+
+  const onDismissSnackBar = () => setSnackBarVisible(false);
 
   submitPicture = async () => {
 
@@ -29,6 +33,7 @@ const InventoryScanScreen = (props) => {
             features: [
               { type: 'LABEL_DETECTION', maxResults: 10 },
               { type: 'LOGO_DETECTION', maxResults: 5 },
+              {type: 'OBJECT_LOCALIZATION', maxResults: 5},
             ],
             image: {
               content: base64data
@@ -52,12 +57,20 @@ const InventoryScanScreen = (props) => {
 
       var labels = [];
       var logos = [];
+      var objs = []
 
       if(responseJson.responses[0].labelAnnotations){
         labels = responseJson.responses[0].labelAnnotations.map((item) => {
           return item.description;
         });
       }
+
+      if(responseJson.responses[0].localizedObjectAnnotations){
+        objs = responseJson.responses[0].localizedObjectAnnotations.map((item) => {
+          return item.name;
+        });
+      }
+
 
       if(responseJson.responses[0].logoAnnotations){
         logos = responseJson.responses[0].logoAnnotations.map((item) => {
@@ -66,10 +79,12 @@ const InventoryScanScreen = (props) => {
       }
 
 
-      var fin = await (logos.concat(labels)).filter(food => food != 'Food' && food != 'Drink' && food != 'Fluid');
+      var allGoogleResponses = await (labels.concat(objs.concat(labels))).filter(food => food != 'Food' && food != 'Drink' && food != 'Fluid');
+
+      var fin = allGoogleResponses.filter((v, i ,a) => a.indexOf(v) === i);
 
 
-      console.log(fin);
+      // console.log(fin);
       var str = 'https://api.nal.usda.gov/fdc/v1/foods/search?api_key='
       const apiKey = 'v2dhN94YJzPxxzm6UcUgNUYfyz9UgSikLFe4WeUE';
 
@@ -95,7 +110,18 @@ const InventoryScanScreen = (props) => {
       }))
       
       var result = list.filter(item => typeof(item) === 'string');
-      console.log(result);
+      // console.log(result);
+
+      if(result.length == 0){
+        setImageUri(null);
+        setSnackBarVisible(true);
+      }
+      else{
+        setImageUri(null);
+
+        props.navigation.navigate('Confirm', { list: result });
+      }
+      
       
       //result is the final array to be passed
 
@@ -250,6 +276,13 @@ const InventoryScanScreen = (props) => {
                 </View>
               </View>
             </Camera>
+            <Snackbar
+              visible={snackBarVisible}
+              onDismiss={onDismissSnackBar}
+              style={{backgroundColor: 'white', justifyContent: 'center'}}
+            >
+              <Text style={{color: 'black', fontSize: 20}}>Could not find food! Retake</Text>
+            </Snackbar>
       </View>
     );
   }
