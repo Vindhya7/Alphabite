@@ -20,10 +20,17 @@ class InventoryScanConfirmScreen extends React.Component{
 
     constructor(props){
         super(props);
+
+    }
+
+
+    componentDidMount(){
+        var items = this.props.navigation.state.params.list;
+
+
         this.state = { items: this.props.navigation.state.params.list,
             isSelected: false,
         };
-        console.log(this.state.items);
 
     }
 
