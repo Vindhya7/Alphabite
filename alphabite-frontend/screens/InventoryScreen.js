@@ -33,7 +33,8 @@ class InventoryScreen extends React.Component{
         fabVisible: true,
         isDialogVisible: false,
         duration:'set',
-        setEditemItem: 0
+        setEditedItem: 0,
+        durationColor: true,
       }
 
     }
@@ -76,7 +77,7 @@ class InventoryScreen extends React.Component{
     }
 
     handleDialog = (idx) => {
-        this.setState({ setEditemItem: idx})
+        this.setState({ setEditedItem: idx})
         this.setState({ isDialogVisible: true });
     }
 
@@ -219,14 +220,14 @@ class InventoryScreen extends React.Component{
 
         if(this.state.sortDirection == 'ascending'){
           arr.sort((a,b) => {
-            sortedArr = ["1week", "2weeks", "1month", "2months", "6months", "12months"];
+            sortedArr = ["set","1week", "2weeks", "1month", "2months", "6months", "12months"];
             return sortedArr.indexOf(a.reminder) - sortedArr.indexOf(b.reminder);
           });
           
         }
         else{
           arr.sort((a, b) => {
-            sortedArr = ["1week", "2weeks", "1month", "2months", "6months", "12months"];
+            sortedArr = ["set","1week", "2weeks", "1month", "2months", "6months", "12months"];
             return sortedArr.indexOf(b.reminder) - sortedArr.indexOf(a.reminder);
           });
         }
@@ -253,7 +254,7 @@ class InventoryScreen extends React.Component{
 
             <DataTable.Cell style={{justifyContent: 'flex-end'}}>
                 <TouchableOpacity onPress={() => this.handleDialog(idx)}>
-                    <Text style={{color:'#000a13'}}> {item.reminder} </Text>
+                    <Text style={(item.reminder).localeCompare("set") ? styles.noSet : styles.set }> {item.reminder} </Text>
                 </TouchableOpacity>
             </DataTable.Cell>
 
@@ -277,7 +278,8 @@ class InventoryScreen extends React.Component{
                       </DataTable.Title>
 
                       <DataTable.Title style={{}} numeric >
-                          <TouchableOpacity onPress = {() => this.sortByReminder() }><Text style={{fontWeight: 'bold'}}>Reminder</Text></TouchableOpacity>
+                          <TouchableOpacity onPress = {() => this.sortByReminder() }><Text style={{fontWeight: 'bold',fontSize:14
+                          }}>Reminder</Text></TouchableOpacity>
                       </DataTable.Title>
 
                   </DataTable.Header>;
@@ -293,7 +295,7 @@ class InventoryScreen extends React.Component{
                       </DataTable.Title>
 
                       <DataTable.Title style={{}} numeric >
-                          <TouchableOpacity onPress = {() => this.sortByReminder() }><Text style={{fontWeight: 'bold', fontSize:10}}>Reminder</Text></TouchableOpacity>
+                          <TouchableOpacity onPress = {() => this.sortByReminder() }><Text style={{fontWeight: 'bold', fontSize:14}}>Reminder</Text></TouchableOpacity>
                       </DataTable.Title>
 
                   </DataTable.Header>;
@@ -309,7 +311,7 @@ class InventoryScreen extends React.Component{
                       </DataTable.Title>
 
                       <DataTable.Title style={{}} numeric sortDirection={this.state.sortDirection} >
-                          <TouchableOpacity onPress = {() => this.sortByReminder() }><Text style={{fontWeight: 'bold', fontSize:10}}>Reminder</Text></TouchableOpacity>
+                          <TouchableOpacity onPress = {() => this.sortByReminder() }><Text style={{fontWeight: 'bold', fontSize:14}}>Reminder</Text></TouchableOpacity>
                       </DataTable.Title>
 
                   </DataTable.Header>;
@@ -319,6 +321,7 @@ class InventoryScreen extends React.Component{
             selectedValue={this.state.duration}
             onValueChange={(itemValue, itemIndex) => {this.setState({duration: itemValue})}}
         >
+            <Picker.Item label="Set Duration" value="set" />
             <Picker.Item label="1 Week" value="1week" />
             <Picker.Item label="2 Weeks" value="2weeks" />
             <Picker.Item label="1 Month" value="1month" />
@@ -341,7 +344,7 @@ class InventoryScreen extends React.Component{
                             </Dialog.Content>
                             <Dialog.Actions >
                                 <Button  onPress={() => this.setDialogVisible(false)}>Cancel</Button>
-                                <Button  onPress={() => {this.setDialogVisible(false); this.setReminder(this.state.setEditemItem) }}>Ok</Button>
+                                <Button  onPress={() => {this.setDialogVisible(false); this.setReminder(this.state.setEditedItem) }}>Ok</Button>
                             </Dialog.Actions>
                         </View>
                     </Dialog>
@@ -432,9 +435,14 @@ const styles = StyleSheet.create({
   },
   dataCell:{
     flexDirection:'row', alignItems:'center',
-
-
-  }
+  },
+noSet: {
+    color: '#000a13'
+},
+set: {
+    color: '#ff0000',
+    fontWeight: 'bold',
+}
 });
 
 export default InventoryScreen;
