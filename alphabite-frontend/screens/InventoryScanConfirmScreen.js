@@ -147,13 +147,11 @@ const styles = StyleSheet.create({
     },
     dataItem:{
         backgroundColor:"#F7F7F7",
+        
     },
     dataCell:{
         flexDirection:'row',
         alignItems:'center',
-    },
-    inputView: {
-        justifyContent:'center'
     },
     loginBtn:{
         width:"80%",
