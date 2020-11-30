@@ -97,12 +97,9 @@ class InventoryScanConfirmScreen extends React.Component{
 
                     var foods = t1.filter(x => typeof(x) === 'string');
                     var quants = t2.filter(x => typeof(x) === 'string');
-                    console.log(foods);
-                    console.log(quants);
 
                     var vals = snapshot.val();
 
-                    console.log(vals);
 
                     foods.map((food, idx) => {
                         if(food in vals){
