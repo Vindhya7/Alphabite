@@ -20,7 +20,9 @@ class InventoryScanConfirmScreen extends React.Component{
 
     constructor(props){
         super(props);
-
+        this.state = { items: this.props.navigation.state.params.list,
+            isSelected: false,
+        };
     }
 
 
@@ -28,9 +30,7 @@ class InventoryScanConfirmScreen extends React.Component{
         var items = this.props.navigation.state.params.list;
 
 
-        this.state = { items: this.props.navigation.state.params.list,
-            isSelected: false,
-        };
+        
 
     }
 
