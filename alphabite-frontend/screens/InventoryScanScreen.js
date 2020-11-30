@@ -278,9 +278,9 @@ const InventoryScanScreen = (props) => {
             <Snackbar
               visible={snackBarVisible}
               onDismiss={onDismissSnackBar}
-              style={{backgroundColor: 'white', justifyContent: 'center'}}
+              style={{width:"80%",marginBottom:85,backgroundColor: '#282828', alignSelf: 'center', opacity: 0.9}}
             >
-              <Text style={{color: 'black', fontSize: 20}}>Could not find food! Retake</Text>
+              <Text style={{color: '#95db93', fontSize: 20}}>Could not find food - Retake</Text>
             </Snackbar>
       </View>
     );

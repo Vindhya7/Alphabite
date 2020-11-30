@@ -134,7 +134,7 @@ class UserProfileScreen extends React.Component{
             multiline = {false}
             maxLength = {200}
             keyboardType="number-pad"
-            style={{backgroundColor:"#71ceac"}}
+            style={{backgroundColor:"#ffffff"}}
         /> ;
         if(this.state.editedWord == this.state.fields[1]){
             dialogInput = <TextInput
@@ -144,7 +144,7 @@ class UserProfileScreen extends React.Component{
                 multiline = {false}
                 maxLength = {200}
                 keyboardType="number-pad"
-                style={{backgroundColor:"#71ceac"}}
+                style={{backgroundColor:"#ffffff"}}
             /> ;
         }
         else if(this.state.editedWord == this.state.fields[2]){
@@ -165,7 +165,7 @@ class UserProfileScreen extends React.Component{
                 <Portal  >
                     <Dialog  visible={this.state.isDialogVisible}
                             onDismiss={() => this.setDialogVisible(false)}>
-                        <View style={{backgroundColor:"#71ceac"}}>
+                        <View style={{backgroundColor:"#ffffff"}}>
                             <Dialog.Title style={{color: '#000a13'}}>Enter your {this.state.editedWord}</Dialog.Title>
                             <Dialog.Content>
                                 { dialogInput }

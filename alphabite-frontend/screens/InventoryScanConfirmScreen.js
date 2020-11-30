@@ -221,7 +221,7 @@ class InventoryScanConfirmScreen extends React.Component{
                 <Snackbar
                   visible={this.state.snackBarIsVisible}
                   onDismiss={() => this.onDismissSnackBar()}
-                  style={{backgroundColor: 'white', justifyContent: 'center'}}
+                  style={{width:"80%",marginBottom:85,backgroundColor: '#282828', alignSelf: 'center', opacity: 0.9}}
                 >
                   <Text style={{color: 'black', fontSize: 20}}>Please add quantity for selected items.</Text>
                 </Snackbar>
