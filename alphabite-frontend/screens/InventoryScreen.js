@@ -52,6 +52,7 @@ class InventoryScreen extends React.Component{
                 this.setState({ uid: user.uid });
                 firebase.database().ref('users/' + user.uid + '/inventory').once("value")
                     .then((snapshot) => {
+                        console.log(snapshot.val());
                         var itemKeys = Object.keys(snapshot.val())
                           .map( item => {
                             return item;
@@ -381,7 +382,7 @@ class InventoryScreen extends React.Component{
                     {
                       icon: 'camera',
                       label: 'Take Picture',
-                      onPress: () => { this.setState({ fabVisible: false}); this.props.navigation.navigate('Scan', { refresh: this.refresh, uid: this.state.uid },)}
+                      onPress: () => { this.setState({ fabVisible: false}); this.props.navigation.navigate('Scan', { refresh: this.refresh, uid: this.state.uid, parentProp: this.props },)}
                     },
                     {
                       icon: 'pencil',

@@ -64,53 +64,88 @@ class InventoryScanConfirmScreen extends React.Component{
         this.setState({ items: newList });
     }
 
-    storeSelectedItem = async () => {
-        this.state.items.map((item) => {
-            if(item.isSelected){
-                if(item.quantity){
-                    //snackbar
-                    this.setState({ snackBarIsVisible: true});
-                    return;
-                }
-                else{
+    storeSelectedItem(){
 
-                    firebase
-                        .database()
-                        .ref('users/' + this.state.uid + '/inventory/')
-                        .once('value')
-                        .then((snapshot) => {
-                            var food = item.key.toLowerCase();
-                            var quant = item.quantity;
-                            var reminder = "set";
+        const errs = this.state.items.map((item) => {
+            if(item.isSelected && item.quantity == 0) return 1;
+            else return 0;
+        }).filter(x => x == 1);
 
-                            var vals = snapshot.val();
-                            if(food in vals){
-                                var q = vals[food.toLowerCase()];
-                                quant  = Number(q.quantity) + Number(this.state.quantity);
-                                reminder = q.reminder;
-                            }
+        const selected = this.state.items.map((item) => {
+            if(item.isSelected) return 1;
+            else return 0;
+        }).filter(x => x == 1);
 
-                            var obj = { quantity: quant, reminder: reminder };
+        if(errs.length != 0 || selected.length == 0){
+            this.setState({ snackBarIsVisible: true});
+            return;
+        }
+        else{
+            firebase
+                .database()
+                .ref('users/' + this.state.uid + '/inventory/')
+                .once('value')
+                .then((snapshot) => {
 
+                    var t1 = this.state.items.map((item) => {
+                        if(item.isSelected) return item.key.toLowerCase();
+                    });
+
+                    var t2 = this.state.items.map((item) => {
+                        if(item.isSelected) return item.quantity.toString();
+                    });
+
+                    var foods = t1.filter(x => typeof(x) === 'string');
+                    var quants = t2.filter(x => typeof(x) === 'string');
+                    console.log(foods);
+                    console.log(quants);
+
+                    var vals = snapshot.val();
+
+                    console.log(vals);
+
+                    foods.map((food, idx) => {
+                        if(food in vals){
+                            var q = vals[food.toLowerCase()];
+                            var quant = Number(q.quantity) + Number(quants[idx]);
+                            
+                            var obj = {quantity: quant, reminder: q.reminder };
+                            firebase
+                                .database()
+                                .ref('users/' + this.state.uid + '/inventory/')
+                                .update({
+                                    [food] : obj
+                                })
+
+                        }
+                        else{
+                            var obj = { quantity: quants[idx], reminder: 'set' };
                             firebase
                                 .database()
                                 .ref('users/' + this.state.uid + '/inventory/')
                                 .update({
                                     [food]: obj
                                 })
+                        }
+                    });
 
-                        }).catch((error) => {
-                            console.log(error);
-                        });
-                }
-            }
-        });
+                    
 
-        this.props.navigation.navigate('Inventory');
+                }).catch((error) => {
+                    console.log(error);
+                });
+
+            
+            this.props.navigation.popToTop();
+        } 
     }
 
     onDismissSnackBar(){
         this.setState({ snackBarIsVisible: false});
+    }
+
+    componentWillUnmount(){
+        this.props.navigation.state.params.parentProp.navigation.state.params.refresh();
     }
 
     addTableRows(){
@@ -188,7 +223,7 @@ class InventoryScanConfirmScreen extends React.Component{
                 </ScrollView>
                 <Snackbar
                   visible={this.state.snackBarIsVisible}
-                  onDismiss={() => this.onDismissSnackBar}
+                  onDismiss={() => this.onDismissSnackBar()}
                   style={{backgroundColor: 'white', justifyContent: 'center'}}
                 >
                   <Text style={{color: 'black', fontSize: 20}}>Please add quantity for selected items.</Text>

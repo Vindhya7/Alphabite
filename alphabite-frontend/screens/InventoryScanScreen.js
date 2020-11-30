@@ -119,7 +119,7 @@ const InventoryScanScreen = (props) => {
       else{
         setImageUri(null);
 
-        props.navigation.navigate('Confirm', { list: result });
+        props.navigation.navigate('Confirm', { list: result, parentProp: props });
       }
       
       
