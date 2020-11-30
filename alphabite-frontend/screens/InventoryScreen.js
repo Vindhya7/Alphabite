@@ -9,12 +9,14 @@ import {
     StatusBar,
     ScrollView,
     Picker,
+    TouchableHighlight
 } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 import AppBar from '../components/AppBar.js';
 import {DataTable, IconButton, Portal, FAB, Dialog,  Button} from 'react-native-paper';
 import firebase from 'firebase';
+import Swipeable from 'react-native-swipeable-row';
 
 class InventoryScreen extends React.Component{
 
@@ -35,6 +37,7 @@ class InventoryScreen extends React.Component{
         duration:'set',
         setEditedItem: 0,
         durationColor: true,
+        refs: []
       }
 
     }
@@ -141,6 +144,22 @@ class InventoryScreen extends React.Component{
       this.setState({data: newData});
     }
 
+    deleteItem(idx){
+      var obj = this.state.data[idx];
+      var ref = this.state.refs[idx];
+
+      ref.recenter();
+
+      obj.quantity = 1;
+      var newData = this.state.data;
+      newData[idx] = obj;
+
+      var newRefs = this.state.refs.splice(idx);
+      this.setState({ refs: newRefs });
+      this.setState({ data: newData });
+      this.minusOne(idx);
+    }
+
     sortByFood(){
 
       if(this.state.sortBy == 0) {
@@ -236,12 +255,23 @@ class InventoryScreen extends React.Component{
         this.setState({data: arr});
         this.setState({sortBy: 2});
     }
+
+    addRef(idx, ref){
+      var list = this.state.refs;
+      list[idx] = ref;
+      this.setState({ refs: list });
+    }
     
 
     addTableRows(){
+
       return this.state.data.map((item, idx) => {
-        return (
-          <DataTable.Row style={styles.dataItem} key = {idx}>
+
+        const rightButtons = [
+          <TouchableHighlight style={{backgroundColor: 'red'}}><IconButton icon="delete-outline" onPress={ () => this.deleteItem(idx) }/></TouchableHighlight>
+        ];
+
+        var row = <DataTable.Row style={styles.dataItem} key = {idx}>
 
             <DataTable.Cell style={{}}><Text style={{color:'#000a13'}}>{item.key}</Text></DataTable.Cell>
 
@@ -259,7 +289,14 @@ class InventoryScreen extends React.Component{
                 </TouchableOpacity>
             </DataTable.Cell>
 
-          </DataTable.Row>
+          </DataTable.Row>;
+
+        
+
+        return (
+          <Swipeable rightButtons={rightButtons} onRef = {(ref) => this.addRef(idx, ref)}>
+                {row}
+          </Swipeable>
         );
       });
     }
