@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     StatusBar,
     ScrollView,
-    CheckBox
+    CheckBox, TextInput
 } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import {DataTable, IconButton} from "react-native-paper";
@@ -22,6 +22,7 @@ class InventoryScanConfirmScreen extends React.Component{
         super(props);
         this.state = { items: this.props.navigation.state.params.list,
             isSelected: false,
+            quantity: 0
         };
     }
 
@@ -29,13 +30,10 @@ class InventoryScanConfirmScreen extends React.Component{
     componentDidMount(){
         var items = this.props.navigation.state.params.list;
 
-
-        
-
     }
 
     static navigationOptions = {
-        title: 'Confirm the Item',
+        title: 'Confirm the Items',
         headerStyle: { backgroundColor: '#95db93' },
         headerTitleStyle: { color: '#00a13' },
     };
@@ -56,13 +54,26 @@ class InventoryScanConfirmScreen extends React.Component{
 
                     <DataTable.Cell><Text style={{color:'#000a13'}}>{item}</Text></DataTable.Cell>
 
+                    <DataTable.Cell>
+                        <View style={styles.inputView} >
+                            <TextInput
+
+                                placeholder="Add Quantity"
+                                placeholderTextColor={(this.state.quantity) ? '#000a13' : 'red'}
+                                returnKeyType="next"
+                                textContentType="name"
+                                value={this.state.quantity}
+                                onChangeText={quantity => this.setState({ quantity: quantity })}
+                            />
+                        </View>
+                    </DataTable.Cell>
+
                     <DataTable.Cell style={{justifyContent: 'flex-end'}}>
                         <CheckBox
                             value={this.state.isSelected}
                             onValueChange={ () => this.handleSelection(item) }
                             style={styles.checkbox}
                         />
-                        {/*} <IconButton icon="check-outline" style={(this.state.styleButton) ? styles.iconSelected:styles.iconNotSelected} onPress={ () => this.selected(item) }/>*/}
                     </DataTable.Cell>
 
                 </DataTable.Row>
@@ -99,6 +110,12 @@ class InventoryScanConfirmScreen extends React.Component{
                                 onPress={() => this.storeSelectedItem()}>
                                 <Text style={styles.loginText}>Confirm</Text>
                             </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={styles.loginBtn}
+                                onPress={() => this.props.navigate.goBack()}>
+                                <Text style={styles.loginText}>Retake</Text>
+                            </TouchableOpacity>
                         </View>
 
                     </View>
@@ -132,7 +149,11 @@ const styles = StyleSheet.create({
         backgroundColor:"#F7F7F7",
     },
     dataCell:{
-        flexDirection:'row', alignItems:'center',
+        flexDirection:'row',
+        alignItems:'center',
+    },
+    inputView: {
+        justifyContent:'center'
     },
     loginBtn:{
         width:"80%",
@@ -161,6 +182,12 @@ const styles = StyleSheet.create({
     },
     checkbox: {
         alignSelf: "center",
+    },
+    notZero: {
+        color:"#000a13",
+    },
+    zero: {
+        color: "red"
     }
 
 });
