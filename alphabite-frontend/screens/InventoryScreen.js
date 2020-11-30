@@ -220,14 +220,14 @@ class InventoryScreen extends React.Component{
 
         if(this.state.sortDirection == 'ascending'){
           arr.sort((a,b) => {
-            sortedArr = ["set","1week", "2weeks", "1month", "2months", "6months", "12months"];
+            var sortedArr = ["set","1week", "2weeks", "1month", "2months", "6months", "12months"];
             return sortedArr.indexOf(a.reminder) - sortedArr.indexOf(b.reminder);
           });
           
         }
         else{
           arr.sort((a, b) => {
-            sortedArr = ["set","1week", "2weeks", "1month", "2months", "6months", "12months"];
+            var sortedArr = ["set","1week", "2weeks", "1month", "2months", "6months", "12months"];
             return sortedArr.indexOf(b.reminder) - sortedArr.indexOf(a.reminder);
           });
         }

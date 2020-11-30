@@ -64,9 +64,9 @@ const InventoryScanScreen = (props) => {
       var logos = responseJson.responses[0].logoAnnotations.map((item) => {
         return item.description;
       });
-      console.log(labels);
-      console.log(logos);
 
+      var fin = labels.concat(logos);
+      
     }
 
   };
@@ -121,7 +121,7 @@ const InventoryScanScreen = (props) => {
               <Dialog.Title>Confirm</Dialog.Title>
               <Dialog.Actions>
                 <Button onPress={() => setImageUri(null)}>Retake</Button>
-                <Button onPress={() => submitPicture()}>Confirm</Button>
+                <Button onPress={submitPicture}>Confirm</Button>
               </Dialog.Actions>
             </Dialog>
           </Portal>
