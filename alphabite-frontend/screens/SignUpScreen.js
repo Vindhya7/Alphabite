@@ -104,7 +104,7 @@ class SignUpScreen extends React.Component {
 
           <View style={{ marginTop: 10 }}>
             <Text
-              style={{ fontWeight: '200', fontSize: 17, textAlign: 'center' }}
+              style={{ fontWeight: '200', fontSize: 17, textAlign: 'center', color:'white'}}
               onPress={() => {
                 this.props.navigation.navigate('SignIn');
               }}
