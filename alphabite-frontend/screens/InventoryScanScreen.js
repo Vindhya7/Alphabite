@@ -3,7 +3,6 @@ import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Button, Dialog, Portal, Snackbar } from "react-native-paper";
 import firebase from 'firebase';
-import ProcessGoogleResponse from '../apis/GCApi.js';
 
 const InventoryScanScreen = (props) => {
   const [hasPermission, setHasPermission] = useState(null);
