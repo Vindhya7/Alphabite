@@ -53,13 +53,15 @@ class InventoryTypeScreen extends React.Component{
                 var vals = snapshot.val();
                 var updateKey = this.state.itemName.toLowerCase();
                 var updateQuantity = this.state.quantity;
+                var reminder = 'set';
 
                 if(updateKey in vals){
                     var q = vals[this.state.itemName.toLowerCase()];
-                    updateQuantity  = Number(q) + Number(this.state.quantity);
+                    updateQuantity  = Number(q.quantity) + Number(this.state.quantity);
+                    reminder = q.reminder;
                 }
 
-                var vals = {quantity: updateQuantity, reminder: "set"};
+                var vals = {quantity: updateQuantity, reminder: reminder};
                 
                 firebase
                     .database()

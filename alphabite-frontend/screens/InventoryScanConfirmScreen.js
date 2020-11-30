@@ -13,22 +13,34 @@ import {
     CheckBox, TextInput
 } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import {DataTable, IconButton} from "react-native-paper";
+import { DataTable, IconButton, Snackbar } from "react-native-paper";
+import firebase from "firebase";
 
 class InventoryScanConfirmScreen extends React.Component{
 
 
     constructor(props){
         super(props);
-        this.state = { items: this.props.navigation.state.params.list,
-            isSelected: false,
-            quantity: 0
+
+        this.state = {
+            items: [],
+            snackBarIsVisible: false
         };
     }
 
 
     componentDidMount(){
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user != null) {
+                this.setState({uid: user.uid});
+            }
+        })
+
         var items = this.props.navigation.state.params.list;
+        var obj = items.map((item) => {
+            return { key: item, quantity: 0, isSelected: false };
+        })
+        this.setState({items: obj});
 
     }
 
@@ -38,40 +50,94 @@ class InventoryScanConfirmScreen extends React.Component{
         headerTitleStyle: { color: '#00a13' },
     };
 
-    handleSelection(item){
-        console.log(item);
-        this.setState({ isSelected: !this.state.isSelected})
+    handleSelection(idx){
+        var list = this.state.items;
+        list[idx].isSelected = (list[idx].isSelected) ? false : true;
+        var newList = list;
+        this.setState({ items: newList });
     }
 
-    storeSelectedItem(){
+    handleQuantityChange(idx, quantity){
+        var list = this.state.items;
+        list[idx].quantity = quantity;
+        var newList = list;
+        this.setState({ items: newList });
+    }
 
+    storeSelectedItem = async () => {
+        this.state.items.map((item) => {
+            if(item.isSelected){
+                if(item.quantity){
+                    //snackbar
+                    this.setState({ snackBarIsVisible: true});
+                    return;
+                }
+                else{
+
+                    firebase
+                        .database()
+                        .ref('users/' + this.state.uid + '/inventory/')
+                        .once('value')
+                        .then((snapshot) => {
+                            var food = item.key.toLowerCase();
+                            var quant = item.quantity;
+                            var reminder = "set";
+
+                            var vals = snapshot.val();
+                            if(food in vals){
+                                var q = vals[food.toLowerCase()];
+                                quant  = Number(q.quantity) + Number(this.state.quantity);
+                                reminder = q.reminder;
+                            }
+
+                            var obj = { quantity: quant, reminder: reminder };
+
+                            firebase
+                                .database()
+                                .ref('users/' + this.state.uid + '/inventory/')
+                                .update({
+                                    [food]: obj
+                                })
+
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+                }
+            }
+        });
+
+        this.props.navigation.navigate('Inventory');
+    }
+
+    onDismissSnackBar(){
+        this.setState({ snackBarIsVisible: false});
     }
 
     addTableRows(){
-        return this.state.items.map((item) => {
+        return this.state.items.map((item, idx) => {
             return (
-                <DataTable.Row style={styles.dataItem}>
+                <DataTable.Row style={styles.dataItem} key={idx}>
 
-                    <DataTable.Cell><Text style={{color:'#000a13'}}>{item}</Text></DataTable.Cell>
+                    <DataTable.Cell><Text style={{color:'#000a13'}}>{item.key}</Text></DataTable.Cell>
 
                     <DataTable.Cell>
                         <View style={styles.inputView} >
                             <TextInput
 
                                 placeholder="Add Quantity"
-                                placeholderTextColor={(this.state.quantity) ? '#000a13' : 'red'}
+                                placeholderTextColor={(item.quantity) ? '#000a13' : 'red'}
                                 returnKeyType="next"
                                 textContentType="name"
-                                value={this.state.quantity}
-                                onChangeText={quantity => this.setState({ quantity: quantity })}
+                                value={item.quantity}
+                                onChangeText={(quantity) => this.handleQuantityChange(idx, quantity)}
                             />
                         </View>
                     </DataTable.Cell>
 
                     <DataTable.Cell style={{justifyContent: 'flex-end'}}>
                         <CheckBox
-                            value={this.state.isSelected}
-                            onValueChange={ () => this.handleSelection(item) }
+                            value={item.isSelected}
+                            onValueChange={ () => this.handleSelection(idx) }
                             style={styles.checkbox}
                         />
                     </DataTable.Cell>
@@ -113,13 +179,20 @@ class InventoryScanConfirmScreen extends React.Component{
 
                             <TouchableOpacity
                                 style={styles.loginBtn}
-                                onPress={() => this.props.navigate.goBack()}>
+                                onPress={() => this.props.navigation.goBack()}>
                                 <Text style={styles.loginText}>Retake</Text>
                             </TouchableOpacity>
                         </View>
 
                     </View>
                 </ScrollView>
+                <Snackbar
+                  visible={this.state.snackBarIsVisible}
+                  onDismiss={() => this.onDismissSnackBar}
+                  style={{backgroundColor: 'white', justifyContent: 'center'}}
+                >
+                  <Text style={{color: 'black', fontSize: 20}}>Please add quantity for selected items.</Text>
+                </Snackbar>
 
             </SafeAreaView>
         );
