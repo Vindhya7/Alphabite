@@ -271,7 +271,9 @@ class InventoryScreen extends React.Component{
           <TouchableHighlight style={{backgroundColor: 'red'}}><IconButton icon="delete-outline" onPress={ () => this.deleteItem(idx) }/></TouchableHighlight>
         ];
 
-        var row = <DataTable.Row style={styles.dataItem} key = {idx}>
+        var row = 
+
+          <DataTable.Row style={styles.dataItem} key = {idx}>
 
             <DataTable.Cell style={{}}><Text style={{color:'#000a13'}}>{item.key}</Text></DataTable.Cell>
 

@@ -41,7 +41,7 @@ class InventoryTypeScreen extends React.Component{
     static navigationOptions = {
         title: 'Enter the Item details',
         headerStyle: { backgroundColor: '#95db93' },
-        headerTitleStyle: { color: '#00a13' },
+        headerTitleStyle: { color: '#000a13' },
     };
 
     addItemInfo() {
@@ -54,20 +54,21 @@ class InventoryTypeScreen extends React.Component{
                 var updateKey = this.state.itemName.toLowerCase();
                 var updateQuantity = this.state.quantity;
                 var reminder = 'set';
-
-                if(updateKey in vals){
-                    var q = vals[this.state.itemName.toLowerCase()];
-                    updateQuantity  = Number(q.quantity) + Number(this.state.quantity);
-                    reminder = q.reminder;
+                if(vals){
+                    if(updateKey in vals){
+                        var q = vals[this.state.itemName.toLowerCase()];
+                        updateQuantity  = Number(q.quantity) + Number(this.state.quantity);
+                        reminder = q.reminder;
+                    }
                 }
-
-                var vals = {quantity: updateQuantity, reminder: reminder};
+                
+                var obj = {quantity: updateQuantity, reminder: reminder};
                 
                 firebase
                     .database()
                     .ref('users/' + this.state.uid + '/inventory/')
                     .update({
-                        [updateKey]: vals
+                        [updateKey]: obj
                     })
 
                 this.props.navigation.goBack();

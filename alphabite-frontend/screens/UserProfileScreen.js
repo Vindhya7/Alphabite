@@ -13,6 +13,7 @@ class UserProfileScreen extends React.Component{
 
     constructor(props){
         super(props);
+
         this.state = { user: {},
             isDialogVisible: false,
             inputText: '',
@@ -20,7 +21,7 @@ class UserProfileScreen extends React.Component{
             fields: ["Age", "Name", "Gender", "Height", "Weight"],
             editedWord: '',
             gender: '',
-            uid: ''
+            uid: '',
         };
     }
 
@@ -143,7 +144,6 @@ class UserProfileScreen extends React.Component{
                 editable = {true}
                 multiline = {false}
                 maxLength = {200}
-                keyboardType="number-pad"
                 style={{backgroundColor:"#ffffff"}}
             /> ;
         }

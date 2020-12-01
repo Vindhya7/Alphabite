@@ -102,7 +102,7 @@ class InventoryScanConfirmScreen extends React.Component{
 
 
                     foods.map((food, idx) => {
-                        if(food in vals){
+                        if(vals && food in vals){
                             var q = vals[food.toLowerCase()];
                             var quant = Number(q.quantity) + Number(quants[idx]);
                             
