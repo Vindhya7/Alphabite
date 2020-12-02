@@ -47,7 +47,7 @@ class InventoryScanConfirmScreen extends React.Component{
     static navigationOptions = {
         title: 'Confirm the Items',
         headerStyle: { backgroundColor: '#95db93' },
-        headerTitleStyle: { color: '#00a13' },
+        headerTitleStyle: { color: '#000a13' },
     };
 
     handleSelection(idx){
@@ -221,9 +221,10 @@ class InventoryScanConfirmScreen extends React.Component{
                 <Snackbar
                   visible={this.state.snackBarIsVisible}
                   onDismiss={() => this.onDismissSnackBar()}
-                  style={{width:"80%",marginBottom:85,backgroundColor: '#282828', alignSelf: 'center', opacity: 0.9}}
+                  style={{width:"80%",marginBottom:85,backgroundColor: 'white', alignSelf: 'center', opacity: 0.9}}
+                  duration={3000}
                 >
-                  <Text style={{color: 'black', fontSize: 20}}>Please add quantity for selected items.</Text>
+                  <Text style={{color: '#000a13', fontSize: 20}}>Please add quantity for selected items.</Text>
                 </Snackbar>
 
             </SafeAreaView>

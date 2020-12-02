@@ -149,7 +149,7 @@ class UserProfileScreen extends React.Component{
         }
         else if(this.state.editedWord == this.state.fields[2]){
             dialogInput = <Picker
-                selectedValue={this.state.gender}
+                selectedValue={gender}
                 onValueChange={(itemValue, itemIndex) => {this.setState({ inputText: itemValue }); this.setState({gender: itemValue})}}
             >
                 <Picker.Item label="Female" value="Female" />
