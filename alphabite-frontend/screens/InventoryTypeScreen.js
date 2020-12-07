@@ -33,11 +33,6 @@ class InventoryTypeScreen extends React.Component{
         })
     }
 
-    componentWillUnmount(){
-        console.log(this.props.navigation.state);
-        this.props.navigation.state.params.refresh();
-    }
-
     static navigationOptions = {
         title: 'Enter the Item details',
         headerStyle: { backgroundColor: '#95db93' },

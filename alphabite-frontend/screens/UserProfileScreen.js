@@ -26,7 +26,6 @@ import {
   List,
   IconButton,
 } from "react-native-paper";
-import { NavigationEvents } from "react-navigation";
 
 class UserProfileScreen extends React.Component {
   constructor(props) {
@@ -65,6 +64,13 @@ class UserProfileScreen extends React.Component {
           });
       }
     });
+  }
+
+  componentWillUnmount() {
+    // fix Warning: Can't perform a React state update on an unmounted component
+    this.setState = (state, callback) => {
+      return;
+    };
   }
 
   setDialogVisible = (bool) => {
@@ -194,7 +200,6 @@ class UserProfileScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <NavigationEvents onDidFocus={() => console.log("Works")} />
         <Portal>
           <Dialog
             visible={this.state.isDialogVisible}

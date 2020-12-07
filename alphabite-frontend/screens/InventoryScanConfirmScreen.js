@@ -141,10 +141,6 @@ class InventoryScanConfirmScreen extends React.Component{
         this.setState({ snackBarIsVisible: false});
     }
 
-    componentWillUnmount(){
-        this.props.navigation.state.params.parentProp.navigation.state.params.refresh();
-    }
-
     addTableRows(){
         return this.state.items.map((item, idx) => {
             return (

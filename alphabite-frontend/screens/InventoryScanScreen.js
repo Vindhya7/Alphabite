@@ -121,7 +121,6 @@ const InventoryScanScreen = (props) => {
         props.navigation.navigate('Confirm', { list: result, parentProp: props });
       }
       
-      
       //result is the final array to be passed
 
     }
@@ -153,10 +152,6 @@ const InventoryScanScreen = (props) => {
         const { status } = await Camera.requestPermissionsAsync();
         setHasPermission(status === 'granted');
       })();
-
-      return () => {
-        props.navigation.state.params.refresh();
-      }
 
     }, []);
   if (hasPermission === null) {

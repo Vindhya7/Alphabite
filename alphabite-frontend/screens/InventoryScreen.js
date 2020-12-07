@@ -48,10 +48,9 @@ class InventoryScreen extends React.Component {
     };
   }
 
+  //TODO fix refresh after returning from stack navigation
   refresh = () => {
-    this.setState({ fabVisible: true });
     this.componentDidMount();
-    this.render();
   };
 
   componentDidMount() {
@@ -63,7 +62,6 @@ class InventoryScreen extends React.Component {
           .ref("users/" + user.uid + "/inventory")
           .once("value")
           .then((snapshot) => {
-            console.log(snapshot.val());
             var itemKeys = Object.keys(snapshot.val()).map((item) => {
               return item;
             });
@@ -82,6 +80,22 @@ class InventoryScreen extends React.Component {
           });
       }
     });
+  }
+
+  componentWillUnmount() {
+    // fix Warning: Can't perform a React state update on an unmounted component
+    this.setState = (state, callback) => {
+      return;
+    };
+  }
+
+  handleNavigationIn() {
+    this.setState({ fabVisible: true });
+    this.refresh();
+  }
+
+  handleNavigationOut() {
+    this.setState({ fabVisible: false });
   }
 
   handleDialog = (idx) => {
@@ -290,7 +304,7 @@ class InventoryScreen extends React.Component {
       ];
 
       var row = (
-        <DataTable.Row style={styles.dataItem} key={idx}>
+        <DataTable.Row style={styles.dataItem}>
           <DataTable.Cell style={{}}>
             <Text style={{ color: "#000a13" }}>{item.key}</Text>
           </DataTable.Cell>
@@ -328,6 +342,7 @@ class InventoryScreen extends React.Component {
         <Swipeable
           rightButtons={rightButtons}
           onRef={(ref) => this.addRef(idx, ref)}
+          key={idx}
         >
           {row}
         </Swipeable>
@@ -444,9 +459,9 @@ class InventoryScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <NavigationEvents 
-          onDidFocus = { () => this.setState({ fabVisible: true })}
-          onDidBlur = { () => this.setState({ fabVisible: false })}
+        <NavigationEvents
+          onDidFocus={() => this.handleNavigationIn()}
+          onDidBlur={() => this.handleNavigationOut()}
         />
         <Portal>
           <Dialog
@@ -497,7 +512,7 @@ class InventoryScreen extends React.Component {
                 icon: "camera",
                 label: "Take Picture",
                 onPress: () => {
-                  this.setState({ fabVisible: false });
+                  // this.setState({ fabVisible: false });
                   this.props.navigation.navigate("Scan", {
                     refresh: this.refresh,
                     uid: this.state.uid,
@@ -509,7 +524,7 @@ class InventoryScreen extends React.Component {
                 icon: "pencil",
                 label: "Type",
                 onPress: () => {
-                  this.setState({ fabVisible: false });
+                  // this.setState({ fabVisible: false });
                   this.props.navigation.navigate("Type", {
                     refresh: this.refresh,
                   });
