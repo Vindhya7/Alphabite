@@ -11,7 +11,7 @@ class RecipeScreen extends React.Component{
             <SafeAreaView style = {styles.container}>
                 <AppBar navigation = {this.props.navigation} title="Recipes"/>
                 <Text>Hi, Vindhya</Text>
-                
+
             </SafeAreaView>
         );
     }
@@ -20,54 +20,37 @@ class RecipeScreen extends React.Component{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003f5c'
+    backgroundColor: "#000a13",
   },
-  headerContainer: {
-    backgroundColor: '#465881',
-    flexDirection: 'row'
+  innerContainer: {
+    flex: 1,
+    alignItems: "stretch",
   },
-  icon: {
-    marginLeft: 16,
-    marginTop: 10,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+  bottomContainer: {
+    flex: 8,
+    alignItems: "stretch",
   },
-  logo:{
-    fontWeight:"bold",
-    fontSize:50,
-    color:"#fb5b5a",
-    marginBottom:40
+  dataTable: {},
+  dataHeader: {
+    height: 70,
+    paddingTop: 20,
+    backgroundColor: "#95db93",
+    fontWeight: "bold",
   },
-  inputView:{
-    width:"80%",
-    backgroundColor:"#465881",
-    borderRadius:25,
-    height:50,
-    marginBottom:20,
-    justifyContent:"center",
-    padding:20
+  dataItem: {
+    backgroundColor: "#F7F7F7",
   },
-  inputText:{
-    height:50,
-    color:"white"
+  dataCell: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  forgot:{
-    color:"white",
-    fontSize:11
+  noSet: {
+    color: "#000a13",
   },
-  loginBtn:{
-    width:"80%",
-    backgroundColor:"#fb5b5a",
-    borderRadius:25,
-    height:50,
-    alignItems:"center",
-    justifyContent:"center",
-    marginTop:40,
-    marginBottom:10
+  set: {
+    color: "#ff0000",
+    fontWeight: "bold",
   },
-  loginText:{
-    color:"white"
-  }
 });
 
 export default RecipeScreen;
