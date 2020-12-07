@@ -6,15 +6,11 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
-  TouchableHighlight,
-  StatusBar,
   Picker,
-  FlatList,
   ScrollView,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import firebase from "firebase";
-import "react-native-gesture-handler";
 import AppBar from "../components/AppBar.js";
 import {
   Portal,

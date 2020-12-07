@@ -1,8 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Button, Image, TouchableOpacity, StatusBar } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { StyleSheet, Text, SafeAreaView } from 'react-native';
 import AppBar from '../components/AppBar.js';
-import 'react-native-gesture-handler';
 
 
 class RecipeScreen extends React.Component{

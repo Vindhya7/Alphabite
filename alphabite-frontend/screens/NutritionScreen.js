@@ -18,7 +18,6 @@ import {
 } from "react-native-paper";
 import firebase from "firebase";
 import AppBar from '../components/AppBar.js';
-import 'react-native-gesture-handler';
 import { NavigationEvents } from 'react-navigation';
 import Swipeable from "react-native-swipeable-row";
 

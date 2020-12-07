@@ -1,4 +1,3 @@
-import 'react-native-gesture-handler';
 import InventoryScreen from './InventoryScreen.js';
 import InventoryScanScreen from './InventoryScanScreen.js';
 import InventoryTypeScreen from './InventoryTypeScreen.js'

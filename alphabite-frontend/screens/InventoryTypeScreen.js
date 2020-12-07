@@ -7,7 +7,6 @@ import {
     TouchableOpacity,
     TextInput
 } from 'react-native';
-import 'react-native-gesture-handler';
 import firebase from "firebase";
 
 
