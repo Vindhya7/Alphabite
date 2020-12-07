@@ -24,6 +24,7 @@ import {
 } from "react-native-paper";
 import firebase from "firebase";
 import Swipeable from "react-native-swipeable-row";
+import { NavigationEvents } from 'react-navigation';
 
 class InventoryScreen extends React.Component {
   static navigationOptions = {
@@ -443,6 +444,10 @@ class InventoryScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
+        <NavigationEvents 
+          onDidFocus = { () => this.setState({ fabVisible: true })}
+          onDidBlur = { () => this.setState({ fabVisible: false })}
+        />
         <Portal>
           <Dialog
             visible={this.state.isDialogVisible}
