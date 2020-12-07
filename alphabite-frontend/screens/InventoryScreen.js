@@ -4,14 +4,11 @@ import {
   Text,
   View,
   SafeAreaView,
-  Image,
   TouchableOpacity,
-  StatusBar,
   ScrollView,
   Picker,
   TouchableHighlight,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
 import "react-native-gesture-handler";
 import AppBar from "../components/AppBar.js";
 import {
