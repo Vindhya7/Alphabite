@@ -12,19 +12,16 @@ import {
   FlatList,
   ScrollView,
 } from "react-native";
-import { FontAwesome5, AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import firebase from "firebase";
 import "react-native-gesture-handler";
 import AppBar from "../components/AppBar.js";
 import {
   Portal,
-  Modal,
-  Provider,
   Dialog,
   TextInput,
   Button,
   List,
-  IconButton,
 } from "react-native-paper";
 
 class UserProfileScreen extends React.Component {
@@ -197,7 +194,8 @@ class UserProfileScreen extends React.Component {
         <AntDesign name="edit" size={20} color="black" />
       </TouchableOpacity>
     );
-
+    
+    //TODO Fix Gender profile avatar
     return (
       <SafeAreaView style={styles.container}>
         <Portal>

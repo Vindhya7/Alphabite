@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
 import { Button, Dialog, Portal, Snackbar } from "react-native-paper";
-import firebase from 'firebase';
 
 const InventoryScanScreen = (props) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -16,6 +15,7 @@ const InventoryScanScreen = (props) => {
 
   const onDismissSnackBar = () => setSnackBarVisible(false);
 
+  //TODO Refactor api calls to another file 
   submitPicture = async () => {
 
     const response = await fetch(imageUri);
@@ -161,6 +161,7 @@ const InventoryScanScreen = (props) => {
     return <Text>No access to camera</Text>;
   }
 
+  //TODO Flash on/off symbol
   if(imageUri){
     return (
       <View style={{ flex: 1 }}>

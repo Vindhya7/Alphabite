@@ -48,7 +48,6 @@ class InventoryScreen extends React.Component {
     };
   }
 
-  //TODO fix refresh after returning from stack navigation
   refresh = () => {
     this.componentDidMount();
   };
@@ -292,6 +291,7 @@ class InventoryScreen extends React.Component {
     this.setState({ refs: list });
   }
 
+  //TODO Fix swipeable delete by recentering
   addTableRows() {
     return this.state.data.map((item, idx) => {
       const rightButtons = [

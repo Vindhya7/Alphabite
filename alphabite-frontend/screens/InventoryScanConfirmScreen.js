@@ -3,17 +3,12 @@ import {
     StyleSheet,
     Text,
     View,
-    FlatList,
     SafeAreaView,
-    Button,
-    Image,
     TouchableOpacity,
-    StatusBar,
     ScrollView,
     CheckBox, TextInput
 } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { DataTable, IconButton, Snackbar } from "react-native-paper";
+import { DataTable, Snackbar } from "react-native-paper";
 import firebase from "firebase";
 
 class InventoryScanConfirmScreen extends React.Component{

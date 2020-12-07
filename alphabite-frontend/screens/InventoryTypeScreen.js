@@ -4,16 +4,11 @@ import {
     Text,
     View,
     SafeAreaView,
-    Button,
-    Image,
     TouchableOpacity,
-    StatusBar,
     TextInput
 } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
 import 'react-native-gesture-handler';
 import firebase from "firebase";
-import {IconButton} from "react-native-paper";
 
 
 
