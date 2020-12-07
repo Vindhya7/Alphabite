@@ -95,7 +95,7 @@ class NutritionScreen extends React.Component{
       // console.log(item)
 
       return (
-          <DataTable.Row style={styles.dataItem}>
+          <DataTable.Row style={styles.dataItem} key={idx}>
             <DataTable.Cell style={{}}>
               <Text style={{ color: "#000a13" }}>{item.nutrient}</Text>
             </DataTable.Cell>
