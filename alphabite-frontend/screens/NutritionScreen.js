@@ -93,14 +93,14 @@ class NutritionScreen extends React.Component {
 
     if (this.state.sortDirection == "ascending") {
       arr.sort((a, b) => {
-        if (a.key < b.key) return -1;
-        if (a.key > b.key) return 1;
+        if (a.nutrient < b.nutrient) return -1;
+        if (a.nutrient > b.nutrient) return 1;
         return 0;
       });
     } else {
       arr.sort((a, b) => {
-        if (a.key < b.key) return 1;
-        if (a.key > b.key) return -1;
+        if (a.nutrient < b.nutrient) return 1;
+        if (a.nutrient > b.nutrient) return -1;
         return 0;
       });
     }

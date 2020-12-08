@@ -58,24 +58,18 @@ class InventoryScreen extends React.Component {
           .once("value")
           .then((snapshot) => {
             if (snapshot.val()) {
-              var itemKeys = Object.keys(snapshot.val()).map((item) => {
-                return item;
-              });
-              var quants = Object.keys(snapshot.val()).map((item) => {
-                return snapshot.val()[item].quantity;
-              });
+              const newData = Object.keys(snapshot.val()).reduce(
+                (arr, item) => [
+                  ...arr,
+                  {
+                    key: item,
+                    quantity: snapshot.val()[item].quantity,
+                    reminder: snapshot.val()[item].reminder,
+                  },
+                ],
+                []
+              );
 
-              var rems = Object.keys(snapshot.val()).map((item) => {
-                return snapshot.val()[item].reminder;
-              });
-
-              var newData = itemKeys.map((item, idx) => {
-                return {
-                  key: item,
-                  quantity: quants[idx],
-                  reminder: rems[idx],
-                };
-              });
               this.setState({ data: newData });
             }
           });
