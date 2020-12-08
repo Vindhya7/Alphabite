@@ -12,6 +12,7 @@ import firebase from "firebase";
 import Autocomplete from "react-native-autocomplete-input";
 import RecipeCard from "../components/RecipeCard.js";
 import calculateRecs from "../components/calculateRecs.js";
+import getRecipes from "../api/spoonacular.js";
 
 class RecipeScreen extends React.Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class RecipeScreen extends React.Component {
       uid: "",
       userNutrients: [],
       userInventory: [],
+      recipes: [],
     };
   }
 
@@ -65,10 +67,26 @@ class RecipeScreen extends React.Component {
             this.state.userNutrients
           );
 
+          const prom = Promise.resolve(this.fetchRecipes(keyWords));
 
+          prom.then((response) => {
+            response.map(({ id, image, title }) => {
+              this.setState({
+                recipes: [
+                  ...this.state.recipes,
+                  { id: id, image: image, title: title },
+                ],
+              });
+            });
+          });
         });
     });
   }
+
+  fetchRecipes = async (keyWords) => {
+    const response = await getRecipes(keyWords);
+    return response;
+  };
 
   findNutrients(searchTerm) {
     if (searchTerm === "") {
@@ -89,7 +107,6 @@ class RecipeScreen extends React.Component {
     const { searchTerm } = this.state;
     const nutrients = this.findNutrients(searchTerm);
     const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
-
     return (
       <SafeAreaView style={styles.container}>
         <AppBar navigation={this.props.navigation} title="Recipes" />
