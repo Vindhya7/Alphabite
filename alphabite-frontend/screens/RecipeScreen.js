@@ -136,11 +136,8 @@ class RecipeScreen extends React.Component {
               );
             })
           ) : (
-            <Text style={styles.loginText}></Text>
+              <RecipeCard />
           )}
-        </View>
-        <View>
-          <RecipeCard />
         </View>
       </SafeAreaView>
     );
