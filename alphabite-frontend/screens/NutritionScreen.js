@@ -80,6 +80,10 @@ class NutritionScreen extends React.Component {
     this.setState({ fabVisible: false });
   }
 
+  sortByTotal(){
+      
+  }
+
   sortByNutrient() {
     if (this.state.sortBy == 0) {
       if (this.state.sortDirection == "ascending") {
@@ -88,7 +92,7 @@ class NutritionScreen extends React.Component {
         this.setState({ sortDirection: "ascending" });
       }
     }
-
+   
     var arr = this.state.data;
 
     if (this.state.sortDirection == "ascending") {
@@ -135,7 +139,7 @@ class NutritionScreen extends React.Component {
             <Text style={{ color: "#000a13" }}>{item.nutrient}</Text>
           </DataTable.Cell>
 
-          <DataTable.Cell>
+          <DataTable.Cell style={{paddingLeft:115}}>
             <Text>{item.consumed}</Text>
           </DataTable.Cell>
 
@@ -161,37 +165,41 @@ class NutritionScreen extends React.Component {
             </TouchableOpacity>
           </DataTable.Title>
 
-          <DataTable.Title style={{ paddingRight: 25 }} numeric>
+          <DataTable.Title numeric>
             <TouchableOpacity onPress={() => this.sortByConsumption()}>
               <Text style={{ fontWeight: "bold" }}>Consumed</Text>
             </TouchableOpacity>
           </DataTable.Title>
 
-          <DataTable.Title style={{ paddingRight: 25 }} numeric>
-            <Text style={{ fontWeight: "bold" }}>Total</Text>
+          <DataTable.Title numeric>
+            <TouchableOpacity onPress={() => this.sortByTotal()}>
+              <Text style={{ fontWeight: "bold" }}>Total</Text>
+            </TouchableOpacity>
           </DataTable.Title>
         </DataTable.Header>
       );
     } else if (this.state.sortBy == 1) {
       header = (
         <DataTable.Header style={styles.dataHeader}>
-          <DataTable.Title>
+          <DataTable.Title sortDirection={this.state.sortDirection}>
             <TouchableOpacity
               onPress={() => {
-                this.sortByFood();
+                this.sortByNutrient();
               }}
             >
               <Text style={{ fontWeight: "bold" }}>Nutrient</Text>
             </TouchableOpacity>
           </DataTable.Title>
 
-          <DataTable.Title
-            style={{ paddingRight: 25 }}
-            sortDirection={this.state.sortDirection}
-            numeric
-          >
-            <TouchableOpacity onPress={() => this.sortByQuantity()}>
-              <Text style={{ fontWeight: "bold" }}>Consumed/Total</Text>
+          <DataTable.Title numeric>
+            <TouchableOpacity onPress={() => this.sortByConsumption()}>
+              <Text style={{ fontWeight: "bold" }}>Consumed</Text>
+            </TouchableOpacity>
+          </DataTable.Title>
+
+          <DataTable.Title numeric>
+            <TouchableOpacity onPress={() => this.sortByTotal()}>
+              <Text style={{ fontWeight: "bold" }}>Total</Text>
             </TouchableOpacity>
           </DataTable.Title>
         </DataTable.Header>
@@ -199,19 +207,25 @@ class NutritionScreen extends React.Component {
     } else {
       header = (
         <DataTable.Header style={styles.dataHeader}>
-          <DataTable.Title>
+          <DataTable.Title sortDirection={this.state.sortDirection}>
             <TouchableOpacity
               onPress={() => {
-                this.sortByFood();
+                this.sortByNutrient();
               }}
             >
               <Text style={{ fontWeight: "bold" }}>Nutrient</Text>
             </TouchableOpacity>
           </DataTable.Title>
 
-          <DataTable.Title style={{ paddingRight: 25 }} numeric>
-            <TouchableOpacity onPress={() => this.sortByQuantity()}>
-              <Text style={{ fontWeight: "bold" }}>Consumed/Total</Text>
+          <DataTable.Title numeric>
+            <TouchableOpacity onPress={() => this.sortByConsumption()}>
+              <Text style={{ fontWeight: "bold" }}>Consumed</Text>
+            </TouchableOpacity>
+          </DataTable.Title>
+
+          <DataTable.Title numeric>
+            <TouchableOpacity onPress={() => this.sortByTotal()}>
+              <Text style={{ fontWeight: "bold" }}>Total</Text>
             </TouchableOpacity>
           </DataTable.Title>
         </DataTable.Header>
@@ -238,6 +252,7 @@ class NutritionScreen extends React.Component {
                 {header}
 
                 {this.addTableRows()}
+
               </DataTable>
             </View>
           </View>
@@ -253,7 +268,7 @@ class NutritionScreen extends React.Component {
                 label: "Inventory",
                 onPress: () => {
                   // this.setState({ fabVisible: false });
-                  this.props.navigation.navigate("Scan", {
+                  this.props.navigation.navigate("Inventory", {
                     refresh: this.refresh,
                     uid: this.state.uid,
                     parentProp: this.props,
