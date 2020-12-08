@@ -4,18 +4,13 @@ import {
   Text,
   View,
   SafeAreaView,
-  Button,
-  Image,
   TouchableOpacity,
-  StatusBar,
   ScrollView,
-  TouchableHighlight,
 } from "react-native";
 import { DataTable, IconButton, Portal, FAB } from "react-native-paper";
 import firebase from "firebase";
 import AppBar from "../components/AppBar.js";
 import { NavigationEvents } from "react-navigation";
-import Swipeable from "react-native-swipeable-row";
 
 class NutritionScreen extends React.Component {
   static navigationOptions = {

@@ -55,7 +55,15 @@ class CreateUserProfileScreen extends React.Component {
       (obj, item) => ({ ...obj, [item.nutrient]: item.vals }),
       {}
     );
-    
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user != null) {
+        user.updateProfile({
+          displayName: this.state.displayName,
+        });
+      }
+    });
+
     firebase
       .database()
       .ref("users/" + this.state.user.uid)

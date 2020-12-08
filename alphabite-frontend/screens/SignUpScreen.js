@@ -19,7 +19,7 @@ import {Entypo, MaterialIcons} from "@expo/vector-icons";
 class SignUpScreen extends React.Component {
   state = { displayName: '', email: '', password: '', errorMessage: '', loading: false };
   onLoginSuccess() {
-    this.props.navigation.navigate('CreateProfile');
+    this.props.navigation.navigate('Loading');
   }
   onLoginFailure(errorMessage) {
     this.setState({ error: errorMessage, loading: false });
