@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
-import { Button, Dialog, Portal, Snackbar } from "react-native-paper";
+import {
+  Button,
+  Dialog,
+  Portal,
+  Snackbar,
+  ActivityIndicator,
+} from "react-native-paper";
 
 const InventoryScanScreen = (props) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -13,10 +19,14 @@ const InventoryScanScreen = (props) => {
 
   const [snackBarVisible, setSnackBarVisible] = React.useState(false);
 
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const onDismissSnackBar = () => setSnackBarVisible(false);
 
   //TODO Refactor api calls to another file 
   submitPicture = async () => {
+
+    setIsLoading(true);
 
     const response = await fetch(imageUri);
     const blob = await response.blob();
@@ -107,6 +117,8 @@ const InventoryScanScreen = (props) => {
           if(foods[0].score > 700) return item;
         }
       }))
+
+      setIsLoading(false);
       
       var result = list.filter(item => typeof(item) === 'string');
       // console.log(result);
@@ -163,24 +175,44 @@ const InventoryScanScreen = (props) => {
 
   //TODO Flash on/off symbol
   if(imageUri){
-    return (
-      <View style={{ flex: 1 }}>
-        <ImageBackground
-          style={{ width: "100%", height: "100%" }}
-          source={{ uri: imageUri }}>
-
-          <Portal>
-            <Dialog visible = "true">
-              <Dialog.Title>Confirm</Dialog.Title>
-              <Dialog.Actions>
-                <Button onPress={() => setImageUri(null)}>Retake</Button>
-                <Button onPress={submitPicture}>Confirm</Button>
-              </Dialog.Actions>
-            </Dialog>
-          </Portal>
-        </ImageBackground>
-      </View>
-    );
+    if(isLoading){
+      return (
+        <View style={{ flex: 1 }}>
+          <ImageBackground
+            style={{ width: "100%", height: "100%" }}
+            source={{ uri: imageUri }}
+          >
+            <Portal>
+              <Dialog visible="true">
+                <Dialog.Title>Loading</Dialog.Title>
+                  <ActivityIndicator animating={true} />
+              </Dialog>
+            </Portal>
+          </ImageBackground>
+        </View>
+      );
+    }
+    else{
+      return (
+        <View style={{ flex: 1 }}>
+          <ImageBackground
+            style={{ width: "100%", height: "100%" }}
+            source={{ uri: imageUri }}
+          >
+            <Portal>
+              <Dialog visible="true">
+                <Dialog.Title>Confirm</Dialog.Title>
+                <Dialog.Actions>
+                  <Button onPress={() => setImageUri(null)}>Retake</Button>
+                  <Button onPress={submitPicture}>Confirm</Button>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
+          </ImageBackground>
+        </View>
+      );
+    }
+    
   }
   else{
     return (
