@@ -20,7 +20,7 @@ import {
 } from "react-native-paper";
 import firebase from "firebase";
 import Swipeable from "react-native-swipeable-row";
-import { NavigationEvents } from 'react-navigation';
+import { NavigationEvents } from "react-navigation";
 
 class InventoryScreen extends React.Component {
   static navigationOptions = {
@@ -57,21 +57,27 @@ class InventoryScreen extends React.Component {
           .ref("users/" + user.uid + "/inventory")
           .once("value")
           .then((snapshot) => {
-            var itemKeys = Object.keys(snapshot.val()).map((item) => {
-              return item;
-            });
-            var quants = Object.keys(snapshot.val()).map((item) => {
-              return snapshot.val()[item].quantity;
-            });
+            if (snapshot.val()) {
+              var itemKeys = Object.keys(snapshot.val()).map((item) => {
+                return item;
+              });
+              var quants = Object.keys(snapshot.val()).map((item) => {
+                return snapshot.val()[item].quantity;
+              });
 
-            var rems = Object.keys(snapshot.val()).map((item) => {
-              return snapshot.val()[item].reminder;
-            });
+              var rems = Object.keys(snapshot.val()).map((item) => {
+                return snapshot.val()[item].reminder;
+              });
 
-            var newData = itemKeys.map((item, idx) => {
-              return { key: item, quantity: quants[idx], reminder: rems[idx] };
-            });
-            this.setState({ data: newData });
+              var newData = itemKeys.map((item, idx) => {
+                return {
+                  key: item,
+                  quantity: quants[idx],
+                  reminder: rems[idx],
+                };
+              });
+              this.setState({ data: newData });
+            }
           });
       }
     });
@@ -82,6 +88,14 @@ class InventoryScreen extends React.Component {
     this.setState = (state, callback) => {
       return;
     };
+  }
+
+  handleScrollStart() {
+    this.setState({ fabVisible: false });
+  }
+
+  handleScrollEnd() {
+    this.setState({ fabVisible: true });
   }
 
   handleNavigationIn() {
@@ -487,7 +501,12 @@ class InventoryScreen extends React.Component {
         </Portal>
 
         <AppBar navigation={this.props.navigation} title="Inventory" />
-        <ScrollView>
+        <ScrollView
+          onScroll={() => {
+            this.handleScrollStart();
+          }}
+          onMomentumScrollEnd={() => this.handleScrollEnd()}
+        >
           <View style={styles.innerContainer}>
             <View style={styles.bottomContainer}>
               <DataTable style={styles.dataTable}>

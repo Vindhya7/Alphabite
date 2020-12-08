@@ -64,6 +64,27 @@ class NutritionScreen extends React.Component {
     });
   }
 
+  refresh = () => {
+    this.componentDidMount();
+  };
+
+  handleScrollStart() {
+    this.setState({ fabVisible: false });
+  }
+
+  handleScrollEnd() {
+    this.setState({ fabVisible: true });
+  }
+
+  handleNavigationIn() {
+    this.setState({ fabVisible: true });
+    this.refresh();
+  }
+
+  handleNavigationOut() {
+    this.setState({ fabVisible: false });
+  }
+
   sortByNutrient() {
     if (this.state.sortBy == 0) {
       if (this.state.sortDirection == "ascending") {
@@ -204,9 +225,18 @@ class NutritionScreen extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
+        <NavigationEvents
+          onDidFocus={() => this.handleNavigationIn()}
+          onDidBlur={() => this.handleNavigationOut()}
+        />
         <AppBar navigation={this.props.navigation} title="Nutrition Log" />
 
-        <ScrollView>
+        <ScrollView
+          onScroll={() => {
+            this.handleScrollStart();
+          }}
+          onMomentumScrollEnd={() => this.handleScrollEnd()}
+        >
           <View style={styles.innerContainer}>
             <View style={styles.bottomContainer}>
               <DataTable style={styles.dataTable}>
