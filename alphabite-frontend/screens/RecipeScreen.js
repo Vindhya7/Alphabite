@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   View,
   Button,
+  ScrollView,
   TouchableOpacity,
 } from "react-native";
 import AppBar from "../components/AppBar.js";
@@ -112,6 +113,9 @@ class RecipeScreen extends React.Component {
         <AppBar navigation={this.props.navigation} title="Recipes" />
         <Autocomplete
           onChangeText={(text) => this.setState({ searchTerm: text })}
+          keyExtractor={(item, i) => (
+            item
+          )}
           renderItem={({ item, i }) => (
             <TouchableOpacity
               onPress={() => this.setState({ searchTerm: item })}
@@ -126,19 +130,24 @@ class RecipeScreen extends React.Component {
           }
         />
 
-        <View>
-          {nutrients.length > 0 ? (
-            nutrients.map((item, idx) => {
-              return (
-                <Text key={idx} style={styles.loginText}>
-                  {item}
-                </Text>
-              );
-            })
-          ) : (
-              <RecipeCard />
-          )}
-        </View>
+        <ScrollView>
+          {nutrients.length > 0
+            ? nutrients.map((item, idx) => {
+                return (
+                  <Text key={idx} style={styles.loginText}>
+                    {item}
+                  </Text>
+                );
+              })
+            : this.state.recipes.map((recipe) => {
+                return (<RecipeCard
+                  id={recipe.id}
+                  key={recipe.id}
+                  title={recipe.title}
+                  image={recipe.image}
+                />);
+              })}
+        </ScrollView>
       </SafeAreaView>
     );
   }
