@@ -1,7 +1,7 @@
-import InventoryScreen from './InventoryScreen.js';
-import InventoryScanScreen from './InventoryScanScreen.js';
-import InventoryTypeScreen from './InventoryTypeScreen.js'
-import InventoryScanConfirmScreen from './InventoryScanConfirmScreen.js'
+import InventoryScreen from '../screens/InventoryScreen.js';
+import InventoryScanScreen from '../screens/InventoryScanScreen.js';
+import InventoryTypeScreen from '../screens/InventoryTypeScreen.js'
+import InventoryScanConfirmScreen from '../screens/InventoryScanConfirmScreen.js'
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 

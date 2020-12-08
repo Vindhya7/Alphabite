@@ -1,8 +1,8 @@
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import UserProfileScreen from './UserProfileScreen.js';
-import InventoryStack from './InventoryStack.js';
-import NutritionScreen from './NutritionScreen.js';
-import RecipeScreen from './RecipeScreen.js';
+import UserProfileScreen from '../screens/UserProfileScreen.js';
+import InventoryStack from '../navigators/InventoryStack.js';
+import NutritionScreen from '../screens/NutritionScreen.js';
+import RecipeScreen from '../screens/RecipeScreen.js';
 import { createAppContainer, DrawerNavigator} from 'react-navigation';
 
 

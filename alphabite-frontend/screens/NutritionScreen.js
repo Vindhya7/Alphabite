@@ -265,7 +265,7 @@ class NutritionScreen extends React.Component {
                 label: "Recipe",
                 onPress: () => {
                   // this.setState({ fabVisible: false });
-                  this.props.navigation.navigate("Type", {
+                  this.props.navigation.navigate("Recipe", {
                     refresh: this.refresh,
                   });
                 },

@@ -4,8 +4,8 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { Provider } from 'react-native-paper';
 import firebase from '@firebase/app';
 import firebaseConfig from './config/firebase.js';
-import AuthNavigator from './screens/AuthNavigator';
-import HomeNavigator from './screens/HomeNavigator';
+import AuthNavigator from './navigators/AuthNavigator';
+import HomeNavigator from './navigators/HomeNavigator';
 
 
 
