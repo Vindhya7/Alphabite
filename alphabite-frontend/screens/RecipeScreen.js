@@ -10,6 +10,7 @@ import {
 import AppBar from "../components/AppBar.js";
 import firebase from "firebase";
 import Autocomplete from "react-native-autocomplete-input";
+import RecipeCard from "./RecipeCard.js";
 
 class RecipeScreen extends React.Component {
   constructor(props) {
@@ -118,6 +119,9 @@ class RecipeScreen extends React.Component {
           ) : (
             <Text style={styles.loginText}>Nothing found</Text>
           )}
+        </View>
+        <View>
+          <RecipeCard/>
         </View>
       </SafeAreaView>
     );
