@@ -46,7 +46,7 @@ class UserProfileScreen extends React.Component {
           .once("value")
           .then((snapshot) => {
             const user = Object.keys(snapshot.val())
-              .filter((item) => item != "inventory")
+              .filter((item) => item != "inventory" && item != "nutrition")
               .map((item, index) => {
                 return { id: index, k: item, v: snapshot.val()[item] };
               });

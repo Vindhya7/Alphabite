@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -8,21 +8,16 @@ import {
   Image,
   TouchableOpacity,
   StatusBar,
-  ScrollView, TouchableHighlight
-} from 'react-native';
-import {
-  DataTable,
-  IconButton,
-  Portal,
-  FAB,
-} from "react-native-paper";
+  ScrollView,
+  TouchableHighlight,
+} from "react-native";
+import { DataTable, IconButton, Portal, FAB } from "react-native-paper";
 import firebase from "firebase";
-import AppBar from '../components/AppBar.js';
-import { NavigationEvents } from 'react-navigation';
+import AppBar from "../components/AppBar.js";
+import { NavigationEvents } from "react-navigation";
 import Swipeable from "react-native-swipeable-row";
 
-
-class NutritionScreen extends React.Component{
+class NutritionScreen extends React.Component {
   static navigationOptions = {
     headerShown: false,
   };
@@ -30,7 +25,7 @@ class NutritionScreen extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      data: [{ nutrient: 'Vitamin A', vals: [0, 0]}, { nutrient: 'Vitamin B', vals: [0, 0]}],
+      data: [],
       sortDirection: "ascending",
       sortBy: 0,
       uid: "",
@@ -42,10 +37,35 @@ class NutritionScreen extends React.Component{
     };
   }
 
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user != null) {
+        this.setState({ uid: user.uid });
+        firebase
+          .database()
+          .ref("users/" + user.uid + "/nutrition")
+          .once("value")
+          .then((snapshot) => {
+            const newData = Object.keys(snapshot.val()).reduce(
+              (arr, item) => [
+                ...arr,
+                {
+                  nutrient: item,
+                  consumed: snapshot.val()[item][0],
+                  required: snapshot.val()[item][1],
+                },
+              ],
+              []
+            );
+
+            this.setState({ data: newData });
+          });
+      }
+    });
+  }
 
   sortByNutrient() {
     if (this.state.sortBy == 0) {
-
       if (this.state.sortDirection == "ascending") {
         this.setState({ sortDirection: "descending" });
       } else {
@@ -76,9 +96,9 @@ class NutritionScreen extends React.Component{
   sortByConsumption() {
     if (this.state.sortBy == 1) {
       if (this.state.sortDirection == "ascending") {
-        this.setState({sortDirection: "descending"});
+        this.setState({ sortDirection: "descending" });
       } else {
-        this.setState({sortDirection: "ascending"});
+        this.setState({ sortDirection: "ascending" });
       }
     }
   }
@@ -94,161 +114,153 @@ class NutritionScreen extends React.Component{
       // console.log(item)
 
       return (
-          <DataTable.Row style={styles.dataItem} key={idx}>
-            <DataTable.Cell style={{}}>
-              <Text style={{ color: "#000a13" }}>{item.nutrient}</Text>
-            </DataTable.Cell>
+        <DataTable.Row style={styles.dataItem} key={idx}>
+          <DataTable.Cell style={{}}>
+            <Text style={{ color: "#000a13" }}>{item.nutrient}</Text>
+          </DataTable.Cell>
 
+          <DataTable.Cell>
+            <Text>{item.consumed}</Text>
+          </DataTable.Cell>
 
-            <DataTable.Cell >
-                <Text>{item.vals[0]}</Text>
-            </DataTable.Cell>
-
-            <DataTable.Cell style={{ justifyContent: "flex-end" }}>
-              <Text>{item.vals[1]}</Text>
-            </DataTable.Cell>
-
-          </DataTable.Row>
+          <DataTable.Cell style={{ justifyContent: "flex-end" }}>
+            <Text>{item.required}</Text>
+          </DataTable.Cell>
+        </DataTable.Row>
       );
     });
   }
-    render(){
+  render() {
+    var header;
+    if (this.state.sortBy == 0) {
+      header = (
+        <DataTable.Header style={styles.dataHeader}>
+          <DataTable.Title sortDirection={this.state.sortDirection}>
+            <TouchableOpacity
+              onPress={() => {
+                this.sortByNutrient();
+              }}
+            >
+              <Text style={{ fontWeight: "bold" }}>Nutrient</Text>
+            </TouchableOpacity>
+          </DataTable.Title>
 
-      var header;
-      if (this.state.sortBy == 0) {
-        header = (
-            <DataTable.Header style={styles.dataHeader}>
-              <DataTable.Title sortDirection={this.state.sortDirection}>
-                <TouchableOpacity
-                    onPress={() => {
-                      this.sortByNutrient();
-                    }}
-                >
-                  <Text style={{ fontWeight: "bold" }}>Nutrient</Text>
-                </TouchableOpacity>
-              </DataTable.Title>
+          <DataTable.Title style={{ paddingRight: 25 }} numeric>
+            <TouchableOpacity onPress={() => this.sortByConsumption()}>
+              <Text style={{ fontWeight: "bold" }}>Consumed</Text>
+            </TouchableOpacity>
+          </DataTable.Title>
 
-              <DataTable.Title style={{ paddingRight: 25 }} numeric>
-                <TouchableOpacity
-                    onPress={() => this.sortByConsumption()}>
-                  <Text style={{ fontWeight: "bold" }}>Consumed</Text>
-                </TouchableOpacity>
-              </DataTable.Title>
+          <DataTable.Title style={{ paddingRight: 25 }} numeric>
+            <Text style={{ fontWeight: "bold" }}>Total</Text>
+          </DataTable.Title>
+        </DataTable.Header>
+      );
+    } else if (this.state.sortBy == 1) {
+      header = (
+        <DataTable.Header style={styles.dataHeader}>
+          <DataTable.Title>
+            <TouchableOpacity
+              onPress={() => {
+                this.sortByFood();
+              }}
+            >
+              <Text style={{ fontWeight: "bold" }}>Nutrient</Text>
+            </TouchableOpacity>
+          </DataTable.Title>
 
+          <DataTable.Title
+            style={{ paddingRight: 25 }}
+            sortDirection={this.state.sortDirection}
+            numeric
+          >
+            <TouchableOpacity onPress={() => this.sortByQuantity()}>
+              <Text style={{ fontWeight: "bold" }}>Consumed/Total</Text>
+            </TouchableOpacity>
+          </DataTable.Title>
+        </DataTable.Header>
+      );
+    } else {
+      header = (
+        <DataTable.Header style={styles.dataHeader}>
+          <DataTable.Title>
+            <TouchableOpacity
+              onPress={() => {
+                this.sortByFood();
+              }}
+            >
+              <Text style={{ fontWeight: "bold" }}>Nutrient</Text>
+            </TouchableOpacity>
+          </DataTable.Title>
 
-              <DataTable.Title style={{ paddingRight: 25 }} numeric>
-                  <Text style={{ fontWeight: "bold" }}>Total</Text>
-              </DataTable.Title>
-
-            </DataTable.Header>
-        );
-      } else if (this.state.sortBy == 1) {
-        header = (
-            <DataTable.Header style={styles.dataHeader}>
-              <DataTable.Title>
-                <TouchableOpacity
-                    onPress={() => {
-                      this.sortByFood();
-                    }}
-                >
-                  <Text style={{ fontWeight: "bold" }}>Nutrient</Text>
-                </TouchableOpacity>
-              </DataTable.Title>
-
-              <DataTable.Title
-                  style={{ paddingRight: 25 }}
-                  sortDirection={this.state.sortDirection}
-                  numeric
-              >
-                <TouchableOpacity onPress={() => this.sortByQuantity()}>
-                  <Text style={{ fontWeight: "bold" }}>Consumed/Total</Text>
-                </TouchableOpacity>
-              </DataTable.Title>
-
-            </DataTable.Header>
-        );
-      } else {
-        header = (
-            <DataTable.Header style={styles.dataHeader}>
-              <DataTable.Title>
-                <TouchableOpacity
-                    onPress={() => {
-                      this.sortByFood();
-                    }}
-                >
-                  <Text style={{ fontWeight: "bold" }}>Nutrient</Text>
-                </TouchableOpacity>
-              </DataTable.Title>
-
-              <DataTable.Title style={{ paddingRight: 25 }} numeric>
-                <TouchableOpacity onPress={() => this.sortByQuantity()}>
-                  <Text style={{ fontWeight: "bold" }}>Consumed/Total</Text>
-                </TouchableOpacity>
-              </DataTable.Title>
-
-            </DataTable.Header>
-        );
-      }
-
-      return(
-            <SafeAreaView style = {styles.container}>
-                <AppBar navigation = {this.props.navigation} title = "Nutrition Log"/>
-
-              <ScrollView>
-                <View style={styles.innerContainer}>
-                  <View style={styles.bottomContainer}>
-                    <DataTable style={styles.dataTable}>
-                      {header}
-
-                      {this.addTableRows()}
-                    </DataTable>
-                  </View>
-                </View>
-              </ScrollView>
-              <Portal>
-                <FAB.Group
-                    open={this.state.fabOpen}
-                    icon={this.state.fabOpen ? "close" : "plus"}
-                    visible={this.state.fabVisible}
-                    actions={[
-                      {
-                        icon: "plus",
-                        label: "Inventory",
-                        onPress: () => {
-                          // this.setState({ fabVisible: false });
-                          this.props.navigation.navigate("Scan", {
-                            refresh: this.refresh,
-                            uid: this.state.uid,
-                            parentProp: this.props,
-                          });
-                        },
-                      },
-                      {
-                        icon: "plus",
-                        label: "Recipe",
-                        onPress: () => {
-                          // this.setState({ fabVisible: false });
-                          this.props.navigation.navigate("Type", {
-                            refresh: this.refresh,
-                          });
-                        },
-                      },
-                    ]}
-                    onStateChange={() =>
-                        this.setState({ fabOpen: !this.state.fabOpen })
-                    }
-                    onPress={() => {
-                      if (this.state.fabOpen) {
-                        this.setState({ fabOpen: false });
-                      } else {
-                        this.setState({ fabOpen: true });
-                      }
-                    }}
-                />
-              </Portal>
-            </SafeAreaView>
-        );
+          <DataTable.Title style={{ paddingRight: 25 }} numeric>
+            <TouchableOpacity onPress={() => this.sortByQuantity()}>
+              <Text style={{ fontWeight: "bold" }}>Consumed/Total</Text>
+            </TouchableOpacity>
+          </DataTable.Title>
+        </DataTable.Header>
+      );
     }
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <AppBar navigation={this.props.navigation} title="Nutrition Log" />
+
+        <ScrollView>
+          <View style={styles.innerContainer}>
+            <View style={styles.bottomContainer}>
+              <DataTable style={styles.dataTable}>
+                {header}
+
+                {this.addTableRows()}
+              </DataTable>
+            </View>
+          </View>
+        </ScrollView>
+        <Portal>
+          <FAB.Group
+            open={this.state.fabOpen}
+            icon={this.state.fabOpen ? "close" : "plus"}
+            visible={this.state.fabVisible}
+            actions={[
+              {
+                icon: "plus",
+                label: "Inventory",
+                onPress: () => {
+                  // this.setState({ fabVisible: false });
+                  this.props.navigation.navigate("Scan", {
+                    refresh: this.refresh,
+                    uid: this.state.uid,
+                    parentProp: this.props,
+                  });
+                },
+              },
+              {
+                icon: "plus",
+                label: "Recipe",
+                onPress: () => {
+                  // this.setState({ fabVisible: false });
+                  this.props.navigation.navigate("Type", {
+                    refresh: this.refresh,
+                  });
+                },
+              },
+            ]}
+            onStateChange={() =>
+              this.setState({ fabOpen: !this.state.fabOpen })
+            }
+            onPress={() => {
+              if (this.state.fabOpen) {
+                this.setState({ fabOpen: false });
+              } else {
+                this.setState({ fabOpen: true });
+              }
+            }}
+          />
+        </Portal>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
