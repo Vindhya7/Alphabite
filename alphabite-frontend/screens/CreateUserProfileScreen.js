@@ -9,6 +9,7 @@ import {
   Picker,
 } from "react-native";
 import firebase from "firebase";
+import createNutritionProfile from "../components/createNutritionProfile";
 
 class CreateUserProfileScreen extends React.Component {
   state = {
@@ -20,7 +21,7 @@ class CreateUserProfileScreen extends React.Component {
     gender: "Female",
     errorMessage: "",
     loading: false,
-    nutrtion: {},
+    nutrition: {},
   };
 
   componentDidMount() {
@@ -42,6 +43,19 @@ class CreateUserProfileScreen extends React.Component {
   }
 
   addUserInfo() {
+    const { height, weight, age, gender } = this.state;
+    const nutritionProfile = createNutritionProfile(
+      height,
+      weight,
+      age,
+      gender
+    );
+
+    const nutrition = nutritionProfile.reduce(
+      (obj, item) => ({ ...obj, [item.nutrient]: item.vals }),
+      {}
+    );
+    
     firebase
       .database()
       .ref("users/" + this.state.user.uid)
@@ -52,6 +66,7 @@ class CreateUserProfileScreen extends React.Component {
         age: this.state.age,
         gender: this.state.gender,
         inventory: {},
+        nutrition: nutrition,
       })
       .then((data) => {
         this.props.navigation.navigate("App");
