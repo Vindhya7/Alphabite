@@ -11,6 +11,7 @@ import AppBar from "../components/AppBar.js";
 import firebase from "firebase";
 import Autocomplete from "react-native-autocomplete-input";
 import RecipeCard from "./RecipeCard.js";
+import calculateRecs from "../components/calculateRecs.js";
 
 class RecipeScreen extends React.Component {
   constructor(props) {
@@ -28,42 +29,41 @@ class RecipeScreen extends React.Component {
       this.setState({ uid: user.uid });
       firebase
         .database()
-        .ref("users/" + user.uid + "/nutrition")
+        .ref("users/" + user.uid)
         .once("value")
         .then((snapshot) => {
-          const nutrients = Object.keys(snapshot.val()).reduce(
+          const nutrients = Object.keys(snapshot.val()["nutrition"]).reduce(
             (arr, item) => [
               ...arr,
               {
                 nutrient: item,
-                consumed: snapshot.val()[item][0],
-                required: snapshot.val()[item][1],
+                consumed: snapshot.val()["nutrition"][item][0],
+                required: snapshot.val()["nutrition"][item][1],
               },
             ],
             []
           );
 
-          this.setState({ userNutrients: nutrients });
-        });
-
-      firebase
-        .database()
-        .ref("users/" + user.uid + "/inventory")
-        .once("value")
-        .then((snapshot) => {
-          const newData = Object.keys(snapshot.val()).reduce(
+          const inventory = Object.keys(snapshot.val()["inventory"]).reduce(
             (arr, item) => [
               ...arr,
               {
                 key: item,
-                quantity: snapshot.val()[item].quantity,
-                reminder: snapshot.val()[item].reminder,
+                quantity: snapshot.val()["inventory"][item].quantity,
+                reminder: snapshot.val()["inventory"][item].reminder,
               },
             ],
             []
           );
 
-          this.setState({ userInventory: newData });
+          this.setState({ userInventory: inventory });
+
+          this.setState({ userNutrients: nutrients });
+
+          const keyWords = calculateRecs(
+            this.state.userInventory,
+            this.state.userNutrients
+          );
         });
     });
   }
@@ -117,11 +117,11 @@ class RecipeScreen extends React.Component {
               );
             })
           ) : (
-            <Text style={styles.loginText}>Nothing found</Text>
+            <Text style={styles.loginText}></Text>
           )}
         </View>
         <View>
-          <RecipeCard/>
+          <RecipeCard />
         </View>
       </SafeAreaView>
     );
