@@ -10,7 +10,7 @@ import {
 import AppBar from "../components/AppBar.js";
 import firebase from "firebase";
 import Autocomplete from "react-native-autocomplete-input";
-import RecipeCard from "./RecipeCard.js";
+import RecipeCard from "../components/RecipeCard.js";
 import calculateRecs from "../components/calculateRecs.js";
 
 class RecipeScreen extends React.Component {
@@ -64,6 +64,8 @@ class RecipeScreen extends React.Component {
             this.state.userInventory,
             this.state.userNutrients
           );
+
+
         });
     });
   }
