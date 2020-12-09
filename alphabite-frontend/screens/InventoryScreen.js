@@ -21,6 +21,15 @@ import {
 import firebase from "firebase";
 import Swipeable from "react-native-swipeable-row";
 import { NavigationEvents } from "react-navigation";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 class InventoryScreen extends React.Component {
   static navigationOptions = {
@@ -66,6 +75,7 @@ class InventoryScreen extends React.Component {
                     key: item,
                     quantity: snapshot.val()[item].quantity,
                     reminder: snapshot.val()[item].reminder,
+                    remID: null,
                   },
                 ],
                 []
@@ -111,10 +121,16 @@ class InventoryScreen extends React.Component {
     this.setState({ isDialogVisible: bool });
   };
 
-  setReminder = (idx) => {
+  setReminder = async (idx) => {
     var rem = this.state.duration;
     var obj = this.state.data[idx];
+
+    if(obj.remID){
+      await Notifications.cancelScheduledNotificationAsync(obj.remID);
+    }
+
     obj.reminder = rem;
+    
     firebase
       .database()
       .ref("users/" + this.state.uid + "/inventory/" + obj.key)
@@ -125,7 +141,39 @@ class InventoryScreen extends React.Component {
     newData[idx] = obj;
 
     this.setState({ data: newData });
+
+    var remTimes = {
+      "1week": 60 * 60 * 24 * 7 * 1000,
+      "2weeks": 2 * 60 * 60 * 24 * 7 * 1000,
+      "1month": 60 * 60 * 24 * 30 * 1000,
+      "2months": 2 * 60 * 60 * 24 * 30 * 1000,
+      "6months": 6 * 60 * 60 * 24 * 30 * 1000,
+      "12months": 12 * 60 * 60 * 24 * 30 * 1000,
+    };
+
+    await this.schedulePushNotification(remTimes[rem], idx);
   };
+
+  schedulePushNotification = async (val, idx) => {
+    const t = new Date(Date.now() + val);
+    t.setMinutes(0);
+    t.setSeconds(0);
+    const id = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Eat",
+        body: "Something in your inventory is expiring!",
+      },
+      trigger: { seconds: 60 },
+    });
+    
+    var obj = this.state.data[idx];
+    obj.remID = id;
+    var newData = this.state.data;
+    newData[idx] = obj;
+
+    this.setState({ data: newData });
+
+  }
 
   addOne = (idx) => {
     var obj = this.state.data[idx];
