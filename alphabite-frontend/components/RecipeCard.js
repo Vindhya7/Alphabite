@@ -8,10 +8,28 @@ import {
   Paragraph,
   TouchableRipple,
 } from "react-native-paper";
+import * as Font from 'expo-font';
+
+let customFonts = {
+  'Montserrat': require('../assets/fonts/Montserrat-Regular.ttf'),
+  'Montserrat-bold': require('../assets/fonts/Montserrat-SemiBold.ttf')
+};
 
 class RecipeCard extends React.Component {
   constructor(props) {
     super(props);
+    this.state={
+      fontsLoaded: false,
+    };
+  }
+
+  async _loadFontsAsync() {
+    await Font.loadAsync(customFonts);
+    this.setState({ fontsLoaded: true });
+  }
+
+  componentDidMount(){
+    this._loadFontsAsync();
   }
 
   handleClick(){
@@ -30,7 +48,7 @@ class RecipeCard extends React.Component {
             source={{ uri: this.props.image }}
           />
           <Card.Content>
-            <Title style={{ fontSize: 15, color: "#000a13" }}>
+            <Title style={{ fontSize: 15, color: "#000a13", fontFamily: 'Montserrat-bold' }}>
               {this.props.title}
             </Title>
           </Card.Content>

@@ -9,12 +9,20 @@ import {
   Picker,
   ImageBackground,
   TouchableHighlight,
+  Linking,
 } from "react-native";
+import * as Font from 'expo-font';
 import AppBar from "../components/AppBar.js";
 import { IconButton, Portal, FAB, Dialog, Button } from "react-native-paper";
 import firebase from "firebase";
 import { NavigationEvents } from "react-navigation";
 import getRecipeByID from "../api/spGetRecipeByID";
+import { LinearGradient } from 'expo-linear-gradient';
+
+let customFonts = {
+  'Montserrat': require('../assets/fonts/Montserrat-Regular.ttf'),
+  'Montserrat-bold': require('../assets/fonts/Montserrat-SemiBold.ttf')
+};
 
 class RecipeScreen extends React.Component {
   static navigationOptions = {
@@ -27,10 +35,19 @@ class RecipeScreen extends React.Component {
     super(props);
     this.state = {
       recipe: {},
+      dish: ["lunch","dinner","main course"],
+      nutrients: [{"Calories":180},{"Carbon":54},{"Fat":101}],
+      fontsLoaded: false,
     };
   }
 
+  async _loadFontsAsync() {
+    await Font.loadAsync(customFonts);
+    this.setState({ fontsLoaded: true });
+  }
+
   componentDidMount() {
+    this._loadFontsAsync();
     // const prom = Promise.resolve(
     //   this.fetchRecipe(this.props.navigation.state.params.id)
     // );
@@ -368,13 +385,35 @@ class RecipeScreen extends React.Component {
       },
     };
 
-    this.setState({ recipe: recipe });
+    this.setState({ recipe: recipe});
   }
 
   fetchRecipe = async (id) => {
     const response = await getRecipeByID(id);
     return response;
   };
+
+  addDishtypes(){
+    return this.state.dish.map(element => {
+      return (
+        <View style={{backgroundColor:'rgba(0,0,0,0.5)', margin:5, padding:5, borderRadius: 4}}>
+          <Text style={{color:'white',fontFamily: 'Montserrat'}}>{element}</Text>
+        </View>
+      );
+    });
+  }
+  addNutrients(){
+    return this.state.nutrients.map(item => {
+      return (
+        <View style={{backgroundColor:'rgba(0,0,0,0.5)', width:80,height:70, margin:5, padding:5, borderRadius: 4}}>
+          <Text style={{color:'white', margin:3,textAlign:'center',fontFamily: 'Montserrat'}}>{Object.keys(item)[0]}</Text>
+          <Text style={{color:'white',margin:3, textAlign:'center',fontFamily: 'Montserrat'}}>{Object.values(item)[0]}</Text>
+        </View>
+      );
+    });
+  }
+
+  
 
   render() {
     let icontag;
@@ -391,16 +430,34 @@ class RecipeScreen extends React.Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ImageBackground source={{ uri: this.state.recipe.image }} style={styles.image}>
-        <View>
+        <LinearGradient
+          colors={['transparent','rgba(0,0,0,0.8)','rgba(0,0,0,0.8)']}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            height: "100%",
+          }}>
+
           <View style={styles.detailsContainer}>
-            <Text style={styles.contentTitle}>{this.state.recipe.title}</Text>
-            {icontag}
-            <Text style={styles.details}>Link: {this.state.recipe.sourceUrl}</Text>
-            <Text style={styles.details}>Servings: {this.state.recipe.servings}</Text>
-            <Text style={styles.details}>Cooking Time: {this.state.recipe.readyInMinutes}</Text>
-            <Text style={styles.details}>Health Score: {this.state.recipe.healthScore}</Text>
+            <Text style={styles.contentTitle}
+                  onPress={() => {
+                    Linking.openURL(this.state.recipe.sourceUrl);
+                  }}
+            >{this.state.recipe.title}</Text>
+            <View style={{flexDirection:'row', justifyContent:'center'}}>{this.addDishtypes()}</View> 
+            <View style={{flexDirection:'row', justifyContent:'center'}}>
+              <Text style={styles.details}>Servings: {this.state.recipe.servings}</Text>
+              <Text style={styles.details}>Cooking Time: {this.state.recipe.readyInMinutes}</Text>
+            </View>
+            <View style={{flexDirection:'row', justifyContent:'center'}}>
+              {/* <Text style={styles.details}>Health Score: {this.state.recipe.healthScore}</Text> */}
+              {this.addNutrients()}
+            </View>
+            <IconButton size={40} color='white' style={{backgroundColor:'rgba(0,0,0,0.6)',alignSelf:'flex-end',margin:30}} icon="plus"></IconButton>
           </View>
-        </View>
+        </LinearGradient>
         </ImageBackground>
       </SafeAreaView>
     );
@@ -419,9 +476,9 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   detailsContainer:{
-    backgroundColor:'rgba(240, 240, 240, 0.4)',
-    height:"60%",
-    marginTop:50,
+    backgroundColor:'rgba(240, 240, 240, 0.3)',
+    height:"52%",
+    marginTop:250,
     marginLeft:20,
     marginRight:20,
     borderRadius:  25,
@@ -429,14 +486,17 @@ const styles = StyleSheet.create({
   contentTitle: {
     margin: 20,
     color:'white',
-    fontWeight:'bold',
     fontSize:20,
+    textDecorationLine: 'underline',
+    textAlign: 'center',
+    fontFamily: 'Montserrat-bold'
+
   },
   details:{
-    margin:20,
-    fontSize: 18,
-    color: 'white'
-
+    margin:15,
+    fontSize: 16,
+    color: 'white',
+    fontFamily: 'Montserrat'
   }
 });
 
