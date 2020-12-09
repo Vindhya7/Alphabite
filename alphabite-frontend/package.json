@@ -10,6 +10,8 @@
   "dependencies": {
     "@google-cloud/vision": "^2.1.2",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-firebase/app": "^10.1.0",
+    "@react-native-firebase/functions": "^10.1.1",
     "@react-navigation/drawer": "^5.11.4",
     "@react-navigation/stack": "^5.12.8",
     "expo": "~39.0.2",

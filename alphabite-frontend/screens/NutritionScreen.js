@@ -36,6 +36,10 @@ class NutritionScreen extends React.Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
         this.setState({ uid: user.uid });
+
+        console.log(firebase.database.ServerValue.TIMESTAMP)
+          
+
         firebase
           .database()
           .ref("users/" + user.uid + "/nutrition")

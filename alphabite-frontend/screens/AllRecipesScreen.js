@@ -16,6 +16,8 @@ import calculateRecs from "../api/calculateRecs.js";
 import getRecipes from "../api/spGetRecipes.js";
 import { IconButton } from "react-native-paper";
 import { FlatGrid } from "react-native-super-grid";
+import debounce from '../api/debounce';
+import getRecipeSuggestions from '../api/spGetRecipeSuggestions';
 
 class AllRecipesScreen extends React.Component {
   static navigationOptions = {
@@ -30,7 +32,9 @@ class AllRecipesScreen extends React.Component {
       userNutrients: [],
       userInventory: [],
       recipes: [],
+      searchResults: [],
     };
+    this.getRecipeSearchResults = debounce(this.getRecipeSearchResults, 500);
   }
 
   componentDidMount() {
@@ -95,24 +99,26 @@ class AllRecipesScreen extends React.Component {
     return response;
   };
 
-  findNutrients(searchTerm) {
+  getRecipeSearchResults(searchTerm) {
     if (searchTerm === "") {
       return [];
     }
 
-    const { userNutrients } = this.state;
-    const keys = userNutrients.map((obj) => {
-      return obj.nutrient;
-    });
-    const regex = new RegExp(`${searchTerm.trim()}`, "i");
-    return keys.filter((key) => key.search(regex) >= 0);
+    //TODO get recipe suggestions from spoonacular
+    const prom = Promise.resolve(getRecipeSuggestions(searchTerm));
+
+    prom.then(({results}) => {
+      const regex = new RegExp(`${searchTerm.trim()}`, "i");
+      return results.filter((item) => item.title.search(regex) >= 0);
+    })
+
   }
 
   filter() {}
 
   render() {
     const { searchTerm } = this.state;
-    const nutrients = this.findNutrients(searchTerm);
+    const recipeSearchResults = this.getRecipeSearchResults(searchTerm);
     const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
     return (
       <SafeAreaView style={styles.container}>
@@ -131,28 +137,29 @@ class AllRecipesScreen extends React.Component {
             style={{ backgroundColor: "#95db93" }}
             inputContainerStyle={styles.inputContainer}
             onChangeText={(text) => this.setState({ searchTerm: text })}
-            keyExtractor={(item, i) => item}
+            keyExtractor={(item, i) => item.title}
             renderItem={({ item, i }) => (
               <TouchableOpacity
-                onPress={() => this.setState({ searchTerm: item })}
+                onPress={() => this.setState({ searchTerm: item.title })}
               >
-                <Text>{item}</Text>
+                <Text>{item.title}</Text>
               </TouchableOpacity>
             )}
             data={
-              nutrients.length === 1 && comp(searchTerm, nutrients[0])
+              recipeSearchResults && recipeSearchResults.length === 1 &&
+              comp(searchTerm, recipeSearchResults[0])
                 ? []
-                : nutrients
+                : recipeSearchResults
             }
           />
         </View>
 
         <ScrollView>
-          {nutrients.length > 0 ? (
-            nutrients.map((item, idx) => {
+          {recipeSearchResults && recipeSearchResults.length > 0 ? (
+            recipeSearchResults.map((item, idx) => {
               return (
                 <Text key={idx} style={styles.loginText}>
-                  {item}
+                  {item.title}
                 </Text>
               );
             })
