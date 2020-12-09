@@ -155,15 +155,15 @@ class InventoryScreen extends React.Component {
   };
 
   schedulePushNotification = async (val, idx) => {
-    const t = new Date(Date.now() + val);
-    t.setMinutes(0);
-    t.setSeconds(0);
+    const trigger = new Date(Date.now() + val);
+    trigger.setMinutes(0);
+    trigger.setSeconds(0);
     const id = await Notifications.scheduleNotificationAsync({
       content: {
         title: "Eat",
         body: "Something in your inventory is expiring!",
       },
-      trigger: { seconds: 60 },
+      trigger,
     });
     
     var obj = this.state.data[idx];
