@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Picker,
+  ImageBackground,
   TouchableHighlight,
 } from "react-native";
 import AppBar from "../components/AppBar.js";
@@ -34,7 +35,7 @@ class RecipeScreen extends React.Component {
       this.fetchRecipe(this.props.navigation.state.params.id)
     );
     prom.then((recipe) => {
-        console.log(recipe.nutrition);
+        console.log(recipe);
       this.setState({ recipe: recipe });
     });
   }
@@ -47,7 +48,12 @@ class RecipeScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <Text>{this.state.recipe.title}</Text>
+        <ImageBackground source={{ uri: this.state.recipe.image }} style={styles.image}>
+        <View style={styles.detailsContainer}>
+          <Text style={styles.contentTitle}>{this.state.recipe.title}</Text>
+        </View>
+        </ImageBackground>
+        
       </SafeAreaView>
     );
   }
@@ -59,6 +65,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center"
+  },
+  detailsContainer:{
+    backgroundColor:'rgba(240, 240, 240, 0.7)',
+    height:"70%",
+    marginTop:250,
+    marginLeft:20,
+    marginRight:20,
+    borderRadius:  25,
+  },
+  contentTitle: {
+    margin: 20,
+    color:'#000a13',
+    fontWeight:'bold',
+    fontSize:20,
+
+  }
 });
 
 export default RecipeScreen;
