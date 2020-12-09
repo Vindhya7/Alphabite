@@ -12,7 +12,7 @@ import AppBar from "../components/AppBar.js";
 import firebase from "firebase";
 import Autocomplete from "react-native-autocomplete-input";
 import RecipeCard from "../components/RecipeCard.js";
-import calculateRecs from "../components/calculateRecs.js";
+import calculateRecs from "../api/calculateRecs.js";
 import getRecipes from "../api/spoonacular.js";
 import { IconButton } from "react-native-paper";
 

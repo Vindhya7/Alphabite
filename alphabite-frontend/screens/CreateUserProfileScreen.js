@@ -9,7 +9,7 @@ import {
   Picker,
 } from "react-native";
 import firebase from "firebase";
-import createNutritionProfile from "../components/createNutritionProfile";
+import createNutritionProfile from "../api/createNutritionProfile";
 
 class CreateUserProfileScreen extends React.Component {
   state = {
