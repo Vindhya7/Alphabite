@@ -30,8 +30,9 @@ class RecipeCard extends React.Component {
 const styles = StyleSheet.create({
   card: {
     width:200,
-    height:200,
+    height:130,
     margin:50
+    
   }
 });
 

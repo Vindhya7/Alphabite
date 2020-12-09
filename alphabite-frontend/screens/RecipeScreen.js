@@ -17,7 +17,7 @@ import getRecipes from "../api/spoonacular.js";
 import { IconButton } from "react-native-paper";
 
 class RecipeScreen extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -144,7 +144,7 @@ class RecipeScreen extends React.Component {
                 
             
               <ScrollView>
-                <View styles={{width:10}}>
+                <View style={{}}>
                   {nutrients.length > 0
                     ? nutrients.map((item, idx) => {
                         return (
