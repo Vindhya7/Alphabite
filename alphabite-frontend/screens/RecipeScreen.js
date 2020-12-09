@@ -17,6 +17,7 @@ import getRecipes from "../api/spoonacular.js";
 import { IconButton } from "react-native-paper";
 
 class RecipeScreen extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
