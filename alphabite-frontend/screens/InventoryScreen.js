@@ -40,8 +40,9 @@ class InventoryScreen extends React.Component {
       duration: "set",
       setEditedItem: 0,
       durationColor: true,
-      refs: [],
     };
+
+    refs = {};
   }
 
   refresh = () => {
@@ -173,17 +174,12 @@ class InventoryScreen extends React.Component {
   };
 
   deleteItem(idx) {
+    refs[idx].current.recenter();
+    delete refs[idx];
     var obj = this.state.data[idx];
-    var ref = this.state.refs[idx];
-
-    ref.recenter();
-
     obj.quantity = 1;
     var newData = this.state.data;
     newData[idx] = obj;
-
-    var newRefs = this.state.refs.splice(idx);
-    this.setState({ refs: newRefs });
     this.setState({ data: newData });
     this.minusOne(idx);
   }
@@ -289,13 +285,6 @@ class InventoryScreen extends React.Component {
     this.setState({ sortBy: 2 });
   }
 
-  addRef(idx, ref) {
-    var list = this.state.refs;
-    list[idx] = ref;
-    this.setState({ refs: list });
-  }
-
-  //TODO Fix swipeable delete by recentering
   addTableRows() {
     return this.state.data.map((item, idx) => {
       const rightButtons = [
@@ -306,6 +295,11 @@ class InventoryScreen extends React.Component {
           />
         </TouchableHighlight>,
       ];
+
+      if (!refs[idx]) {
+        console.log(idx);
+        refs[idx] = React.createRef();
+      }
 
       var row = (
         <DataTable.Row style={styles.dataItem}>
@@ -343,11 +337,7 @@ class InventoryScreen extends React.Component {
       );
 
       return (
-        <Swipeable
-          rightButtons={rightButtons}
-          onRef={(ref) => this.addRef(idx, ref)}
-          key={idx}
-        >
+        <Swipeable rightButtons={rightButtons} ref={refs[idx]} key={idx}>
           {row}
         </Swipeable>
       );
