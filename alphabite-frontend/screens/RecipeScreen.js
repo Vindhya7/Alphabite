@@ -146,7 +146,6 @@ class RecipeScreen extends React.Component {
         </View>
 
         <ScrollView>
-          <View style={{}}>
             {nutrients.length > 0 ? (
               nutrients.map((item, idx) => {
                 return (
@@ -173,7 +172,6 @@ class RecipeScreen extends React.Component {
                 )}
               />
             )}
-          </View>
         </ScrollView>
       </SafeAreaView>
     );

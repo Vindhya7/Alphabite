@@ -18,10 +18,10 @@ class RecipeCard extends React.Component {
     return (
       <Card style ={styles.card} onPress={() => console.log("clicked")}>
         <TouchableOpacity>
+        <Card.Cover style={{borderRadius:10}} source={{ uri: this.props.image }} />
           <Card.Content>
-            <Title style={{fontSize:15}}>{this.props.title}</Title>
+            <Title style={{fontSize:15,color:'#000a13'}}>{this.props.title}</Title>
           </Card.Content>
-          <Card.Cover style={{width:200, height: 105}} source={{ uri: this.props.image }} />
         </TouchableOpacity>
       </Card>
     );
@@ -29,10 +29,8 @@ class RecipeCard extends React.Component {
 }
 const styles = StyleSheet.create({
   card: {
-    width:200,
-    height:130,
-    margin:50
-    
+    height:260,
+    borderRadius:10,
   }
 });
 
