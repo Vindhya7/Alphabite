@@ -80,9 +80,7 @@ class NutritionScreen extends React.Component {
     this.setState({ fabVisible: false });
   }
 
-  sortByTotal(){
-      
-  }
+  sortByTotal() {}
 
   sortByNutrient() {
     if (this.state.sortBy == 0) {
@@ -92,7 +90,7 @@ class NutritionScreen extends React.Component {
         this.setState({ sortDirection: "ascending" });
       }
     }
-   
+
     var arr = this.state.data;
 
     if (this.state.sortDirection == "ascending") {
@@ -139,7 +137,7 @@ class NutritionScreen extends React.Component {
             <Text style={{ color: "#000a13" }}>{item.nutrient}</Text>
           </DataTable.Cell>
 
-          <DataTable.Cell style={{paddingLeft:115}}>
+          <DataTable.Cell style={{ paddingLeft: 115 }}>
             <Text>{item.consumed}</Text>
           </DataTable.Cell>
 
@@ -252,7 +250,6 @@ class NutritionScreen extends React.Component {
                 {header}
 
                 {this.addTableRows()}
-
               </DataTable>
             </View>
           </View>

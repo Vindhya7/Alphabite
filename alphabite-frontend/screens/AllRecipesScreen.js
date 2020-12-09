@@ -17,9 +17,7 @@ import getRecipes from "../api/spoonacular.js";
 import { IconButton } from "react-native-paper";
 import { FlatGrid } from "react-native-super-grid";
 
-
-class RecipeScreen extends React.Component {
-
+class AllRecipesScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -146,32 +144,30 @@ class RecipeScreen extends React.Component {
         </View>
 
         <ScrollView>
-            {nutrients.length > 0 ? (
-              nutrients.map((item, idx) => {
-                return (
-                  <Text key={idx} style={styles.loginText}>
-                    {item}
-                  </Text>
-                );
-              })
-            ) : (
-              <FlatGrid
-                itemDimension={130}
-                data={this.state.recipes}
-                style={styles.gridView}
-                spacing={10}
-                keyExtractor={(item, idx) => (
-                  item.id
-                )}
-                renderItem={({ item }) => (
-                  <RecipeCard
-                    title={item.title}
-                    image={item.image}
-                    id={item.id}
-                  />
-                )}
-              />
-            )}
+          {nutrients.length > 0 ? (
+            nutrients.map((item, idx) => {
+              return (
+                <Text key={idx} style={styles.loginText}>
+                  {item}
+                </Text>
+              );
+            })
+          ) : (
+            <FlatGrid
+              itemDimension={130}
+              data={this.state.recipes}
+              style={styles.gridView}
+              spacing={10}
+              keyExtractor={(item, idx) => item.id}
+              renderItem={({ item }) => (
+                <RecipeCard
+                  title={item.title}
+                  image={item.image}
+                  id={item.id}
+                />
+              )}
+            />
+          )}
         </ScrollView>
       </SafeAreaView>
     );
@@ -213,4 +209,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RecipeScreen;
+export default AllRecipesScreen;
