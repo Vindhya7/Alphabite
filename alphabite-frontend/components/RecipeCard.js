@@ -9,6 +9,8 @@ import {
   TouchableRipple,
 } from "react-native-paper";
 import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+
 
 let customFonts = {
   'Montserrat': require('../assets/fonts/Montserrat-Regular.ttf'),
@@ -40,21 +42,25 @@ class RecipeCard extends React.Component {
   }
   
   render() {
-    return (
-      <TouchableOpacity onPress={() => this.handleClick()}>
-        <Card style={styles.card}>
-          <Card.Cover
-            style={{ borderRadius: 10 }}
-            source={{ uri: this.props.image }}
-          />
-          <Card.Content>
-            <Title style={{ fontSize: 15, color: "#000a13", fontFamily: 'Montserrat-bold' }}>
-              {this.props.title}
-            </Title>
-          </Card.Content>
-        </Card>
-      </TouchableOpacity>
-    );
+    if (this.state.fontsLoaded) {
+      return (
+        <TouchableOpacity onPress={() => this.handleClick()}>
+          <Card style={styles.card}>
+            <Card.Cover
+              style={{ borderRadius: 10 }}
+              source={{ uri: this.props.image }}
+            />
+            <Card.Content>
+              <Title style={{ fontSize: 15, color: "#000a13", fontFamily: 'Montserrat-bold' }}>
+                {this.props.title}
+              </Title>
+            </Card.Content>
+          </Card>
+        </TouchableOpacity>
+      );
+    }else{
+      return <AppLoading />;
+    }
   }
 }
 const styles = StyleSheet.create({

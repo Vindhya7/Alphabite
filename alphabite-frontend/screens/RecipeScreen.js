@@ -18,6 +18,7 @@ import firebase from "firebase";
 import { NavigationEvents } from "react-navigation";
 import getRecipeByID from "../api/spGetRecipeByID";
 import { LinearGradient } from 'expo-linear-gradient';
+import { AppLoading } from 'expo';
 
 let customFonts = {
   'Montserrat': require('../assets/fonts/Montserrat-Regular.ttf'),
@@ -394,18 +395,18 @@ class RecipeScreen extends React.Component {
   };
 
   addDishtypes(){
-    return this.state.dish.map(element => {
+    return this.state.dish.map((element,idx) => {
       return (
-        <View style={{backgroundColor:'rgba(0,0,0,0.5)', margin:5, padding:5, borderRadius: 4}}>
+        <View key={idx} style={{backgroundColor:'rgba(0,0,0,0.5)', margin:5, padding:5, borderRadius: 4}}>
           <Text style={{color:'white',fontFamily: 'Montserrat'}}>{element}</Text>
         </View>
       );
     });
   }
   addNutrients(){
-    return this.state.nutrients.map(item => {
+    return this.state.nutrients.map((item, idx) => {
       return (
-        <View style={{backgroundColor:'rgba(0,0,0,0.5)', width:80,height:70, margin:5, padding:5, borderRadius: 4}}>
+        <View key={idx} style={{backgroundColor:'rgba(0,0,0,0.5)', width:80,height:70, margin:5, padding:5, borderRadius: 4}}>
           <Text style={{color:'white', margin:3,textAlign:'center',fontFamily: 'Montserrat'}}>{Object.keys(item)[0]}</Text>
           <Text style={{color:'white',margin:3, textAlign:'center',fontFamily: 'Montserrat'}}>{Object.values(item)[0]}</Text>
         </View>
@@ -427,40 +428,47 @@ class RecipeScreen extends React.Component {
       icontag=<IconButton style={{backgroundColor:'yellow'}} icon="barley-off"/>
     }
 
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <ImageBackground source={{ uri: this.state.recipe.image }} style={styles.image}>
-        <LinearGradient
-          colors={['transparent','rgba(0,0,0,0.8)','rgba(0,0,0,0.8)']}
-          style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            height: "100%",
-          }}>
-
-          <View style={styles.detailsContainer}>
-            <Text style={styles.contentTitle}
-                  onPress={() => {
-                    Linking.openURL(this.state.recipe.sourceUrl);
-                  }}
-            >{this.state.recipe.title}</Text>
-            <View style={{flexDirection:'row', justifyContent:'center'}}>{this.addDishtypes()}</View> 
-            <View style={{flexDirection:'row', justifyContent:'center'}}>
-              <Text style={styles.details}>Servings: {this.state.recipe.servings}</Text>
-              <Text style={styles.details}>Cooking Time: {this.state.recipe.readyInMinutes}</Text>
+    if (this.state.fontsLoaded) {
+      return (
+        <SafeAreaView style={{ flex: 1 }}>
+          <ImageBackground source={{ uri: this.state.recipe.image }} style={styles.image}>
+          <LinearGradient
+            colors={['transparent','rgba(0,0,0,0.8)','rgba(0,0,0,0.8)']}
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: 0,
+              height: "100%",
+            }}>
+  
+            <View style={styles.detailsContainer}>
+              <Text style={styles.contentTitle}
+                    onPress={() => {
+                      Linking.openURL(this.state.recipe.sourceUrl);
+                    }}
+              >{this.state.recipe.title}</Text>
+              <View style={{flexDirection:'row', justifyContent:'center'}}>{this.addDishtypes()}</View> 
+              <View style={{flexDirection:'row', justifyContent:'center'}}>
+                <Text style={styles.details}>Servings: {this.state.recipe.servings}</Text>
+                <Text style={styles.details}>Cooking Time: {this.state.recipe.readyInMinutes}</Text>
+              </View>
+              <View style={{flexDirection:'row', justifyContent:'center'}}>
+                {/* <Text style={styles.details}>Health Score: {this.state.recipe.healthScore}</Text> */}
+                {this.addNutrients()}
+              </View>
+              <TouchableOpacity>
+                <IconButton size={40} color='white' style={{backgroundColor:'rgba(0,0,0,0.6)',alignSelf:'flex-end',margin:30}} icon="plus"></IconButton>
+              </TouchableOpacity>
             </View>
-            <View style={{flexDirection:'row', justifyContent:'center'}}>
-              {/* <Text style={styles.details}>Health Score: {this.state.recipe.healthScore}</Text> */}
-              {this.addNutrients()}
-            </View>
-            <IconButton size={40} color='white' style={{backgroundColor:'rgba(0,0,0,0.6)',alignSelf:'flex-end',margin:30}} icon="plus"></IconButton>
-          </View>
-        </LinearGradient>
-        </ImageBackground>
-      </SafeAreaView>
-    );
+          </LinearGradient>
+          </ImageBackground>
+        </SafeAreaView>
+      );
+    }
+    else{
+      return <AppLoading />;
+    }
   }
 }
 
