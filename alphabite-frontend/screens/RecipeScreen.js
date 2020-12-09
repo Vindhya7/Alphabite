@@ -46,14 +46,31 @@ class RecipeScreen extends React.Component {
   };
 
   render() {
+    let icontag;
+    if(this.state.recipe.vegetarian){
+      icontag=<IconButton style={{backgroundColor:'green'}} icon="square-circle"/>
+    }else if(!this.state.recipe.vegetarian && !this.state.recipe.vegan){
+      icontag=<IconButton style={{backgroundColor:'red'}} icon="square-circle"/>
+    }else if(this.state.recipe.glutenFree){
+      icontag=<IconButton style={{backgroundColor:'yellow'}} icon="barley"/>
+    }else{
+      icontag=<IconButton style={{backgroundColor:'yellow'}} icon="barley-off"/>
+    }
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ImageBackground source={{ uri: this.state.recipe.image }} style={styles.image}>
-        <View style={styles.detailsContainer}>
-          <Text style={styles.contentTitle}>{this.state.recipe.title}</Text>
+        <View>
+          <View style={styles.detailsContainer}>
+            <Text style={styles.contentTitle}>{this.state.recipe.title}</Text>
+            {icontag}
+            <Text style={styles.details}>Link: {this.state.recipe.sourceUrl}</Text>
+            <Text style={styles.details}>Servings: {this.state.recipe.servings}</Text>
+            <Text style={styles.details}>Cooking Time: {this.state.recipe.readyInMinutes}</Text>
+            <Text style={styles.details}>Health Score: {this.state.recipe.healthScore}</Text>
+          </View>
         </View>
         </ImageBackground>
-        
       </SafeAreaView>
     );
   }
@@ -71,18 +88,23 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   detailsContainer:{
-    backgroundColor:'rgba(240, 240, 240, 0.7)',
-    height:"70%",
-    marginTop:250,
+    backgroundColor:'rgba(240, 240, 240, 0.4)',
+    height:"60%",
+    marginTop:50,
     marginLeft:20,
     marginRight:20,
     borderRadius:  25,
   },
   contentTitle: {
     margin: 20,
-    color:'#000a13',
+    color:'white',
     fontWeight:'bold',
     fontSize:20,
+  },
+  details:{
+    margin:20,
+    fontSize: 18,
+    color: 'white'
 
   }
 });
