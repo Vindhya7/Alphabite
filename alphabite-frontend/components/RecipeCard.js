@@ -13,17 +13,29 @@ class RecipeCard extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  handleClick(){
+    console.log("clicked");
+    this.props.nav.navigate("Recipe", {
+      id: this.props.id,
+    });
+  }
   
   render() {
     return (
-      <Card style ={styles.card} onPress={() => console.log("clicked")}>
-        <TouchableOpacity>
-        <Card.Cover style={{borderRadius:10}} source={{ uri: this.props.image }} />
+      <TouchableOpacity onPress={() => this.handleClick()}>
+        <Card style={styles.card}>
+          <Card.Cover
+            style={{ borderRadius: 10 }}
+            source={{ uri: this.props.image }}
+          />
           <Card.Content>
-            <Title style={{fontSize:15,color:'#000a13'}}>{this.props.title}</Title>
+            <Title style={{ fontSize: 15, color: "#000a13" }}>
+              {this.props.title}
+            </Title>
           </Card.Content>
-        </TouchableOpacity>
-      </Card>
+        </Card>
+      </TouchableOpacity>
     );
   }
 }

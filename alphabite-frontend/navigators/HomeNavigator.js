@@ -2,15 +2,15 @@ import { createDrawerNavigator } from "react-navigation-drawer";
 import UserProfileScreen from "../screens/UserProfileScreen.js";
 import InventoryStack from "../navigators/InventoryStack.js";
 import NutritionScreen from "../screens/NutritionScreen.js";
-import AllRecipesScreen from "../screens/AllRecipesScreen.js";
-import { createAppContainer, DrawerNavigator } from "react-navigation";
+import RecipeStack from "../navigators/RecipeStack.js";
+import { createAppContainer } from "react-navigation";
 
 const HomeNavigator = createDrawerNavigator(
   {
     UserProfile: { screen: UserProfileScreen },
     Inventory: { screen: InventoryStack },
     Nutrition: { screen: NutritionScreen },
-    Recipe: { screen: AllRecipesScreen },
+    Recipe: { screen: RecipeStack },
   },
   {
     initialRouteName: "UserProfile",

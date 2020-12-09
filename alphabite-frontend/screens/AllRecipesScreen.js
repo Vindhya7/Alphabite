@@ -13,11 +13,15 @@ import firebase from "firebase";
 import Autocomplete from "react-native-autocomplete-input";
 import RecipeCard from "../components/RecipeCard.js";
 import calculateRecs from "../api/calculateRecs.js";
-import getRecipes from "../api/spoonacular.js";
+import getRecipes from "../api/spGetRecipes.js";
 import { IconButton } from "react-native-paper";
 import { FlatGrid } from "react-native-super-grid";
 
 class AllRecipesScreen extends React.Component {
+  static navigationOptions = {
+    headerShown: false,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -161,6 +165,7 @@ class AllRecipesScreen extends React.Component {
               keyExtractor={(item, idx) => item.id}
               renderItem={({ item }) => (
                 <RecipeCard
+                  nav={this.props.navigation}
                   title={item.title}
                   image={item.image}
                   id={item.id}
