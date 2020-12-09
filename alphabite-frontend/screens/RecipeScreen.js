@@ -14,6 +14,7 @@ import Autocomplete from "react-native-autocomplete-input";
 import RecipeCard from "../components/RecipeCard.js";
 import calculateRecs from "../components/calculateRecs.js";
 import getRecipes from "../api/spoonacular.js";
+import { IconButton } from "react-native-paper";
 
 class RecipeScreen extends React.Component {
   constructor(props) {
@@ -111,43 +112,58 @@ class RecipeScreen extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <AppBar navigation={this.props.navigation} title="Recipes" />
-        <Autocomplete
-          onChangeText={(text) => this.setState({ searchTerm: text })}
-          keyExtractor={(item, i) => (
-            item
-          )}
-          renderItem={({ item, i }) => (
-            <TouchableOpacity
-              onPress={() => this.setState({ searchTerm: item })}
-            >
-              <Text>{item}</Text>
-            </TouchableOpacity>
-          )}
-          data={
-            nutrients.length === 1 && comp(searchTerm, nutrients[0])
-              ? []
-              : nutrients
-          }
-        />
+        
 
-        <ScrollView>
-          {nutrients.length > 0
-            ? nutrients.map((item, idx) => {
-                return (
-                  <Text key={idx} style={styles.loginText}>
-                    {item}
-                  </Text>
-                );
-              })
-            : this.state.recipes.map((recipe) => {
-                return (<RecipeCard
-                  id={recipe.id}
-                  key={recipe.id}
-                  title={recipe.title}
-                  image={recipe.image}
-                />);
-              })}
-        </ScrollView>
+            <View style={{backgroundColor:'#95db93',height:80,paddingTop:15,flexDirection:'row'}}>
+            <IconButton
+                icon="magnify"
+                onPress={() => this.minusOne(idx)}
+              /> 
+              <Autocomplete 
+                style={{backgroundColor:'#95db93'}}
+                inputContainerStyle={styles.inputContainer}
+                onChangeText={(text) => this.setState({ searchTerm: text })}
+                keyExtractor={(item, i) => (
+                  item
+                )}
+                renderItem={({ item, i }) => (
+                  <TouchableOpacity
+                    onPress={() => this.setState({ searchTerm: item })}
+                  >
+                    <Text>{item}</Text>
+                  </TouchableOpacity>
+                )}
+                data={
+                  nutrients.length === 1 && comp(searchTerm, nutrients[0])
+                    ? []
+                    : nutrients
+                }
+              />
+            </View>
+                
+            
+              <ScrollView>
+                <View styles={{width:10}}>
+                  {nutrients.length > 0
+                    ? nutrients.map((item, idx) => {
+                        return (
+                          <Text key={idx} style={styles.loginText}>
+                            {item}
+                          </Text>
+                        );
+                      })
+                    : this.state.recipes.map((recipe) => {
+                        return (<RecipeCard
+                          id={recipe.id}
+                          key={recipe.id}
+                          title={recipe.title}
+                          image={recipe.image}
+                        />);
+                      })}
+                  </View>
+              </ScrollView>
+            
+        
       </SafeAreaView>
     );
   }
@@ -174,6 +190,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: "#CCC",
     borderWidth: 1,
+  },
+  inputContainer: {
+    
+    marginRight:40,
+    borderTopWidth:0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    borderColor:'#000a13',
   },
 });
 

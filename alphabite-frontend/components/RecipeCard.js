@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, StyleSheet } from "react-native";
 import {
   Avatar,
   Button,
@@ -16,16 +16,23 @@ class RecipeCard extends React.Component {
   
   render() {
     return (
-      <Card onPress={() => console.log("clicked")}>
+      <Card style ={styles.card} onPress={() => console.log("clicked")}>
         <TouchableOpacity>
           <Card.Content>
-            <Title>{this.props.title}</Title>
+            <Title style={{fontSize:15}}>{this.props.title}</Title>
           </Card.Content>
-          <Card.Cover source={{ uri: this.props.image }} />
+          <Card.Cover style={{width:200, height: 105}} source={{ uri: this.props.image }} />
         </TouchableOpacity>
       </Card>
     );
   }
 }
+const styles = StyleSheet.create({
+  card: {
+    width:200,
+    height:200,
+    margin:50
+  }
+});
 
 export default RecipeCard;
