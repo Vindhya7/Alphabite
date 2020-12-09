@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from "react-navigation-drawer";
 import UserProfileScreen from "../screens/UserProfileScreen.js";
 import InventoryStack from "../navigators/InventoryStack.js";
-import NutritionScreen from "../screens/NutritionScreen.js";
+import NutritionStack from "../navigators/NutritionStack.js";
 import RecipeStack from "../navigators/RecipeStack.js";
 import { createAppContainer } from "react-navigation";
 
@@ -9,7 +9,7 @@ const HomeNavigator = createDrawerNavigator(
   {
     UserProfile: { screen: UserProfileScreen },
     Inventory: { screen: InventoryStack },
-    Nutrition: { screen: NutritionScreen },
+    Nutrition: { screen: NutritionStack },
     Recipe: { screen: RecipeStack },
   },
   {

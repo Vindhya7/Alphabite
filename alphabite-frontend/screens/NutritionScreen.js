@@ -37,9 +37,6 @@ class NutritionScreen extends React.Component {
       if (user != null) {
         this.setState({ uid: user.uid });
 
-        console.log(firebase.database.ServerValue.TIMESTAMP)
-          
-
         firebase
           .database()
           .ref("users/" + user.uid + "/nutrition")
@@ -269,7 +266,7 @@ class NutritionScreen extends React.Component {
                 label: "Inventory",
                 onPress: () => {
                   // this.setState({ fabVisible: false });
-                  this.props.navigation.navigate("Inventory", {
+                  this.props.navigation.navigate("Selection", {
                     refresh: this.refresh,
                     uid: this.state.uid,
                     parentProp: this.props,

@@ -297,7 +297,6 @@ class InventoryScreen extends React.Component {
       ];
 
       if (!refs[idx]) {
-        console.log(idx);
         refs[idx] = React.createRef();
       }
 
