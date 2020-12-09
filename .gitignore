@@ -8,6 +8,7 @@ alphabite-frontend/*.key
 alphabite-frontend/*.mobileprovision
 alphabite-frontend/*.orig.*
 alphabite-frontend/web-build/
+.vscode
 
 # macOS
 .DS_Store
