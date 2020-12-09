@@ -132,7 +132,7 @@ class AllRecipesScreen extends React.Component {
             flexDirection: "row",
           }}
         >
-          <IconButton icon="magnify" onPress={() => this.minusOne(idx)} />
+          <IconButton icon="magnify"/>
           <Autocomplete
             style={{ backgroundColor: "#95db93" }}
             inputContainerStyle={styles.inputContainer}
@@ -146,7 +146,8 @@ class AllRecipesScreen extends React.Component {
               </TouchableOpacity>
             )}
             data={
-              recipeSearchResults && recipeSearchResults.length === 1 &&
+              recipeSearchResults &&
+              recipeSearchResults.length === 1 &&
               comp(searchTerm, recipeSearchResults[0])
                 ? []
                 : recipeSearchResults
@@ -155,6 +156,12 @@ class AllRecipesScreen extends React.Component {
         </View>
 
         <ScrollView>
+          <Button
+            onPress={() => this.props.navigation.navigate("Recipe")}
+            title="Click me Vindy"
+          >
+            
+          </Button>
           {recipeSearchResults && recipeSearchResults.length > 0 ? (
             recipeSearchResults.map((item, idx) => {
               return (
