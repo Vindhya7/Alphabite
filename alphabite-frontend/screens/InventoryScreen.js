@@ -124,48 +124,48 @@ class InventoryScreen extends React.Component {
   setReminder = async (idx) => {
     var rem = this.state.duration;
     var obj = this.state.data[idx];
-    var currdate = new Date()
+    var currdate = new Date();
     var remind = new Date();
 
-    switch(rem){
-      case '5min':
-        remind.setDate(currdate.getDate())
+    switch (rem) {
+      case "5min":
+        remind.setDate(currdate.getDate());
         break;
 
-      case '1week':
-        remind.setDate(currdate.getDate() + parseInt(6))
+      case "1week":
+        remind.setDate(currdate.getDate() + parseInt(6));
         break;
 
-      case '2weeks':
-        remind.setDate(currdate.getDate() + parseInt(13))
+      case "2weeks":
+        remind.setDate(currdate.getDate() + parseInt(13));
         break;
 
-      case '1month':
-        remind.setDate(currdate.getDate() + parseInt(30))
+      case "1month":
+        remind.setDate(currdate.getDate() + parseInt(30));
         break;
 
-      case '2months':
-        remind.setDate(currdate.getDate() + parseInt(60))
+      case "2months":
+        remind.setDate(currdate.getDate() + parseInt(60));
         break;
 
-      case '6months':
-        remind.setDate(currdate.getDate() + parseInt(180))
+      case "6months":
+        remind.setDate(currdate.getDate() + parseInt(180));
         break;
 
-      case '12months':
-        remind.setDate(currdate.getDate() + parseInt(360))
+      case "12months":
+        remind.setDate(currdate.getDate() + parseInt(360));
         break;
 
       default:
         break;
     }
-    
-    if(obj.remID){
+
+    if (obj.remID) {
       await Notifications.cancelScheduledNotificationAsync(obj.remID);
     }
 
     obj.reminder = remind.toDateString();
-    
+
     firebase
       .database()
       .ref("users/" + this.state.uid + "/inventory/" + obj.key)
@@ -196,17 +196,16 @@ class InventoryScreen extends React.Component {
         title: "Eat",
         body: "Something in your inventory is expiring!",
       },
-      trigger : {seconds: val},
+      trigger: { seconds: val },
     });
-    
+
     var obj = this.state.data[idx];
     obj.remID = id;
     var newData = this.state.data;
     newData[idx] = obj;
 
     this.setState({ data: newData });
-
-  }
+  };
 
   addOne = (idx) => {
     var obj = this.state.data[idx];
@@ -336,7 +335,7 @@ class InventoryScreen extends React.Component {
 
     if (this.state.sortDirection == "ascending") {
       arr.sort((a, b) => {
-        if(a.reminder === "set"){
+        if (a.reminder === "set") {
           return -1;
         }
         return Date.parse(a.reminder) - Date.parse(b.reminder);
