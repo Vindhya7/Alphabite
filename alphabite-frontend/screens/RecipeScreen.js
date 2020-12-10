@@ -110,22 +110,22 @@ class RecipeScreen extends React.Component {
 
   render() {
     let icontag;
-    if (this.state.recipe.vegetarian) {
+    if (this.state.recipe.vegetarian || this.state.recipe.vegan) {
       icontag = (
-        <IconButton style={{ backgroundColor: "green" }} icon="square-circle" />
-      );
-    } else if (!this.state.recipe.vegetarian && !this.state.recipe.vegan) {
-      icontag = (
-        <IconButton style={{ backgroundColor: "red" }} icon="square-circle" />
-      );
-    } else if (this.state.recipe.glutenFree) {
-      icontag = (
-        <IconButton style={{ backgroundColor: "yellow" }} icon="barley" />
+        <IconButton color="white" icon="leaf" />
       );
     } else {
-      icontag = (
-        <IconButton style={{ backgroundColor: "yellow" }} icon="barley-off" />
-      );
+      if(this.state.recipe.glutenFree){
+        icontag = (
+          <Text style={styles.details}>GF</Text>
+        );
+      }
+      else{
+        icontag = (
+          <Text>-</Text>
+        );
+      }
+      
     }
 
     if (this.state.fontsLoaded) {
@@ -137,13 +137,7 @@ class RecipeScreen extends React.Component {
           >
             <LinearGradient
               colors={["transparent", "rgba(0,0,0,0.8)", "rgba(0,0,0,0.8)"]}
-              style={{
-                position: "absolute",
-                left: 0,
-                right: 0,
-                top: 0,
-                height: "100%",
-              }}
+              style={styles.gradient}
             >
               <View style={styles.detailsContainer}>
                 <Text
@@ -172,115 +166,55 @@ class RecipeScreen extends React.Component {
                   <Text style={styles.details}>
                     Cooking Time: {this.state.recipe.readyInMinutes}
                   </Text>
+                  {icontag}
                 </View>
                 <View
                   style={{ flexDirection: "row", justifyContent: "center" }}
                 >
                   <View
-                    style={{
-                      backgroundColor: "rgba(0,0,0,0.5)",
-                      width: 80,
-                      height: 70,
-                      margin: 5,
-                      padding: 5,
-                      borderRadius: 4,
-                    }}
+                    style={styles.nutrientBlock}
                   >
                     <Text
-                      style={{
-                        color: "white",
-                        margin: 3,
-                        textAlign: "center",
-                        fontFamily: "Montserrat",
-                      }}
+                      style={styles.nutrientText}
                     >
                       Calories
                     </Text>
                     <Text
-                      style={{
-                        color: "white",
-                        margin: 3,
-                        textAlign: "center",
-                        fontFamily: "Montserrat",
-                      }}
+                      style={styles.nutrientText}
                     >
                       {this.state.calories}
                     </Text>
                   </View>
                   <View
-                    style={{
-                      backgroundColor: "rgba(0,0,0,0.5)",
-                      width: 80,
-                      height: 70,
-                      margin: 5,
-                      padding: 5,
-                      borderRadius: 4,
-                    }}
+                    style={styles.nutrientBlock}
                   >
                     <Text
-                      style={{
-                        color: "white",
-                        margin: 3,
-                        textAlign: "center",
-                        fontFamily: "Montserrat",
-                      }}
+                      style={styles.nutrientText}
                     >
                       Carbs
                     </Text>
                     <Text
-                      style={{
-                        color: "white",
-                        margin: 3,
-                        textAlign: "center",
-                        fontFamily: "Montserrat",
-                      }}
+                      style={styles.nutrientText}
                     >
                       {this.state.carbs}
                     </Text>
                   </View>
                   <View
-                    style={{
-                      backgroundColor: "rgba(0,0,0,0.5)",
-                      width: 80,
-                      height: 70,
-                      margin: 5,
-                      padding: 5,
-                      borderRadius: 4,
-                    }}
+                    style={styles.nutrientBlock}
                   >
                     <Text
-                      style={{
-                        color: "white",
-                        margin: 3,
-                        textAlign: "center",
-                        fontFamily: "Montserrat",
-                      }}
+                      style={styles.nutrientText}
                     >
                       Protein
                     </Text>
                     <Text
-                      style={{
-                        color: "white",
-                        margin: 3,
-                        textAlign: "center",
-                        fontFamily: "Montserrat",
-                      }}
+                      style={styles.nutrientText}
                     >
                       {this.state.protein}
                     </Text>
                   </View>
                 </View>
                 <TouchableOpacity>
-                  {/* <IconButton
-                    size={40}
-                    color="white"
-                    style={{
-                      backgroundColor: "rgba(0,0,0,0.6)",
-                      alignSelf: "flex-end",
-                      margin: 30,
-                    }}
-                    icon="plus"
-                  ></IconButton> */}
                   <Button dark='true' 
                           color='rgba(0,0,0,0.6)' 
                           mode="contained" 
@@ -332,6 +266,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     fontFamily: "Montserrat",
+  },
+  nutrientBlock: {
+    backgroundColor: "rgba(0,0,0,0.5)",
+    width: 80,
+    height: 70,
+    margin: 5,
+    padding: 5,
+    borderRadius: 4,
+  },
+  nutrientText: {
+    color: "white",
+    margin: 3,
+    textAlign: "center",
+    fontFamily: "Montserrat",
+  },
+  gradient:{
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: "100%",
   },
 });
 
