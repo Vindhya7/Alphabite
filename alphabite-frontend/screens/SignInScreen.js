@@ -4,12 +4,8 @@ import {
   View,
   Text,
   TextInput,
-  SafeAreaView,
   TouchableOpacity,
-  KeyboardAvoidingView,
   ActivityIndicator,
-  TouchableWithoutFeedback,
-  Keyboard,
 } from "react-native";
 import "firebase/firestore";
 import firebase from "firebase";
@@ -54,6 +50,12 @@ class SignInScreen extends React.Component {
   }
 
   render() {
+    var iconlock;
+    if(this.state.password == ""){
+      iconlock = <Entypo name="lock-open" size={24} color="black" />
+    }else{
+      iconlock = <Entypo name="lock" size={24} color="black" />
+    }
     return (
       <View style={styles.container}>
         <Text style={styles.logo}>AlphaBite</Text>
@@ -73,7 +75,7 @@ class SignInScreen extends React.Component {
         </View>
 
         <View style={styles.inputView}>
-          <Entypo name="lock-open" size={24} color="black" />
+          {iconlock}
           <TextInput
             style={styles.inputText}
             placeholder=""
