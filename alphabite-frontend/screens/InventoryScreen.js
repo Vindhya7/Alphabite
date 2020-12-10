@@ -124,12 +124,48 @@ class InventoryScreen extends React.Component {
   setReminder = async (idx) => {
     var rem = this.state.duration;
     var obj = this.state.data[idx];
+    console.log(rem);
+    var currdate = new Date()
+    var remind = new Date();
 
+    switch(rem){
+      case '1day':
+        remind.setDate(currdate.getDate() + parseInt(1))
+        break;
+
+      case '1week':
+        remind.setDate(currdate.getDate() + parseInt(6))
+        break;
+
+      case '2weeks':
+        remind.setDate(currdate.getDate() + parseInt(13))
+        break;
+
+      case '1month':
+        remind.setDate(currdate.getDate() + parseInt(30))
+        break;
+
+      case '2months':
+        remind.setDate(currdate.getDate() + parseInt(60))
+        break;
+
+      case '6months':
+        remind.setDate(currdate.getDate() + parseInt(180))
+        break;
+
+      case '12months':
+        remind.setDate(currdate.getDate() + parseInt(360))
+        break;
+
+      default:
+        break;
+    }
+    
     if(obj.remID){
       await Notifications.cancelScheduledNotificationAsync(obj.remID);
     }
 
-    obj.reminder = rem;
+    obj.reminder = remind.toDateString();
     
     firebase
       .database()
@@ -143,6 +179,7 @@ class InventoryScreen extends React.Component {
     this.setState({ data: newData });
 
     var remTimes = {
+      "1day": 60 * 60 * 24 * 1 * 1000,
       "1week": 60 * 60 * 24 * 7 * 1000,
       "2weeks": 2 * 60 * 60 * 24 * 7 * 1000,
       "1month": 60 * 60 * 24 * 30 * 1000,
@@ -305,6 +342,7 @@ class InventoryScreen extends React.Component {
       arr.sort((a, b) => {
         var sortedArr = [
           "set",
+          "1day",
           "1week",
           "2weeks",
           "1month",
@@ -318,6 +356,7 @@ class InventoryScreen extends React.Component {
       arr.sort((a, b) => {
         var sortedArr = [
           "set",
+          "1day",
           "1week",
           "2weeks",
           "1month",
@@ -489,6 +528,7 @@ class InventoryScreen extends React.Component {
         }}
       >
         <Picker.Item label="Set Duration" value="set" />
+        <Picker.Item label="1 Day" value="1day" />
         <Picker.Item label="1 Week" value="1week" />
         <Picker.Item label="2 Weeks" value="2weeks" />
         <Picker.Item label="1 Month" value="1month" />
