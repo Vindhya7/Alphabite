@@ -5,15 +5,12 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-  ScrollView,
-  Picker,
   ImageBackground,
-  TouchableHighlight,
   Linking,
 } from "react-native";
 import * as Font from "expo-font";
 import AppBar from "../components/AppBar.js";
-import { IconButton, Portal, FAB, Dialog, Button } from "react-native-paper";
+import { IconButton, Button } from "react-native-paper";
 import firebase from "firebase";
 import { NavigationEvents } from "react-navigation";
 import getRecipeByID from "../api/spGetRecipeByID";
@@ -70,7 +67,7 @@ class RecipeScreen extends React.Component {
       //process Protein, calories, carbs
       this.state.nutrients.map((nutrientObj) => {
         let title = nutrientObj.title;
-        let amount = nutrientObj.amount;
+        let amount = Number(nutrientObj.amount).toFixed(0);
         let unit = nutrientObj.unit;
         let val = amount + unit;
         if (title === "Calories") {
@@ -274,7 +271,7 @@ class RecipeScreen extends React.Component {
                   </View>
                 </View>
                 <TouchableOpacity>
-                  <IconButton
+                  {/* <IconButton
                     size={40}
                     color="white"
                     style={{
@@ -283,7 +280,14 @@ class RecipeScreen extends React.Component {
                       margin: 30,
                     }}
                     icon="plus"
-                  ></IconButton>
+                  ></IconButton> */}
+                  <Button dark='true' 
+                          color='rgba(0,0,0,0.6)' 
+                          mode="contained" 
+                          style={{margin:30}}
+                          onPress={() => console.log('Pressed')}>
+                      Add to Nutrients
+                  </Button>
                 </TouchableOpacity>
               </View>
             </LinearGradient>

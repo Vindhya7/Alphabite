@@ -153,7 +153,7 @@ class AllRecipesScreen extends React.Component {
             flexDirection: "row",
           }}
         >
-          <IconButton icon="magnify" />
+          <IconButton style={{marginTop:20}} icon="magnify" />
           <TextInput
             style={styles.inputContainer}
             value={this.state.searchTerm}
@@ -238,10 +238,15 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginRight: 40,
+    marginBottom:30,
+    width:"80%",
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderColor: "#000a13",
+    borderBottomWidth:1,
+    backgroundColor:"#95db93",
+    paddingBottom:45
   },
   gridView: {
     marginTop: 10,
