@@ -124,7 +124,6 @@ class InventoryScreen extends React.Component {
   setReminder = async (idx) => {
     var rem = this.state.duration;
     var obj = this.state.data[idx];
-    console.log(rem);
     var currdate = new Date()
     var remind = new Date();
 
@@ -171,7 +170,7 @@ class InventoryScreen extends React.Component {
       .database()
       .ref("users/" + this.state.uid + "/inventory/" + obj.key)
       .update({
-        reminder: rem,
+        reminder: obj.reminder,
       });
     var newData = this.state.data;
     newData[idx] = obj;
@@ -179,28 +178,25 @@ class InventoryScreen extends React.Component {
     this.setState({ data: newData });
 
     var remTimes = {
-      "5min": 60 * 5 * 1000,
-      "1week": 60 * 60 * 24 * 7 * 1000,
-      "2weeks": 2 * 60 * 60 * 24 * 7 * 1000,
-      "1month": 60 * 60 * 24 * 30 * 1000,
-      "2months": 2 * 60 * 60 * 24 * 30 * 1000,
-      "6months": 6 * 60 * 60 * 24 * 30 * 1000,
-      "12months": 12 * 60 * 60 * 24 * 30 * 1000,
+      "5min": 60 * 1,
+      "1week": 60 * 60 * 24 * 7,
+      "2weeks": 2 * 60 * 60 * 24 * 7,
+      "1month": 60 * 60 * 24 * 30,
+      "2months": 2 * 60 * 60 * 24 * 30,
+      "6months": 6 * 60 * 60 * 24 * 30,
+      "12months": 12 * 60 * 60 * 24 * 30,
     };
 
     await this.schedulePushNotification(remTimes[rem], idx);
   };
 
   schedulePushNotification = async (val, idx) => {
-    const trigger = new Date(Date.now() + val);
-    trigger.setMinutes(0);
-    trigger.setSeconds(0);
     const id = await Notifications.scheduleNotificationAsync({
       content: {
         title: "Eat",
         body: "Something in your inventory is expiring!",
       },
-      trigger,
+      trigger : {seconds: val},
     });
     
     var obj = this.state.data[idx];
@@ -340,31 +336,17 @@ class InventoryScreen extends React.Component {
 
     if (this.state.sortDirection == "ascending") {
       arr.sort((a, b) => {
-        var sortedArr = [
-          "set",
-          "5min",
-          "1week",
-          "2weeks",
-          "1month",
-          "2months",
-          "6months",
-          "12months",
-        ];
-        return sortedArr.indexOf(a.reminder) - sortedArr.indexOf(b.reminder);
+        if(a.reminder === "set"){
+          return -1;
+        }
+        return Date.parse(a.reminder) - Date.parse(b.reminder);
       });
     } else {
       arr.sort((a, b) => {
-        var sortedArr = [
-          "set",
-          "5min",
-          "1week",
-          "2weeks",
-          "1month",
-          "2months",
-          "6months",
-          "12months",
-        ];
-        return sortedArr.indexOf(b.reminder) - sortedArr.indexOf(a.reminder);
+        if (b.reminder === "set") {
+          return -1;
+        }
+        return Date.parse(b.reminder) - Date.parse(a.reminder);
       });
     }
 
