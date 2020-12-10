@@ -93,7 +93,7 @@ const InventoryScanScreen = (props) => {
             source={{ uri: imageUri }}
           >
             <Portal>
-              <Dialog visible="true">
+              <Dialog style={{flexDirection:'row', justifyContent:'space-evenly'}} visible="true">
                 <Dialog.Title>Loading</Dialog.Title>
                 <ActivityIndicator animating={true} />
               </Dialog>

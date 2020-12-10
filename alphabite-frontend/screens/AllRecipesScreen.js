@@ -169,7 +169,7 @@ class AllRecipesScreen extends React.Component {
 
           {this.state.isLoading ? (
             <Portal>
-              <Dialog visible="true">
+              <Dialog style={{flexDirection:'row', justifyContent:'space-evenly'}} visible="true">
                 <Dialog.Title>Loading</Dialog.Title>
                 <ActivityIndicator animating={true} />
               </Dialog>
