@@ -7,20 +7,13 @@ import {
   TouchableOpacity,
   ScrollView,
   Picker,
-  TouchableHighlight,
 } from "react-native";
 import AppBar from "../components/AppBar.js";
-import {
-  DataTable,
-  IconButton,
-  Portal,
-  FAB,
-  Dialog,
-  Button,
-} from "react-native-paper";
+import { DataTable, IconButton, Portal, FAB } from "react-native-paper";
 import firebase from "firebase";
 import Swipeable from "react-native-swipeable-row";
 import { NavigationEvents } from "react-navigation";
+import getIngredientInfo from "../api/spGetIngredientInfo";
 
 class NutritionSelectionScreen extends React.Component {
   static navigationOptions = {
@@ -141,20 +134,6 @@ class NutritionSelectionScreen extends React.Component {
     obj.quantity = Number(obj.quantity) - 1;
     if (obj.quantity < 0) obj.quantity = 0;
 
-    // if (obj.quantity == 0) {
-    //   firebase
-    //     .database()
-    //     .ref("users/" + this.state.uid + "/inventory/" + obj.key)
-    //     .set(null);
-    // } else {
-    //   firebase
-    //     .database()
-    //     .ref("users/" + this.state.uid + "/inventory/" + obj.key)
-    //     .update({
-    //       quantity: obj.quantity,
-    //     });
-    // }
-
     var newData = this.state.data;
     newData[idx] = obj;
 
@@ -181,24 +160,84 @@ class NutritionSelectionScreen extends React.Component {
   confirmSelection() {
     var data = this.state.data;
 
-    data.map((obj) => {
-      var left = obj.capacity - obj.quantity;
-      if (left == 0) {
-        firebase
-          .database()
-          .ref("users/" + this.state.uid + "/inventory/" + obj.key)
-          .set(null);
-      } else {
-        firebase
-          .database()
-          .ref("users/" + this.state.uid + "/inventory/" + obj.key)
-          .update({
-            quantity: left,
-          });
-      }
-    });
+    const prom = Promise.resolve(
+      data.map((obj) => {
+        var left = obj.capacity - obj.quantity;
+        if (left == 0) {
+          firebase
+            .database()
+            .ref("users/" + this.state.uid + "/inventory/" + obj.key)
+            .set(null);
+        } else {
+          firebase
+            .database()
+            .ref("users/" + this.state.uid + "/inventory/" + obj.key)
+            .update({
+              quantity: left,
+            });
+        }
 
-    this.props.navigation.popToTop();
+        if (obj.quantity != 0) {
+          var prom = Promise.resolve(getIngredientInfo(obj.key));
+
+          prom.then((nutrientArr) => {
+            nutrientArr.map((nutrientObj) => {
+              const skip = [
+                "Saturated Fat",
+                "Net Carbohydrates",
+                "Sugar",
+                "Folate",
+                "Trans Fat",
+                "Mono Unsaturated Fat",
+                "Poly Unsaturated Fat",
+                "Alcohol",
+                "Caffein",
+                "Fluoride",
+                "Choline",
+                "Folic Acid",
+              ];
+              var title = nutrientObj.title;
+              var amount = nutrientObj.amount;
+              var unit = nutrientObj.unit;
+
+              if (!skip.includes(title)) {
+                firebase
+                  .database()
+                  .ref("users/" + this.state.uid + "/nutrition/" + title)
+                  .once("value")
+                  .then((snapshot) => {
+                    var quant = snapshot.val()[0];
+                    var numb = quant.match(/\d/g);
+                    var dbUnit = quant.replace(/[0-9]/g, "");
+                    numb = numb.join("");
+                    var total = (
+                      (Number(numb) + Number(amount)) *
+                      Number(obj.quantity)
+                    ).toFixed(0);
+                    var final = total + unit;
+                    if (dbUnit == unit) {
+                      firebase
+                        .database()
+                        .ref("users/" + this.state.uid + "/nutrition/" + title)
+                        .update({
+                          0: final,
+                        });
+                    }
+                  });
+              }
+            });
+          });
+        }
+      })
+    );
+
+    prom
+      .then((res) => {
+        this.props.navigation.goBack();
+      })
+      .catch((err) => {
+        this.props.navigation.goBack();
+      });
   }
 
   sortByFood() {

@@ -11,6 +11,7 @@ import { DataTable, IconButton, Portal, FAB } from "react-native-paper";
 import firebase from "firebase";
 import AppBar from "../components/AppBar.js";
 import { NavigationEvents } from "react-navigation";
+import createNutritionProfile from "../api/createNutritionProfile";
 
 class NutritionScreen extends React.Component {
   static navigationOptions = {
@@ -88,7 +89,38 @@ class NutritionScreen extends React.Component {
     this.setState({ fabVisible: false });
   }
 
-  sortByTotal() {}
+  handleReset(){
+    firebase
+      .database()
+      .ref("users/" + this.state.uid)
+      .once("value")
+      .then((snapshot) => {
+        const { gender, weight, height, age } = snapshot.val();
+
+        const nutritionProfile = createNutritionProfile(
+          height,
+          weight,
+          age,
+          gender
+        );
+
+        const nutrition = nutritionProfile.reduce(
+          (obj, item) => ({ ...obj, [item.nutrient]: item.vals }),
+          {}
+        );
+
+        firebase
+          .database()
+          .ref("users/" + this.state.uid)
+          .update({
+            nutrition: nutrition
+          })
+
+        this.refresh();
+      });
+    
+  }
+
 
   sortByNutrient() {
     if (this.state.sortBy == 0) {
@@ -269,15 +301,18 @@ class NutritionScreen extends React.Component {
             visible={this.state.fabVisible}
             actions={[
               {
+                icon: "restart",
+                label: "Reset today's values",
+                onPress: () => {
+                  this.handleReset();
+                }
+              },
+              {
                 icon: "plus",
                 label: "Inventory",
                 onPress: () => {
                   // this.setState({ fabVisible: false });
-                  this.props.navigation.navigate("Selection", {
-                    refresh: this.refresh,
-                    uid: this.state.uid,
-                    parentProp: this.props,
-                  });
+                  this.props.navigation.navigate("Selection");
                 },
               },
               {
@@ -285,9 +320,7 @@ class NutritionScreen extends React.Component {
                 label: "Recipe",
                 onPress: () => {
                   // this.setState({ fabVisible: false });
-                  this.props.navigation.navigate("Recipe", {
-                    refresh: this.refresh,
-                  });
+                  this.props.navigation.navigate("Recipe");
                 },
               },
             ]}
