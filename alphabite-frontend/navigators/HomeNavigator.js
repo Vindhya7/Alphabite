@@ -3,6 +3,7 @@ import UserProfileScreen from "../screens/UserProfileScreen.js";
 import InventoryStack from "../navigators/InventoryStack.js";
 import NutritionStack from "../navigators/NutritionStack.js";
 import RecipeStack from "../navigators/RecipeStack.js";
+import RewardScreen from "../screens/RewardScreen.js";
 import { createAppContainer } from "react-navigation";
 
 const HomeNavigator = createDrawerNavigator(
@@ -11,6 +12,7 @@ const HomeNavigator = createDrawerNavigator(
     Inventory: { screen: InventoryStack },
     Nutrition: { screen: NutritionStack },
     Recipe: { screen: RecipeStack },
+    Rewards: {screen: RewardScreen},
   },
   {
     initialRouteName: "UserProfile",
