@@ -4,20 +4,28 @@ import {
   Text,
   SafeAreaView,
   View,
-  Button,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import {
+  Button,
+  Dialog,
+  Portal,
+  Snackbar,
+  ActivityIndicator,
+} from "react-native-paper";
+
 import AppBar from "../components/AppBar.js";
 import firebase from "firebase";
 import Autocomplete from "react-native-autocomplete-input";
 import RecipeCard from "../components/RecipeCard.js";
 import calculateRecs from "../api/calculateRecs.js";
 import getRecipes from "../api/spGetRecipes.js";
-import { IconButton } from "react-native-paper";
+import { IconButton, TextInput } from "react-native-paper";
 import { FlatGrid } from "react-native-super-grid";
-import debounce from '../api/debounce';
-import getRecipeSuggestions from '../api/spGetRecipeSuggestions';
+import debounce from "../api/debounce";
+import getRecipeSuggestions from "../api/spGetRecipeSuggestions";
+import { AppLoading } from "expo";
 
 class AllRecipesScreen extends React.Component {
   static navigationOptions = {
@@ -33,6 +41,7 @@ class AllRecipesScreen extends React.Component {
       userInventory: [],
       recipes: [],
       searchResults: [],
+      isLoading: false,
     };
     this.getRecipeSearchResults = debounce(this.getRecipeSearchResults, 500);
   }
@@ -94,6 +103,13 @@ class AllRecipesScreen extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    // fix Warning: Can't perform a React state update on an unmounted component
+    this.setState = (state, callback) => {
+      return;
+    };
+  }
+
   fetchRecipes = async (keyWords) => {
     const response = await getRecipes(keyWords);
     return response;
@@ -101,25 +117,30 @@ class AllRecipesScreen extends React.Component {
 
   getRecipeSearchResults(searchTerm) {
     if (searchTerm === "") {
-      return [];
+      this.setState({ searchResults: [] });
+      this.setState({ isLoading: false });
+      return;
     }
 
     //TODO get recipe suggestions from spoonacular
     const prom = Promise.resolve(getRecipeSuggestions(searchTerm));
 
-    prom.then(({results}) => {
-      const regex = new RegExp(`${searchTerm.trim()}`, "i");
-      return results.filter((item) => item.title.search(regex) >= 0);
-    })
-
+    prom.then(({ results }) => {
+      this.setState({ searchResults: results });
+      this.setState({ isLoading: false });
+    });
   }
 
-  filter() {}
+  handleInputChange(text) {
+    this.setState({ searchTerm: text }, () => {
+      this.setState({ isLoading: true });
+      this.getRecipeSearchResults(this.state.searchTerm);
+    });
+  }
 
   render() {
-    const { searchTerm } = this.state;
-    const recipeSearchResults = this.getRecipeSearchResults(searchTerm);
-    const comp = (a, b) => a.toLowerCase().trim() === b.toLowerCase().trim();
+    const recipeSearchResults = this.state.searchResults;
+
     return (
       <SafeAreaView style={styles.container}>
         <AppBar navigation={this.props.navigation} title="Recipes" />
@@ -132,26 +153,11 @@ class AllRecipesScreen extends React.Component {
             flexDirection: "row",
           }}
         >
-          <IconButton icon="magnify"/>
-          <Autocomplete
-            style={{ backgroundColor: "#95db93" }}
-            inputContainerStyle={styles.inputContainer}
-            onChangeText={(text) => this.setState({ searchTerm: text })}
-            keyExtractor={(item, i) => item.title}
-            renderItem={({ item, i }) => (
-              <TouchableOpacity
-                onPress={() => this.setState({ searchTerm: item.title })}
-              >
-                <Text>{item.title}</Text>
-              </TouchableOpacity>
-            )}
-            data={
-              recipeSearchResults &&
-              recipeSearchResults.length === 1 &&
-              comp(searchTerm, recipeSearchResults[0])
-                ? []
-                : recipeSearchResults
-            }
+          <IconButton icon="magnify" />
+          <TextInput
+            style={styles.inputContainer}
+            value={this.state.searchTerm}
+            onChangeText={(text) => this.handleInputChange(text)}
           />
         </View>
 
@@ -159,17 +165,32 @@ class AllRecipesScreen extends React.Component {
           <Button
             onPress={() => this.props.navigation.navigate("Recipe")}
             title="Click me Vindy"
-          >
-            
-          </Button>
-          {recipeSearchResults && recipeSearchResults.length > 0 ? (
-            recipeSearchResults.map((item, idx) => {
-              return (
-                <Text key={idx} style={styles.loginText}>
-                  {item.title}
-                </Text>
-              );
-            })
+          ></Button>
+
+          {this.state.isLoading ? (
+            <Portal>
+              <Dialog visible="true">
+                <Dialog.Title>Loading</Dialog.Title>
+                <ActivityIndicator animating={true} />
+              </Dialog>
+            </Portal>
+          ) : recipeSearchResults && recipeSearchResults.length > 0 ? (
+              <FlatGrid
+                itemDimension={130}
+                data={this.state.searchResults}
+                style={styles.gridView}
+                spacing={10}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <RecipeCard
+                    nav={this.props.navigation}
+                    title={item.title}
+                    image={item.image}
+                    id={item.id}
+                  />
+                )}
+              />
+           
           ) : (
             <FlatGrid
               itemDimension={130}

@@ -1,6 +1,8 @@
 const createNutritionProfile = (height, weight, age, gender) => {
   var nutritionProfile = [];
 
+  nutritionProfile.push(createCalorieObj(gender, age));
+
   nutritionProfile.push(createProteinObj(weight));
 
   nutritionProfile.push(createCarbObj());
@@ -56,8 +58,24 @@ const createNutritionProfile = (height, weight, age, gender) => {
   return nutritionProfile;
 };
 
+createCalorieObj = (gender, age) => {
+  let val = "";
+  if(age < 18){
+    val = "1500kcal";
+  }
+  else{
+    if(gender === "Male"){
+      val = "2500kcal";
+    }
+    else{
+      val = "2000kcal";
+    }
+  }
+  return { nutrient: "Calories", vals: ["0kcal", val] };
+};
+
 createProteinObj = (weight) => {
-  val = (0.36 * weight).toFixed(2) + "g";
+  let val = (0.36 * weight).toFixed(2) + "g";
   return { nutrient: "Protein", vals: ["0g", val] };
 };
 
