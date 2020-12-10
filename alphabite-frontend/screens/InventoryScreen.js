@@ -129,8 +129,8 @@ class InventoryScreen extends React.Component {
     var remind = new Date();
 
     switch(rem){
-      case '1day':
-        remind.setDate(currdate.getDate() + parseInt(1))
+      case '5min':
+        remind.setDate(currdate.getDate())
         break;
 
       case '1week':
@@ -179,7 +179,7 @@ class InventoryScreen extends React.Component {
     this.setState({ data: newData });
 
     var remTimes = {
-      "1day": 60 * 60 * 24 * 1 * 1000,
+      "5min": 60 * 5 * 1000,
       "1week": 60 * 60 * 24 * 7 * 1000,
       "2weeks": 2 * 60 * 60 * 24 * 7 * 1000,
       "1month": 60 * 60 * 24 * 30 * 1000,
@@ -342,7 +342,7 @@ class InventoryScreen extends React.Component {
       arr.sort((a, b) => {
         var sortedArr = [
           "set",
-          "1day",
+          "5min",
           "1week",
           "2weeks",
           "1month",
@@ -356,7 +356,7 @@ class InventoryScreen extends React.Component {
       arr.sort((a, b) => {
         var sortedArr = [
           "set",
-          "1day",
+          "5min",
           "1week",
           "2weeks",
           "1month",
@@ -528,7 +528,7 @@ class InventoryScreen extends React.Component {
         }}
       >
         <Picker.Item label="Set Duration" value="set" />
-        <Picker.Item label="1 Day" value="1day" />
+        <Picker.Item label="5 mins" value="5min" />
         <Picker.Item label="1 Week" value="1week" />
         <Picker.Item label="2 Weeks" value="2weeks" />
         <Picker.Item label="1 Month" value="1month" />
