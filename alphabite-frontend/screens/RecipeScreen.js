@@ -39,6 +39,7 @@ class RecipeScreen extends React.Component {
       protein: "-",
       carbs: "-",
       dishTypes: [],
+      uid: "",
     };
   }
 
@@ -56,6 +57,13 @@ class RecipeScreen extends React.Component {
 
   componentDidMount() {
     this._loadFontsAsync();
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user != null) {
+        this.setState({ uid: user.uid });
+      }
+    });
+
     const prom = Promise.resolve(
       this.fetchRecipe(this.props.navigation.state.params.id)
     );
@@ -108,24 +116,60 @@ class RecipeScreen extends React.Component {
     });
   }
 
+  handleSubmit = async () => {
+    var nutrients = this.state.nutrients;
+
+    
+
+    await nutrients.map((nutrientObj) => {
+      const skip = [
+        "Saturated Fat",
+        "Net Carbohydrates",
+        "Sugar",
+        "Folate",
+        "Trans Fat",
+        "Mono Unsaturated Fat",
+        "Poly Unsaturated Fat",
+        "Alcohol",
+        "Caffein",
+        "Fluoride",
+        "Choline",
+        "Folic Acid",
+      ];
+
+      var title = nutrientObj.title;
+      var amount = nutrientObj.amount;
+      var unit = nutrientObj.unit;
+      if (!skip.includes(title)) {
+        firebase.database()
+          .ref("users/" + this.state.uid + "/nutrition/" + title)
+          .once("value")
+          .then((snapshot) => {
+            var quant = snapshot.val()[0];
+            var numb = quant.match(/\d/g);
+            numb = numb.join("");
+            var total = (Number(numb) + Number(amount)).toFixed(0);
+            var final = total + unit;
+            firebase.database().ref("users/" + this.state.uid + "/nutrition/" + title).update({
+              0: final,
+            });
+          });
+      }
+    });
+
+    this.props.navigation.navigate("Nutrition");
+  }
+
   render() {
     let icontag;
     if (this.state.recipe.vegetarian || this.state.recipe.vegan) {
-      icontag = (
-        <IconButton color="white" icon="leaf" />
-      );
+      icontag = <IconButton color="white" icon="leaf" />;
     } else {
-      if(this.state.recipe.glutenFree){
-        icontag = (
-          <Text style={styles.details}>GF</Text>
-        );
+      if (this.state.recipe.glutenFree) {
+        icontag = <Text style={styles.details}>GF</Text>;
+      } else {
+        icontag = <Text>-</Text>;
       }
-      else{
-        icontag = (
-          <Text>-</Text>
-        );
-      }
-      
     }
 
     if (this.state.fontsLoaded) {
@@ -171,56 +215,32 @@ class RecipeScreen extends React.Component {
                 <View
                   style={{ flexDirection: "row", justifyContent: "center" }}
                 >
-                  <View
-                    style={styles.nutrientBlock}
-                  >
-                    <Text
-                      style={styles.nutrientText}
-                    >
-                      Calories
-                    </Text>
-                    <Text
-                      style={styles.nutrientText}
-                    >
+                  <View style={styles.nutrientBlock}>
+                    <Text style={styles.nutrientText}>Calories</Text>
+                    <Text style={styles.nutrientText}>
                       {this.state.calories}
                     </Text>
                   </View>
-                  <View
-                    style={styles.nutrientBlock}
-                  >
-                    <Text
-                      style={styles.nutrientText}
-                    >
-                      Carbs
-                    </Text>
-                    <Text
-                      style={styles.nutrientText}
-                    >
-                      {this.state.carbs}
-                    </Text>
+                  <View style={styles.nutrientBlock}>
+                    <Text style={styles.nutrientText}>Carbs</Text>
+                    <Text style={styles.nutrientText}>{this.state.carbs}</Text>
                   </View>
-                  <View
-                    style={styles.nutrientBlock}
-                  >
-                    <Text
-                      style={styles.nutrientText}
-                    >
-                      Protein
-                    </Text>
-                    <Text
-                      style={styles.nutrientText}
-                    >
+                  <View style={styles.nutrientBlock}>
+                    <Text style={styles.nutrientText}>Protein</Text>
+                    <Text style={styles.nutrientText}>
                       {this.state.protein}
                     </Text>
                   </View>
                 </View>
                 <TouchableOpacity>
-                  <Button dark='true' 
-                          color='rgba(0,0,0,0.6)' 
-                          mode="contained" 
-                          style={{margin:30}}
-                          onPress={() => console.log('Pressed')}>
-                      Add to Nutrients
+                  <Button
+                    dark="true"
+                    color="rgba(0,0,0,0.6)"
+                    mode="contained"
+                    style={{ margin: 30 }}
+                    onPress={() => this.handleSubmit()}
+                  >
+                    Add to Nutrients
                   </Button>
                 </TouchableOpacity>
               </View>
@@ -281,7 +301,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Montserrat",
   },
-  gradient:{
+  gradient: {
     position: "absolute",
     left: 0,
     right: 0,

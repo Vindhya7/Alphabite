@@ -119,7 +119,7 @@ createCalciumObj = (age, gender) => {
 };
 
 createCopperObj = () => {
-  return { nutrient: "Copper", vals: ["0mcg", "900mcg"] };
+  return { nutrient: "Copper", vals: ["0µg", "900µg"] };
 };
 
 createZincObj = (gender) => {
@@ -138,8 +138,8 @@ createIronObj = (gender) => {
 };
 
 createVitAObj = (gender) => {
-  let val = gender === "Male" ? "900mcg" : "700mcg";
-  return { nutrient: "Vitamin A", vals: ["0mcg", val] };
+  let val = gender === "Male" ? "900µg" : "700µg";
+  return { nutrient: "Vitamin A", vals: ["0µg", val] };
 };
 
 createVitB1Obj = (gender) => {
@@ -166,7 +166,7 @@ createVitB6Obj = () => {
 };
 
 createVitB12Obj = () => {
-  return { nutrient: "Vitamin B12", vals: ["0mcg", "2.4mcg"] };
+  return { nutrient: "Vitamin B12", vals: ["0µg", "2.4µg"] };
 };
 
 createVitCObj = () => {
@@ -174,7 +174,7 @@ createVitCObj = () => {
 };
 
 createVitDObj = () => {
-  return { nutrient: "Vitamin D", vals: ["0mcg", "20mcg"] };
+  return { nutrient: "Vitamin D", vals: ["0µg", "20µg"] };
 };
 
 createVitEObj = () => {
@@ -187,11 +187,11 @@ createVitKObj = (weight) => {
 };
 
 createIodineObj = () => {
-  return { nutrient: "Iodine", vals: ["0mcg", "150mcg"] };
+  return { nutrient: "Iodine", vals: ["0µg", "150µg"] };
 };
 
 createSeleniumObj = () => {
-  return { nutrient: "Selenium", vals: ["0mcg", "55mcg"] };
+  return { nutrient: "Selenium", vals: ["0µg", "55µg"] };
 };
 
 export default createNutritionProfile;
