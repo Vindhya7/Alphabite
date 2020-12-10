@@ -126,7 +126,7 @@ class CreateUserProfileScreen extends React.Component {
             placeholder="Age"
             placeholderTextColor="#000a13"
             returnKeyType="next"
-            textContentType="number-pad"
+            keyboardType="number-pad"
             value={this.state.age}
             onChangeText={(age) => this.setState({ age })}
           />

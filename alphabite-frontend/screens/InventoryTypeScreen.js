@@ -86,7 +86,7 @@ class InventoryTypeScreen extends React.Component {
             placeholder=""
             placeholderTextColor="#000a13"
             returnKeyType="next"
-            textContentType="name"
+            keyboardType="number-pad"
             value={this.quantity}
             onChangeText={(quantity) => this.setState({ quantity })}
           />

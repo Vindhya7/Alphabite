@@ -142,7 +142,7 @@ class InventoryScanConfirmScreen extends React.Component {
                 placeholder="Add Quantity"
                 placeholderTextColor={item.quantity ? "#000a13" : "red"}
                 returnKeyType="next"
-                textContentType="name"
+                keyboardType="number-pad"
                 value={item.quantity}
                 onChangeText={(quantity) =>
                   this.handleQuantityChange(idx, quantity)
