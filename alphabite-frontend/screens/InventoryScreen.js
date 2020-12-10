@@ -378,11 +378,13 @@ class InventoryScreen extends React.Component {
             <View style={styles.dataCell}>
               <IconButton
                 icon="minus-circle-outline"
+                color="red"
                 onPress={() => this.minusOne(idx)}
               />
               <Text style={{ color: "#000a13" }}>{item.quantity}</Text>
               <IconButton
                 icon="plus-circle-outline"
+                color="green"
                 onPress={() => this.addOne(idx)}
               />
             </View>

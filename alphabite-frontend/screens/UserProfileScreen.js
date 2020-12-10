@@ -243,8 +243,8 @@ class UserProfileScreen extends React.Component {
                     <List.Icon
                       {...props}
                       icon="account-circle"
+                      color="#71ceac"
                       style={{
-                        backgroundColor: "#71ceac",
                         borderRadius: 85,
                         borderWidth: 5,
                       }}
@@ -255,8 +255,8 @@ class UserProfileScreen extends React.Component {
                       <List.Icon
                         {...props}
                         icon="pencil"
+                        color="#71ceac"
                         style={{
-                          backgroundColor: "#71ceac",
                           borderRadius: 85,
                           borderWidth: 5,
                         }}
@@ -277,8 +277,8 @@ class UserProfileScreen extends React.Component {
                     <List.Icon
                       {...props}
                       icon="account-circle"
+                      color="#71ceac"
                       style={{
-                        backgroundColor: "#71ceac",
                         borderRadius: 85,
                         borderWidth: 5,
                       }}
@@ -289,8 +289,8 @@ class UserProfileScreen extends React.Component {
                       <List.Icon
                         {...props}
                         icon="pencil"
+                        color="#71ceac"
                         style={{
-                          backgroundColor: "#71ceac",
                           borderRadius: 85,
                           borderWidth: 5,
                         }}
@@ -311,8 +311,8 @@ class UserProfileScreen extends React.Component {
                     <List.Icon
                       {...props}
                       icon="gender-male-female"
+                      color="#71ceac"
                       style={{
-                        backgroundColor: "#71ceac",
                         borderRadius: 85,
                         borderWidth: 5,
                       }}
@@ -323,8 +323,8 @@ class UserProfileScreen extends React.Component {
                       <List.Icon
                         {...props}
                         icon="pencil"
+                        color="#71ceac"
                         style={{
-                          backgroundColor: "#71ceac",
                           borderRadius: 85,
                           borderWidth: 5,
                         }}
@@ -345,8 +345,8 @@ class UserProfileScreen extends React.Component {
                     <List.Icon
                       {...props}
                       icon="human-male-height"
+                      color="#71ceac"
                       style={{
-                        backgroundColor: "#71ceac",
                         borderRadius: 85,
                         borderWidth: 5,
                       }}
@@ -357,8 +357,8 @@ class UserProfileScreen extends React.Component {
                       <List.Icon
                         {...props}
                         icon="pencil"
+                        color="#71ceac"
                         style={{
-                          backgroundColor: "#71ceac",
                           borderRadius: 85,
                           borderWidth: 5,
                         }}
@@ -379,8 +379,8 @@ class UserProfileScreen extends React.Component {
                     <List.Icon
                       {...props}
                       icon="weight-pound"
+                      color="#71ceac"
                       style={{
-                        backgroundColor: "#71ceac",
                         borderRadius: 85,
                         borderWidth: 5,
                       }}
@@ -391,8 +391,8 @@ class UserProfileScreen extends React.Component {
                       <List.Icon
                         {...props}
                         icon="pencil"
+                        color="#71ceac"
                         style={{
-                          backgroundColor: "#71ceac",
                           borderRadius: 85,
                           borderWidth: 5,
                         }}
@@ -412,8 +412,8 @@ class UserProfileScreen extends React.Component {
                     <List.Icon
                       {...props}
                       icon="weight-pound"
+                      color="#71ceac"
                       style={{
-                        backgroundColor: "#71ceac",
                         borderRadius: 85,
                         borderWidth: 5,
                       }}
