@@ -75,6 +75,8 @@ class CreateUserProfileScreen extends React.Component {
         gender: this.state.gender,
         inventory: {},
         nutrition: nutrition,
+        inventoryCount: 0,
+        nutritionCount: 0,
       })
       .then((data) => {
         this.props.navigation.navigate("App");

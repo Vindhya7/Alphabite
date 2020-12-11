@@ -160,6 +160,13 @@ class NutritionSelectionScreen extends React.Component {
   confirmSelection() {
     var data = this.state.data;
 
+    firebase
+      .database()
+      .ref("users/" + this.state.uid)
+      .update({
+        nutritionCount: firebase.database.ServerValue.increment(1),
+      });
+
     const prom = Promise.resolve(
       data.map((obj) => {
         var left = obj.capacity - obj.quantity;

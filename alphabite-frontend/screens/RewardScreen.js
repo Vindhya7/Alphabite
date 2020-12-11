@@ -15,49 +15,80 @@ import firebase from "firebase";
 import AppBar from "../components/AppBar.js";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Portal, Dialog, TextInput, Button, List } from "react-native-paper";
+import { NavigationEvents } from "react-navigation";
 
 class RewardScreen extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      rewards: [],
+      allRewards: [],
+      userRewards: [],
+      inventoryCount: 0,
+      nutritionCount: 0,
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       this.setState({ uid: user.uid });
-    })
+      this.setState({ userRewards: [] });
 
-    firebase 
+      firebase
+        .database()
+        .ref("users/" + this.state.uid)
+        .once("value")
+        .then((snapshot) => {
+          const { inventoryCount, nutritionCount } = snapshot.val();
+          this.setState({ inventoryCount: inventoryCount });
+          this.setState({ nutritionCount: nutritionCount });
+          var rewards = this.state.userRewards;
+          rewards.push(this.state.allRewards[0]);
+          if (this.state.inventoryCount >= 5)
+            rewards.push(this.state.allRewards[1]);
+          if (this.state.nutritionCount >= 2)
+            rewards.push(this.state.allRewards[2]);
+          if (this.state.inventoryCount >= 10)
+            rewards.push(this.state.allRewards[3]);
+          this.setState({ userRewards: rewards });
+        });
+    });
+
+    firebase
       .database()
       .ref("rewards")
       .once("value")
       .then((snapshot) => {
-        this.setState({ rewards: snapshot.val() })
-      })
+        this.setState({ allRewards: snapshot.val() });
+      });
+  }
+
+  componentWillUnmount() {
+    // fix Warning: Can't perform a React state update on an unmounted component
+    this.setState = (state, callback) => {
+      return;
+    };
+  }
+
+  handleNavigationIn() {
+    this.componentDidMount();
   }
 
   render() {
-    var totalR;
-    if (this.state.rewards.length === 0) {
-      totalR = (
-        <Text style={{ color: "#000a13", fontSize: 20, textAlign: "center" }}>
-          {this.state.totalreward} points
-        </Text>
-      );
-    } else {
-      var total = this.state.rewards.reduce((acc, reward) => acc + Number(reward.time), 0)
-      
-      totalR = (
-        <Text style={{ color: "#000a13", fontSize: 20, textAlign: "center" }}>
-          {total} points
-        </Text>
-      );
-    }
+    var total = this.state.userRewards.reduce(
+      (acc, reward) => acc + Number(reward.time),
+      0
+    );
+
+    var totalR = (
+      <Text style={{ color: "#000a13", fontSize: 20, textAlign: "center" }}>
+        {total} points
+      </Text>
+    );
+
     return (
       <SafeAreaView style={styles.container}>
+        <NavigationEvents onDidFocus={() => this.handleNavigationIn()} />
         <AppBar navigation={this.props.navigation} title="Rewards" />
         <ScrollView>
           <View
@@ -90,12 +121,12 @@ class RewardScreen extends React.Component {
               padding: 5,
               borderRadius: 13,
             }}
-            titleStyle={{ color: "white" }}
+            titleStyle={{ color: "white", padding: 20 }}
             descriptionStyle={{ color: "white", marginTop: 0 }}
             options={{
               style: { marginLeft: 20 },
             }}
-            data={this.state.rewards}
+            data={this.state.userRewards}
           />
         </ScrollView>
       </SafeAreaView>

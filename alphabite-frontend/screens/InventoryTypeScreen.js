@@ -51,6 +51,13 @@ class InventoryTypeScreen extends React.Component {
 
         firebase
           .database()
+          .ref("users/" + this.state.uid)
+          .update({
+            inventoryCount: firebase.database.ServerValue.increment(1),
+          });
+
+        firebase
+          .database()
           .ref("users/" + this.state.uid + "/inventory/")
           .update({
             [updateKey]: obj,

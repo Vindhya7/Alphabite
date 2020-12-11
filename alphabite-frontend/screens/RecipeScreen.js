@@ -119,7 +119,12 @@ class RecipeScreen extends React.Component {
   handleSubmit = async () => {
     var nutrients = this.state.nutrients;
 
-    
+    firebase
+      .database()
+      .ref("users/" + this.state.uid)
+      .update({
+        nutritionCount: firebase.database.ServerValue.increment(1),
+      });
 
     await nutrients.map((nutrientObj) => {
       const skip = [

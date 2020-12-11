@@ -75,6 +75,14 @@ class InventoryScanConfirmScreen extends React.Component {
       this.setState({ snackBarIsVisible: true });
       return;
     } else {
+      
+      firebase
+        .database()
+        .ref("users/" + this.state.uid)
+        .update({
+          inventoryCount: firebase.database.ServerValue.increment(1),
+        });
+        
       firebase
         .database()
         .ref("users/" + this.state.uid + "/inventory/")
