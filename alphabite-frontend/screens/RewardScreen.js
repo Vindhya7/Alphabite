@@ -54,7 +54,6 @@ class RewardScreen extends React.Component {
             if (this.state.inventoryCount >= 10)
               rewards.push(this.state.allRewards[3]);
             this.setState({ userRewards: rewards });
-            console.log(this.state.userRewards);
           });
       });
       

@@ -5,6 +5,7 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  RefreshControl,
   ScrollView,
 } from "react-native";
 import { DataTable, IconButton, Portal, FAB } from "react-native-paper";
@@ -30,6 +31,7 @@ class NutritionScreen extends React.Component {
       isDialogVisible: false,
       setEditedItem: 0,
       refs: [],
+      refreshing: false,
     };
   }
 
@@ -56,9 +58,15 @@ class NutritionScreen extends React.Component {
             );
 
             this.setState({ data: newData });
+            this.setState({ refreshing: false });
           });
       }
     });
+  }
+
+  onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.componentDidMount();
   }
 
   componentWillUnmount() {
@@ -66,10 +74,6 @@ class NutritionScreen extends React.Component {
     this.setState = (state, callback) => {
       return;
     };
-  }
-
-  refresh = () => {
-    this.componentDidMount();
   }
 
   handleScrollStart() {
@@ -82,14 +86,15 @@ class NutritionScreen extends React.Component {
 
   handleNavigationIn() {
     this.setState({ fabVisible: true });
-    this.refresh();
+
+    this.onRefresh();
   }
 
   handleNavigationOut() {
     this.setState({ fabVisible: false });
   }
 
-  handleReset(){
+  handleReset() {
     firebase
       .database()
       .ref("users/" + this.state.uid)
@@ -113,14 +118,12 @@ class NutritionScreen extends React.Component {
           .database()
           .ref("users/" + this.state.uid)
           .update({
-            nutrition: nutrition
-          })
+            nutrition: nutrition,
+          });
 
-        this.refresh();
+        this.componentDidMount();
       });
-    
   }
-
 
   sortByNutrient() {
     if (this.state.sortBy == 0) {
@@ -283,6 +286,12 @@ class NutritionScreen extends React.Component {
             this.handleScrollStart();
           }}
           onMomentumScrollEnd={() => this.handleScrollEnd()}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={() => this.onRefresh()}
+            />
+          }
         >
           <View style={styles.innerContainer}>
             <View style={styles.bottomContainer}>
@@ -305,7 +314,7 @@ class NutritionScreen extends React.Component {
                 label: "Reset today's values",
                 onPress: () => {
                   this.handleReset();
-                }
+                },
               },
               {
                 icon: "plus",
