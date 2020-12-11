@@ -51,9 +51,11 @@ class RecipeCard extends React.Component {
               source={{ uri: this.props.image }}
             />
             <Card.Content>
-              <Title style={{ fontSize: 15, color: "#000a13", fontFamily: 'Montserrat-bold' }}>
-                {this.props.title}
-              </Title>
+              <Card.Title 
+              titleNumberOfLines={2}
+              title={this.props.title}
+              style={{ fontSize: 15, color: "#000a13", fontFamily: 'Montserrat-bold' }} />
+              
             </Card.Content>
           </Card>
         </TouchableOpacity>
@@ -67,6 +69,7 @@ const styles = StyleSheet.create({
   card: {
     height:260,
     borderRadius:10,
+    elevation: 2
   }
 });
 

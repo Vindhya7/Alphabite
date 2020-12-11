@@ -5,16 +5,12 @@ import {
   Text,
   View,
   SafeAreaView,
-  Image,
-  TouchableOpacity,
   Picker,
   ScrollView,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 import firebase from "firebase";
 import AppBar from "../components/AppBar.js";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Portal, Dialog, TextInput, Button, List } from "react-native-paper";
 import { NavigationEvents } from "react-navigation";
 
 class RewardScreen extends React.Component {
@@ -32,27 +28,7 @@ class RewardScreen extends React.Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       this.setState({ uid: user.uid });
-      this.setState({ userRewards: [] });
-
-      firebase
-        .database()
-        .ref("users/" + this.state.uid)
-        .once("value")
-        .then((snapshot) => {
-          const { inventoryCount, nutritionCount } = snapshot.val();
-          this.setState({ inventoryCount: inventoryCount });
-          this.setState({ nutritionCount: nutritionCount });
-          var rewards = this.state.userRewards;
-          rewards.push(this.state.allRewards[0]);
-          if (this.state.inventoryCount >= 5)
-            rewards.push(this.state.allRewards[1]);
-          if (this.state.nutritionCount >= 2)
-            rewards.push(this.state.allRewards[2]);
-          if (this.state.inventoryCount >= 10)
-            rewards.push(this.state.allRewards[3]);
-          this.setState({ userRewards: rewards });
-        });
-    });
+      
 
     firebase
       .database()
@@ -60,6 +36,28 @@ class RewardScreen extends React.Component {
       .once("value")
       .then((snapshot) => {
         this.setState({ allRewards: snapshot.val() });
+        firebase
+          .database()
+          .ref("users/" + this.state.uid)
+          .once("value")
+          .then((snapshot) => {
+            this.setState({ userRewards: [] });
+            const { inventoryCount, nutritionCount } = snapshot.val();
+            this.setState({ inventoryCount: inventoryCount });
+            this.setState({ nutritionCount: nutritionCount });
+            var rewards = this.state.userRewards;
+            rewards.push(this.state.allRewards[0]);
+            if (this.state.inventoryCount >= 5)
+              rewards.push(this.state.allRewards[1]);
+            if (this.state.nutritionCount >= 2)
+              rewards.push(this.state.allRewards[2]);
+            if (this.state.inventoryCount >= 10)
+              rewards.push(this.state.allRewards[3]);
+            this.setState({ userRewards: rewards });
+            console.log(this.state.userRewards);
+          });
+      });
+      
       });
   }
 
